@@ -8,18 +8,18 @@
 	</properties>
 
 	<!-- general project information -->
-	<groupId>de.fhhannover.inform.trust</groupId>
+	<groupId>de.hshannover.f4.trust</groupId>
 	<artifactId>ifmapj</artifactId>
-	<version>0.1.5</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 	<name>ifmapj</name>
-	<url>http://trust.inform.fh-hannover.de</url>
+	<url>http://trust.f4.hs-hannover.de</url>
 	<description>
-	IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client library for Java. IF-MAP is an XML based protocol for sharing data across	arbitrary components, specified by the Trusted Computing Group. IfmapJ is maintained by the Trust@FHH group at the Fachhochschule Hannover. IfmapJ was developed within the ESUKOM research project.
+	IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client library for Java. IF-MAP is an XML based protocol for sharing data across	arbitrary components, specified by the Trusted Computing Group. IfmapJ is maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ was developed within the ESUKOM research project.
 	</description>
 	<organization>
-		<name>Trust@FHH</name>
-		<url>http://trust.inform.fh-hannover.de</url>
+		<name>Trust@HsH</name>
+		<url>http://trust.f4.hs-hannover.de</url>
 	</organization>
 
 	<!-- the project license -->
@@ -31,6 +31,11 @@
 			<comments>A business-friendly OSS license</comments>
 		</license>
 	</licenses>
+
+	<scm>
+		<url>https://github.com/trustathsh/ifmapj</url>
+		<connection>https://github.com/trustathsh/ifmapj.git</connection>
+	</scm>
 
 	<!-- the core developers of the project -->
 	<developers>
@@ -93,21 +98,13 @@
 				<configuration>
 					<licenseName>apache_v2</licenseName>
 					<canUpdateDescription>true</canUpdateDescription>
+					<canUpdateCopyright>true</canUpdateCopyright>
 					<descriptionTemplate>${basedir}/src/license/description_template.ftl</descriptionTemplate>
 					<roots>
 						<root>src/main/java</root>
 						<root>src/test/java</root>
 					</roots>
 				</configuration>
-				<executions>
-					<execution>
-						<id>first</id>
-						<goals>
-							<goal>update-file-header</goal>
-						</goals>
-						<phase>process-sources</phase>
-					</execution>
-				</executions>
 			</plugin>
 
 		</plugins>
