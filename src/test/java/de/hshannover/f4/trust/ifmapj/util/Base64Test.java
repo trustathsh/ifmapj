@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.util;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.util;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.util;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.util;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -59,7 +52,7 @@ import util.Base64;
  *
  */
 public class Base64Test {
-	
+
 	String plain1 = "password1";			// ''
 	String plain12 = "password12";			// '=='
 	String plain123 = "password123";		// '='
@@ -67,7 +60,7 @@ public class Base64Test {
 	String base1 = "cGFzc3dvcmQx";		// ''
 	String base12 = "cGFzc3dvcmQxMg==";	// '=='
 	String base123 = "cGFzc3dvcmQxMjM=";	// '='
-	
+
 	String empty = "";
 
 	@Test
@@ -77,7 +70,7 @@ public class Base64Test {
 		assertEquals(base123, Base64.encodeToString(plain123.getBytes(), true));
 		assertEquals(empty, Base64.encodeToString(null, true));
 	}
-	
+
 	@Test
 	public void testEncodeToByte(){
 		assertArrayEquals(base1.getBytes(), Base64.encodeToByte(plain1.getBytes(), true));
@@ -85,7 +78,7 @@ public class Base64Test {
 		assertArrayEquals(base123.getBytes(), Base64.encodeToByte(plain123.getBytes(), true));
 		assertArrayEquals(empty.getBytes(), Base64.encodeToByte(null, true));
 	}
-	
+
 	@Test
 	public void testEncodeToChar(){
 		assertEquals(base1, new String(Base64.encodeToChar(plain1.getBytes(), true)));
@@ -93,7 +86,7 @@ public class Base64Test {
 		assertEquals(base123, new String(Base64.encodeToChar(plain123.getBytes(), true)));
 		assertEquals(empty, new String(Base64.encodeToChar(empty.getBytes(), true)));
 	}
-	
+
 	@Test
 	public void testDecode(){
 		// byte[]
@@ -112,7 +105,7 @@ public class Base64Test {
 		assertArrayEquals(plain123.getBytes(), Base64.decode(base123));
 		assertArrayEquals(empty.getBytes(), Base64.decode(empty));
 	}
-	
+
 	@Test
 	public void testDecodeFast(){
 		// byte[]

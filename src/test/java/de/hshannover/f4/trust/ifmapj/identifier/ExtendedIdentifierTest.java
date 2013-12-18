@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -75,34 +68,34 @@ public class ExtendedIdentifierTest {
 		Document doc = dbf.newDocumentBuilder().newDocument();
 		// <elname xmlns:urn://myuri/>
 		String expected = "&lt;elname xmlns=&quot;urn://myuri&quot;&gt;&lt;/elname&gt;";
-		
+
 		Element el = doc.createElementNS("urn://myuri", "my:elname");
 		doc.appendChild(el);
-		
+
 		Identity id = Identifiers.createExtendedIdentity(doc);
-		
+
 		assertNotNull(id);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
 		assertEquals(expected, id.getName());
 	}
-	
+
 	@Test
 	public void testWithAttr() throws ParserConfigurationException, MarshalException {
 		Document doc = dbf.newDocumentBuilder().newDocument();
 		String expected = "&lt;elname xmlns=&quot;urn://myuri&quot;" +
 						  " val=&quot;attr-val&quot;&gt;&lt;/elname&gt;";
-		
+
 		Element el = doc.createElementNS("urn://myuri", "my:elname");
 		el.setAttributeNS(null, "val", "attr-val");
 		doc.appendChild(el);
-		
+
 		Identity id = Identifiers.createExtendedIdentity(doc);
 		assertNotNull(id);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
@@ -117,69 +110,69 @@ public class ExtendedIdentifierTest {
 		String expected = "&lt;elname xmlns=&quot;urn://myuri&quot;" +
 						  " ad=&quot;advalue&quot; val=&quot;attr-val&quot;&gt;" +
 						  "&lt;/elname&gt;";
-		
+
 		Element el = doc.createElementNS("urn://myuri", "my:elname");
 		el.setAttributeNS(null, "val", "attr-val");
 		el.setAttributeNS(null, "ad", "advalue");
 		doc.appendChild(el);
-		
+
 		Identity id = Identifiers.createExtendedIdentity(doc);
 		assertNotNull(id);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
-		
+
 		assertEquals(expected, id.getName());
 	}
 
 	@Test
 	public void testFromStrSimple() throws MarshalException {
 		String expected = "&lt;network blub=&quot;blubblub&quot;&gt;&lt;/network&gt;";
-		
+
 		Identity id = Identifiers.createExtendedIdentity("<network blub=\"blubblub\"/>");
 		assertNotNull(id);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
-		
+
 		assertEquals(expected, id.getName());
 	}
 
 	@Test
 	public void testTransformFromStrNs() throws MarshalException {
 		String expected = "&lt;network xmlns=&quot;http://uri&quot;&gt;&lt;/network&gt;";
-		
+
 		Identity id = Identifiers.createExtendedIdentity("<nsxx:network xmlns:nsxx=\"http://uri\"/>");
 		assertNotNull(id);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
-		
+
 		assertEquals(expected, id.getName());
 	}
-	
+
 	@Test
 	public void testChildElement() throws MarshalException {
 		String val = "<network blub=\"blubblub\"><child x=\"y\"/></network>";
 		String expected = "&lt;network blub=&quot;blubblub&quot;&gt;" +
 						  "&lt;child x=&quot;y&quot;&gt;&lt;/child&gt;" +
 						  "&lt;/network&gt;";
-		
+
 		Identity id = Identifiers.createExtendedIdentity(val);
 		assertNotNull(id);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("bad subelement");
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
-		
+
 		assertEquals(expected, id.getName());
 	}
 
@@ -189,15 +182,15 @@ public class ExtendedIdentifierTest {
 		String expected = "&lt;network blub=&quot;blubblub&quot;&gt;" +
 						  "&lt;child x=&quot;y&quot;&gt;&lt;/child&gt;" +
 						  "&lt;/network&gt;";
-		
+
 		Identity id = Identifiers.createExtendedIdentity(val);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("multi space bad");
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
-		
+
 		assertEquals(expected, id.getName());
 	}
 
@@ -207,15 +200,15 @@ public class ExtendedIdentifierTest {
 		String expected = "&lt;network blub=&quot;blubblub&quot;&gt;" +
 						  "&lt;child x=&quot;y&quot;&gt;&lt;/child&gt;" +
 						  "&lt;/network&gt;";
-		
+
 		Identity id = Identifiers.createExtendedIdentity(val);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("tab newline bad");
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
-		
+
 		assertEquals(expected, id.getName());
 	}
 
@@ -223,15 +216,15 @@ public class ExtendedIdentifierTest {
 	public void testUnusedNS() throws MarshalException {
 		String val = "<xx:el xmlns:xx=\"http://uri\" xmlns:yy=\"http://unused\"/>";
 		String expected = "&lt;el xmlns=&quot;http://uri&quot;&gt;&lt;/el&gt;";
-		
+
 		Identity id = Identifiers.createExtendedIdentity(val);
-		
+
 		if (!expected.equals(id.getName())) {
 			System.out.println("tab newline bad");
 			System.out.println("ex=\"" + expected + "\"");
 			System.out.println("is=\"" + id.getName()+ "\"");
 		}
-		
+
 		assertEquals(expected, id.getName());
 	}
 
@@ -241,10 +234,10 @@ public class ExtendedIdentifierTest {
 		// currently throws a RuntimeException. That's what we test here.
 		// I don't really see the point in multiple namespaces in a extended
 		// identifer.
-		
+
 		String val = "<xx:el xmlns:xx=\"http://uri\" xmlns:yy=\"http://used\">" +
 					 "<yy:child/></xx:el>";
-		
+
 		Identity id = Identifiers.createExtendedIdentity(val);
 		System.out.println(id.getName());
 		assertNull(id);

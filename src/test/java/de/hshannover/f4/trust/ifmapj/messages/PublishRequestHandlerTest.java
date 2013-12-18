@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -75,13 +68,13 @@ import de.hshannover.f4.trust.ifmapj.messages.Result;
 import de.hshannover.f4.trust.ifmapj.messages.SubscribeRequestImpl;
 
 public class PublishRequestHandlerTest {
-	
+
 	private static RequestHandler<? extends Request> sHandler = makeHandler();
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static final String REQ_EL_NAME = "publish";
 	private static final String RES_EL_NAME = "publishReceived";
 	private static final String IFMAP_URI = "http://www.trustedcomputinggroup.org/2010/IFMAP/2";
-	
+
 	private static PublishRequest makeRequest() {
 		return new PublishRequestImpl();
 	}
@@ -99,7 +92,7 @@ public class PublishRequestHandlerTest {
 	private static RequestHandler<? extends Request> makeHandler() {
 		return new PublishRequestHandler();
 	}
-	
+
 	@Test
 	public void testToElementGood() throws MarshalException {
 		Request req = makeSimpleRequest();
@@ -133,7 +126,7 @@ public class PublishRequestHandlerTest {
 		Element ret = sHandler.toElement(req, doc);
 		assertNull(ret);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementEmptySessionId() throws MarshalException {
 		Request req = makeSimpleRequest();
@@ -160,7 +153,7 @@ public class PublishRequestHandlerTest {
 		Element ret = sHandler.toElement(req, doc);
 		assertNull(ret);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementUpdateNoMetadata() throws MarshalException {
 		PublishRequest req = makeRequest();
@@ -168,7 +161,7 @@ public class PublishRequestHandlerTest {
 				TestHelpers.mac("aa:bb:cc:dd:ee:ff", null), null);
 
 		req.addPublishElement(pe);
-						
+
 		req.setSessionId("1234");
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sHandler.toElement(req, doc);
@@ -182,7 +175,7 @@ public class PublishRequestHandlerTest {
 				TestHelpers.mac("aa:bb:cc:dd:ee:ff", null), null);
 
 		req.addPublishElement(pe);
-						
+
 		req.setSessionId("1234");
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sHandler.toElement(req, doc);
@@ -198,7 +191,7 @@ public class PublishRequestHandlerTest {
 		Result res = sHandler.fromElement(response);
 		assertNull(res);	// This handler returns null on success
 	}
-	
+
 	@Test(expected=IfmapErrorResult.class)
 	public void testFromElementWithErrorResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -269,7 +262,7 @@ public class PublishRequestHandlerTest {
 		assertNotNull(updateEl.getAttributeNode("lifetime"));
 		assertEquals("forever", updateEl.getAttribute("lifetime"));
 	}
-	
+
 	/**
 	 * Null should default to session lifetime
 	 * @throws MarshalException
@@ -294,17 +287,17 @@ public class PublishRequestHandlerTest {
 		assertNotNull(updateEl.getAttributeNode("lifetime"));
 		assertEquals("session", updateEl.getAttribute("lifetime"));
 	}
-	
+
 	@Test
 	public void testToElementUpdateSingleIdentifier() throws MarshalException {
 		PublishRequest req = makeRequest();
-		
+
 		PublishElement pe = TestHelpers.publishUpdate(
 				TestHelpers.mac("aa:bb:cc:dd:ee:ff", null),
 				null,
 				TestHelpers.simpleMetadata(sDocBuilder, "mymeta", "singleValue"));
 		req.addPublishElement(pe);
-						
+
 		req.setSessionId("1234");
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sHandler.toElement(req, doc);
@@ -314,7 +307,7 @@ public class PublishRequestHandlerTest {
 		assertEquals(1, ret.getAttributes().getLength());
 		assertEquals("1234", ret.getAttribute("session-id"));
 		assertEquals(1, ret.getChildNodes().getLength());
-		
+
 		Element updateEl = (Element) ret.getChildNodes().item(0);
 		assertEquals("update", updateEl.getLocalName());
 		assertNull(updateEl.getNamespaceURI());
@@ -328,18 +321,18 @@ public class PublishRequestHandlerTest {
 		assertEquals(1, metadata.getChildNodes().getLength());
 		assertEquals("mymeta", metadata.getChildNodes().item(0).getLocalName());
 	}
-	
+
 	@Test
 	public void testToElementUpdateTwoIdentifiers() throws MarshalException {
 		PublishRequest req = makeRequest();
-		
+
 		PublishElement pe = TestHelpers.publishUpdate(
 				TestHelpers.mac("aa:bb:cc:dd:ee:ff", null),
 				TestHelpers.ip("192.168.0.1", IpAddressType.IPv4, null),
 				TestHelpers.simpleMetadata(sDocBuilder, "mymeta", "singleValue"),
 				TestHelpers.simpleMetadata(sDocBuilder, "mymeta2", "singleValue"));
 		req.addPublishElement(pe);
-						
+
 		req.setSessionId("1234");
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sHandler.toElement(req, doc);
@@ -349,7 +342,7 @@ public class PublishRequestHandlerTest {
 		assertEquals(1, ret.getAttributes().getLength());
 		assertEquals("1234", ret.getAttribute("session-id"));
 		assertEquals(1, ret.getChildNodes().getLength());
-		
+
 		Element updateEl = (Element) ret.getChildNodes().item(0);
 		assertEquals("update", updateEl.getLocalName());
 		assertNull(updateEl.getNamespaceURI());
@@ -481,7 +474,7 @@ public class PublishRequestHandlerTest {
 		NodeList idents = deleteEl.getChildNodes();
 		assertEquals("ip-address", idents.item(0).getLocalName());
 	}
-	
+
 	@Test
 	public void testToElementNotifyNoLifetime() throws MarshalException {
 		PublishRequest req = makeRequest();
@@ -501,7 +494,7 @@ public class PublishRequestHandlerTest {
 		Element notifyEl = (Element) ret.getChildNodes().item(0);
 		assertEquals("notify", notifyEl.getLocalName());
 		assertNull(notifyEl.getNamespaceURI());
-		
+
 		// don't set lifetime!
 		assertNull(notifyEl.getAttributeNode("lifetime"));
 	}
@@ -525,7 +518,7 @@ public class PublishRequestHandlerTest {
 		Element notifyEl = (Element) ret.getChildNodes().item(0);
 		assertEquals("notify", notifyEl.getLocalName());
 		assertNull(notifyEl.getNamespaceURI());
-		
+
 		// don't set lifetime!
 		assertNull(notifyEl.getAttributeNode("lifetime"));
 
@@ -543,7 +536,7 @@ public class PublishRequestHandlerTest {
 				TestHelpers.ip("192.168.0.1", IpAddressType.IPv4, null),
 				TestHelpers.mac("aa:bb:cc:dd:ee:ff", null),
 				TestHelpers.simpleMetadata(sDocBuilder, "mymeta3", "multiValue")));
-		
+
 		req.addPublishElement(TestHelpers.publishDelete(
 				TestHelpers.ip("192.168.0.1", IpAddressType.IPv4, null), null,
 				"myfilter"));
@@ -551,7 +544,7 @@ public class PublishRequestHandlerTest {
 		req.addPublishElement(TestHelpers.publishUpdate(
 				TestHelpers.ip("192.168.0.1", IpAddressType.IPv4, null), null,
 				TestHelpers.simpleMetadata(sDocBuilder, "mymeta4", "multiValue")));
-		
+
 		req.setSessionId("1234");
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sHandler.toElement(req, doc);

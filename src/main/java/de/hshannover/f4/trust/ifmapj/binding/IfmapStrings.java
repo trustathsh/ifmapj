@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.binding;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.binding;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,10 +36,11 @@ package de.hshannover.f4.trust.ifmapj.binding;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.binding;
 
 /**
  * Constants to be used for everything in the schema...
- * 
+ *
  * @author aw
  *
  */
@@ -56,16 +49,16 @@ public class IfmapStrings {
 	/* General stuff */
 	public static final String BASE_PREFIX = "ifmap";
 	public static final String BASE_NS_URI =  "http://www.trustedcomputinggroup.org/2010/IFMAP/2";
-	
+
 	public static final String STD_METADATA_PREFIX =  "meta";
 	public static final String STD_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2010/IFMAP-METADATA/2";
 
 	public static final String OP_METADATA_PREFIX =  "op-meta";
 	public static final String OP_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2012/IFMAP-OPERATIONAL-METADATA/1";
-		
+
 	public static final String SOAP_ENV_PREFIX = "soap";
 	public static final String SOAP_ENV_NS_URI =  "http://www.w3.org/2003/05/soap-envelope";
-	
+
 	public static final String SOAP_ENV_EL_NAME = "Envelope";
 	public static final String SOAP_BODY_EL_NAME = "Body";
 
@@ -77,29 +70,29 @@ public class IfmapStrings {
 
 	/* Requests and Responses */
 	public static final String RESPONSE_EL_NAME = "response";
-	
+
 	public static final String NEW_SESSION_REQ_EL_NAME = "newSession";
 	public static final String NEW_SESSION_REQ_ATTR_MPRS = "max-poll-result-size";
 	public static final String NEW_SESSION_RES_EL_NAME = "newSessionResult";
 	public static final String NEW_SESSION_RES_ATTR_SID = "session-id";
 	public static final String NEW_SESSION_RES_ATTR_PID = "ifmap-publisher-id";
 	public static final String NEW_SESSION_RES_ATTR_MPRS = "max-poll-result-size";
-	
+
 	public static final String ERROR_RES_EL_NAME = "errorResult";
 	public static final String ERROR_RES_ATTR_ERRCODE = "errorCode";
 	public static final String ERROR_RES_ERRSTR_EL_NAME = "errorString";
 	public static final String ERROR_RES_ATTR_NAME = "name";
-	
-	
+
+
 	public static final String SESSION_ID_ATTR = NEW_SESSION_RES_ATTR_SID;
 	public static final String PUBLISHER_ID_ATTR = NEW_SESSION_RES_ATTR_PID;
 
 	public static final String END_SESSION_REQ_EL_NAME = "endSession";
 	public static final String END_SESSION_RES_EL_NAME = "endSessionResult";
-	
+
 	public static final String PURGE_PUBLISHER_REQ_EL_NAME = "purgePublisher";
 	public static final String PURGE_PUBLISHER_RES_EL_NAME = "purgePublisherReceived";
-	
+
 	public static final String RENEW_SESSION_REQ_EL_NAME = "renewSession";
 	public static final String RENEW_SESSION_RES_EL_NAME = "renewSessionResult";
 
@@ -118,18 +111,18 @@ public class IfmapStrings {
 	public static final String PUBLISH_DELETE_ATTR_FILTER = "filter";
 	public static final String PUBLISH_NOTIFY_EL_NAME = "notify";
 	public static final String PUBLISH_METADATA_EL_NAME = "metadata";
-	
+
 	public static final String SEARCH_REQ_EL_NAME = "search";
 	public static final String SEARCH_MATCH_LINKS_FILTER_ATTR = "match-links";
 	public static final String SEARCH_RESULT_FILTER_ATTR = "result-filter";
 	public static final String SEARCH_TERM_IDENT_TYPE = "terminal-identifier-type";
 	public static final String SEARCH_MAX_DEPTH_ATTR = "max-depth";
 	public static final String SEARCH_MAX_SIZE_ATTR = "max-size";
-	
+
 	public static final String SEARCH_RES_EL_NAME = "searchResult";
 	public static final String SEARCH_RES_NAME_ATTR = "name";
 	public static final String SEARCH_METADATA_EL_NAME = "metadata";
-	
+
 	public static final String RESULT_ITEM_EL_NAME = "resultItem";
 
 	public static final String SUBSCRIBE_REQ_EL_NAME = "subscribe";
@@ -137,13 +130,13 @@ public class IfmapStrings {
 	public static final String SUBSCRIBE_UPDATE_EL_NAME = "update";
 	public static final String SUBSCRIBE_DELETE_EL_NAME = "delete";
 	public static final String SUBSCRIBE_SUB_NAME_ATTR = "name";
-	
+
 	/* Identifier stuff */
 	public static final String IDENTIFIER_ATTR_ADMIN_DOMAIN = "administrative-domain";
-	
+
 	public static final String ACCESS_REQUEST_EL_NAME = "access-request";
 	public static final String ACCESS_REQUEST_ATTR_NAME = "name";
-	
+
 	public static final String DEVICE_EL_NAME = "device";
 	public static final String DEVICE_NAME_EL_NAME = "name";
 

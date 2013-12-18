@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.exception;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.exception;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.exception;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.exception;
 
 import de.hshannover.f4.trust.ifmapj.channel.ARC;
 import de.hshannover.f4.trust.ifmapj.channel.SSRC;
@@ -52,12 +45,12 @@ import de.hshannover.f4.trust.ifmapj.messages.PollResult;
 /**
  * Exception to be thrown if a MAPS replied with an ErrorResult to any of the
  * methods {@link SSRC} and {@link ARC} offers.
- * 
+ *
  * @author aw
  *
  */
 public class IfmapErrorResult extends Exception {
-	
+
 	/**
 	 * auto-generated
 	 */
@@ -67,7 +60,7 @@ public class IfmapErrorResult extends Exception {
 	 * represents the errorCode used by the MAPS
 	 */
 	private final IfmapErrorCode mErrorCode;
-	
+
 	/**
 	 * represents the errorString used by the MAPS
 	 */
@@ -78,10 +71,10 @@ public class IfmapErrorResult extends Exception {
 	 * of a {@link PollResult}
 	 */
 	private final String mName;
-	
+
 	/**
 	 * Construct a {@link IfmapErrorResult} exception with obligatory parameters
-	 * 
+	 *
 	 * @param errCode
 	 * @param errStr
 	 * @throws NullPointerException if errStr is null
@@ -89,12 +82,12 @@ public class IfmapErrorResult extends Exception {
 	public IfmapErrorResult(IfmapErrorCode errCode, String errStr) {
 		this(errCode, errStr, null);
 	}
-	
+
 	public IfmapErrorResult(IfmapErrorCode errCode, String errStr, String name) {
-		
+
 		if (errStr == null)
 			throw new NullPointerException("errStr is not allowed to be null");
-		
+
 		mErrorCode = errCode;
 		mErrorString = errStr;
 		mName = name;
@@ -111,7 +104,7 @@ public class IfmapErrorResult extends Exception {
 	public String getName() {
 		return mName;
 	}
-	
+
 	public String toString() {
 		return String.format("error{%s, %s%s}",
 				getErrorCode(), getErrorString(),

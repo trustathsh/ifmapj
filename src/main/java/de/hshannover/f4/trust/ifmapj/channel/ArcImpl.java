@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
@@ -59,47 +52,47 @@ import de.hshannover.f4.trust.ifmapj.messages.Result;
 
 /**
  * Implementation of {@link ARC}
- * 
+ *
  * @author aw
  *
  */
 public class ArcImpl extends AbstractChannel implements ARC {
-	
+
 	/**
 	 * {@link SSRC} object used to create this {@link ARC} instance
 	 */
 	private final SSRC mSsrc;
-	
-	ArcImpl(SSRC ssrc, String url, KeyManager[] kms, TrustManager[] tms) 
+
+	ArcImpl(SSRC ssrc, String url, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException {
 		super(url, kms, tms);
 		if (ssrc == null)
 			throw new NullPointerException("Need a valid SSRC instance");
-		
+
 		mSsrc = ssrc;
 	}
 
-	ArcImpl(SSRC ssrc, String url, String user, String password, TrustManager[] tms) 
+	ArcImpl(SSRC ssrc, String url, String user, String password, TrustManager[] tms)
 			throws InitializationException {
 		super(url, user, password, tms);
 		if (ssrc == null)
 			throw new NullPointerException("Need a valid SSRC instance");
-		
+
 		mSsrc = ssrc;
 	}
 
 	@Override
-	public PollResult poll() 
+	public PollResult poll()
 			throws IfmapErrorResult, EndSessionException, IfmapException {
 		PollRequest pollReq = Requests.createPollReq();
 		Result res = genericRequestWithSessionId(pollReq);
-		
+
 		if (res instanceof EndSessionException)
 			throw (EndSessionException)res;
-		
+
 		if (!(res instanceof PollResult))
 				throw new RuntimeException("Wrong result type for poll?");
-		
+
 		return (PollResult)res;
 	}
 

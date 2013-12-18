@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapException;
@@ -55,7 +48,7 @@ import de.hshannover.f4.trust.ifmapj.messages.SubscribeRequest;
 
 /**
  * Interface describing the Synchronous Send Receive Channel (SSRC) methods.
- * 
+ *
  * @author aw
  * @author jk
  */
@@ -63,26 +56,26 @@ public interface SSRC extends IfmapChannel {
 
 	/**
 	 * Send a newSession request to MAPS
-	 * 
+	 *
 	 * <pre>
 	 *  Deprecated: Since IF-MAP 2.1 a device identifier MUST be
 	 *  supplied by the MAPC which represents the client itself.
 	 * </pre>
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void newSession()
 			throws IfmapErrorResult, IfmapException;
-	
+
 	/**
 	 * Send a newSession request to MAPS with the given parameter
-	 * 
+	 *
 	 * <pre>
 	 *  Deprecated: Since IF-MAP 2.1 a device identifier MUST be
 	 *  supplied by the MAPC which represents the client itself.
 	 * </pre>
-	 * 
+	 *
 	 * @param maxPollResSize the maximum size of poll results that can be
 	 * processed by the MAPC given in bytes
 	 * @throws IfmapErrorResult
@@ -93,15 +86,15 @@ public interface SSRC extends IfmapChannel {
 
 	/**
 	 * Send endSession request to MAPS
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void endSession() throws IfmapErrorResult, IfmapException;
-	
+
 	/**
 	 * Send renewSession request to MAPS
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
@@ -111,25 +104,25 @@ public interface SSRC extends IfmapChannel {
 	/**
 	 * Send purgePublisher request to MAPS in order to purge the MAPCs
 	 * metadata
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void purgePublisher() throws IfmapErrorResult, IfmapException;
-	
+
 	/**
 	 * Send purgePublisher request with the given parameter to MAPS
-	 * 
+	 *
 	 * @param publisherId the publisher-id of the MAPC whose metadata should be purged
-	 * 
+	 *
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void purgePublisher(String publisherId) throws IfmapErrorResult, IfmapException;
-	
+
 	/**
 	 * Send a publish request to MAPS.
-	 * 
+	 *
 	 * @param req the publish request that is sent
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
@@ -138,16 +131,16 @@ public interface SSRC extends IfmapChannel {
 
 	/**
 	 * Send a subscribe request to the MAPS.
-	 * 
+	 *
 	 * @param req the subscribe request
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
 	public void subscribe(SubscribeRequest req) throws IfmapErrorResult, IfmapException;
-	
+
 	/**
 	 * Send a search request to the MAPS
-	 * 
+	 *
 	 * @param req the search request
 	 * @return the results of the search
 	 * @throws IfmapErrorResult
@@ -156,10 +149,10 @@ public interface SSRC extends IfmapChannel {
 	public SearchResult search(SearchRequest req) throws IfmapErrorResult, IfmapException;
 
 	/* public void dump(...) throws IOException, IfmapError; */
-	
+
 	/**
 	 * Open a {@link ARC} corresponding to this {@link SSRC} instance
-	 * 
+	 *
 	 * @return the new {@link ARC}
 	 */
 	public ARC getArc() throws InitializationException;

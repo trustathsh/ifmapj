@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -64,10 +57,10 @@ import de.hshannover.f4.trust.ifmapj.identifier.IdentityType;
 import util.DomHelpers;
 
 public class IdentityHandlerTest {
-	
+
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static IdentityHandler sIdentityHandler = new IdentityHandler();
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWithNullName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -83,7 +76,7 @@ public class IdentityHandlerTest {
 		Element res = sIdentityHandler.toElement(id, doc);
 		assertNull(res);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementNullType() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -94,108 +87,108 @@ public class IdentityHandlerTest {
 
 	/**
 	 * This shouldn't show the administrative-domain
-	 * @throws MarshalException 
+	 * @throws MarshalException
 	 */
 	@Test
 	public void testToElementWithEmptyAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Identity id = Identifiers.createIdentity(IdentityType.userName, "USER100", "");
-		
+
 		Element res = sIdentityHandler.toElement(id, doc);
 		assertNotNull(res);
 		assertEquals("identity", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("USER100", res.getAttribute("name"));
 
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("username", res.getAttribute("type"));
-	
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 	}
-	
+
 	@Test
 	public void testToElementWithAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Identity id = Identifiers.createIdentity(IdentityType.userName, "USER100", "mydomain");
-		
+
 		Element res = sIdentityHandler.toElement(id, doc);
 		assertNotNull(res);
 		assertEquals("identity", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("USER100", res.getAttribute("name"));
 
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("username", res.getAttribute("type"));
-	
+
 		assertNotNull(res.getAttributeNode("administrative-domain"));
 		assertEquals("mydomain", res.getAttribute("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(3, res.getAttributes().getLength());
 	}
-	
+
 	@Test
 	public void testToElementOtherType() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Identity id = Identifiers.createIdentity(IdentityType.other,
 				"SOMETHING_WEIRD", null, "OTHER_TYPE_DEF");
-		
+
 		Element res = sIdentityHandler.toElement(id, doc);
 		assertNotNull(res);
 		assertEquals("identity", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("SOMETHING_WEIRD", res.getAttribute("name"));
 
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("other", res.getAttribute("type"));
-	
+
 		assertNotNull(res.getAttributeNode("other-type-definition"));
 		assertEquals("OTHER_TYPE_DEF", res.getAttribute("other-type-definition"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(3, res.getAttributes().getLength());
 	}
-	
-	
+
+
 	@Test
 	public void testToElementOtherTypeWithAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Identity id = Identifiers.createOtherIdentity("SOMETHING_WEIRD", "mydomain", "OTHER_TYPE_DEF");
-		
+
 		Element res = sIdentityHandler.toElement(id, doc);
 		assertNotNull(res);
 		assertEquals("identity", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("SOMETHING_WEIRD", res.getAttribute("name"));
 
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("other", res.getAttribute("type"));
-	
+
 		assertNotNull(res.getAttributeNode("other-type-definition"));
 		assertEquals("OTHER_TYPE_DEF", res.getAttribute("other-type-definition"));
 
 		assertNotNull(res.getAttributeNode("administrative-domain"));
 		assertEquals("mydomain", res.getAttribute("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(4, res.getAttributes().getLength());
 	}
-		
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWithNullOtherTypeDef() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -220,7 +213,7 @@ public class IdentityHandlerTest {
 		Document doc = sDocBuilder.newDocument();
 		Identity id = Identifiers.createIdentity(IdentityType.userName,
 				"USER100", null, "OTHER_TYPE_DEF");
-		
+
 		Element res = sIdentityHandler.toElement(id, doc);
 		assertNull(res);
 	}
@@ -233,7 +226,7 @@ public class IdentityHandlerTest {
 		Document doc = sDocBuilder.newDocument();
 		Identity id = Identifiers.createIdentity(IdentityType.userName,
 				"USER100", null, "");
-		
+
 		Element res = sIdentityHandler.toElement(id, doc);
 		assertNotNull(res);
 	}
@@ -243,53 +236,53 @@ public class IdentityHandlerTest {
 	public void testFromElementWithName() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
-		
+
 		xmlId.setAttribute("name", "USER100");
 		xmlId.setAttribute("type", "username");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNotNull(id);
 		assertEquals("USER100", id.getName());
 		assertEquals(IdentityType.userName, id.getType());
-		
+
 		assertNull(id.getAdministrativeDomain());
 	}
-	
-	
+
+
 	@Test
 	public void testFromElementWithNameAndAd() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
-		
+
 		xmlId.setAttribute("name", "USER100");
 		xmlId.setAttribute("type", "username");
 		xmlId.setAttribute("administrative-domain", "mydomain");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNotNull(id);
 		assertEquals("USER100", id.getName());
 		assertEquals(IdentityType.userName, id.getType());
 		assertEquals("mydomain", id.getAdministrativeDomain());
 	}
-	
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementWithBadType() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
-		
+
 		xmlId.setAttribute("name", "USER100");
 		xmlId.setAttribute("type", "IP");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
-	
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementWithNullName() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
 		xmlId.setAttribute("type", "username");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
@@ -300,17 +293,17 @@ public class IdentityHandlerTest {
 		Element xmlId = doc.createElementNS(null, "identity");
 		xmlId.setAttribute("type", "username");
 		xmlId.setAttribute("name", "");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
-	
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementWithNullType() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
 		xmlId.setAttribute("name", "USER100");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
@@ -321,7 +314,7 @@ public class IdentityHandlerTest {
 		Element xmlId = doc.createElementNS(null, "identity");
 		xmlId.setAttribute("name", "USER100");
 		xmlId.setAttribute("type", "");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
@@ -330,10 +323,10 @@ public class IdentityHandlerTest {
 	public void testFromElementWithOtherTypeNullOtherTypeDef() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
-		
+
 		xmlId.setAttribute("name", "OTHER_NAME");
 		xmlId.setAttribute("type", "other");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
@@ -342,11 +335,11 @@ public class IdentityHandlerTest {
 	public void testFromElementWithOtherTypeEmptyOtherTypeDef() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
-		
+
 		xmlId.setAttribute("name", "OTHER_NAME");
 		xmlId.setAttribute("type", "other");
 		xmlId.setAttribute("other-type-definition", "");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
@@ -355,11 +348,11 @@ public class IdentityHandlerTest {
 	public void testFromElementWithOtherTypeDefNotOtherType() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
-		
+
 		xmlId.setAttribute("name", "USER100");
 		xmlId.setAttribute("type", "username");
 		xmlId.setAttribute("other-type-definition", "OTHER_TYPE_DEF");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
@@ -368,11 +361,11 @@ public class IdentityHandlerTest {
 	public void testFromElementWithOtherTypeDefAttrNotOtherType() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "identity");
-		
+
 		xmlId.setAttribute("name", "USER100");
 		xmlId.setAttribute("type", "username");
 		xmlId.setAttribute("other-type-definition", "");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
@@ -381,11 +374,11 @@ public class IdentityHandlerTest {
 	public void testNotResponsible() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlId = doc.createElementNS(null, "access-request");
-		
+
 		Identity id = sIdentityHandler.fromElement(xmlId);
 		assertNull(id);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWrongIdentifierType() throws UnmarshalException, MarshalException {
 		Document doc = sDocBuilder.newDocument();

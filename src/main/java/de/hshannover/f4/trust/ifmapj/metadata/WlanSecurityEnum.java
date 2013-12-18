@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.metadata;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.metadata;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,19 +36,20 @@ package de.hshannover.f4.trust.ifmapj.metadata;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.metadata;
 
 /**
  * Enum to express the standard wlan-security information.
- * 
+ *
  * @author ib
  */
 public enum WlanSecurityEnum {
-		
+
 		open { public String toString() { return "open"; } },
 		wep { public String toString() { return "wep"; } },
 		tkip { public String toString() { return "tkip"; } },
 		ccmp { public String toString() { return "ccmp"; } },
 		bip { public String toString() { return "bip"; } },
 		other { public String toString() { return "other"; } }
-		
+
 }

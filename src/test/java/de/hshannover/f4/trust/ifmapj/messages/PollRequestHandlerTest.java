@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import static org.junit.Assert.*;
 
@@ -70,13 +63,13 @@ import util.DomHelpers;
 
 @SuppressWarnings("deprecation")
 public class PollRequestHandlerTest {
-	
+
 	private static RequestHandler<? extends Request> sHandler = makeHandler();
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static final String REQ_EL_NAME = "poll";
 	private static final String RES_EL_NAME = "pollResult";
 	private static final String IFMAP_URI = "http://www.trustedcomputinggroup.org/2010/IFMAP/2";
-	
+
 	private static Request makeRequest() {
 		return new PollRequestImpl();
 	}
@@ -84,7 +77,7 @@ public class PollRequestHandlerTest {
 	private static RequestHandler<? extends Request> makeHandler() {
 		return new PollRequestHandler();
 	}
-	
+
 	@Test
 	public void testToElementGood() throws MarshalException {
 		Request req = makeRequest();
@@ -105,7 +98,7 @@ public class PollRequestHandlerTest {
 		Element ret = sHandler.toElement(req, doc);
 		assertNull(ret);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementEmptySessionId() throws MarshalException {
 		Request req = makeRequest();
@@ -131,14 +124,14 @@ public class PollRequestHandlerTest {
 		Element response = TestHelpers.makeResponse(doc);
 		Element result = TestHelpers.addResultToResponse(RES_EL_NAME, doc, response);
 		TestHelpers.addGoodSingleResultItemResult("searchResult", doc, result);
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
 		assertTrue(res instanceof PollResult);
 		PollResult pr = (PollResult) res;
 		assertEquals(1, pr.getResults().size());
 		assertEquals(SearchResult.Type.searchResult, pr.getResults().get(0).getType());
-		
+
 		// Remove if they are gone...
 		assertEquals(1, pr.getSearchResults().size());
 		assertEquals(0, pr.getUpdateResults().size());
@@ -154,7 +147,7 @@ public class PollRequestHandlerTest {
 		Element response = TestHelpers.makeResponse(doc);
 		Element result = TestHelpers.addResultToResponse(RES_EL_NAME, doc, response);
 		TestHelpers.addGoodSingleResultItemResult("updateResult", doc, result);
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
 		assertTrue(res instanceof PollResult);
@@ -178,7 +171,7 @@ public class PollRequestHandlerTest {
 		Element response = TestHelpers.makeResponse(doc);
 		Element result = TestHelpers.addResultToResponse(RES_EL_NAME, doc, response);
 		TestHelpers.addGoodSingleResultItemResult("deleteResult", doc, result);
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
 		assertTrue(res instanceof PollResult);
@@ -186,7 +179,7 @@ public class PollRequestHandlerTest {
 		assertEquals(1, pr.getResults().size());
 		assertEquals(SearchResult.Type.deleteResult, pr.getResults().get(0).getType());
 		assertEquals("mysub", pr.getResults().get(0).getName());
-		
+
 		// Remove if they are gone...
 		assertEquals(0, pr.getSearchResults().size());
 		assertEquals(0, pr.getUpdateResults().size());
@@ -202,7 +195,7 @@ public class PollRequestHandlerTest {
 		Element response = TestHelpers.makeResponse(doc);
 		Element result = TestHelpers.addResultToResponse(RES_EL_NAME, doc, response);
 		TestHelpers.addGoodSingleResultItemResult("notifyResult", doc, result);
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
 		assertTrue(res instanceof PollResult);
@@ -210,7 +203,7 @@ public class PollRequestHandlerTest {
 		assertEquals(1, pr.getResults().size());
 		assertEquals(SearchResult.Type.notifyResult, pr.getResults().get(0).getType());
 		assertEquals("mysub", pr.getResults().get(0).getName());
-		
+
 		// Remove if they are gone...
 		assertEquals(0, pr.getSearchResults().size());
 		assertEquals(0, pr.getUpdateResults().size());
@@ -226,7 +219,7 @@ public class PollRequestHandlerTest {
 		Element response = TestHelpers.makeResponse(doc);
 		Element result = TestHelpers.addResultToResponse(RES_EL_NAME, doc, response);
 		TestHelpers.appendErrorResult(doc, result, "SearchResultsTooBig", "TOO BIG", "mysub");
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
 		assertTrue(res instanceof PollResult);
@@ -237,7 +230,7 @@ public class PollRequestHandlerTest {
 		assertEquals("TOO BIG", pr.getErrorResults().iterator().next().getErrorString());
 		assertEquals("mysub", pr.getErrorResults().iterator().next().getName());
 
-	
+
 		// Remove when they are gone
 		assertEquals(0, pr.getSearchResults().size());
 		assertEquals(0, pr.getUpdateResults().size());
@@ -253,11 +246,11 @@ public class PollRequestHandlerTest {
 		Element result = TestHelpers.addResultToResponse(RES_EL_NAME, doc, response);
 		Element err = TestHelpers.makeErrorResult(doc, "SearchResultsTooBig", "TOO BIG");
 		result.appendChild(err);
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNull(res);
 	}
-	
+
 	@Test
 	public void testFromElementSingleOfEveryResult() throws UnmarshalException,
 			IfmapErrorResult {
@@ -268,7 +261,7 @@ public class PollRequestHandlerTest {
 		TestHelpers.addGoodSingleResultItemResult("updateResult", doc, result);
 		TestHelpers.addGoodSingleResultItemResult("deleteResult", doc, result);
 		TestHelpers.addGoodSingleResultItemResult("notifyResult", doc, result);
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
 		assertTrue(res instanceof PollResult);
@@ -354,13 +347,13 @@ public class PollRequestHandlerTest {
 
 		Element els[] = new Element[4];
 		// add 4 elements under the searchResult
-		
+
 		for (int i = 0; i < els.length; i++)
-			els[i] = TestHelpers.resultItem(doc, 
+			els[i] = TestHelpers.resultItem(doc,
 					TestHelpers.ipElement(doc, "192.168.0.1", "IPv4", null));
-		
+
 		Element resEl = TestHelpers.makeResult("searchResult", doc, els);
-		
+
 		result.appendChild(resEl);
 		Result res = sHandler.fromElement(response);
 		assertNull(res);

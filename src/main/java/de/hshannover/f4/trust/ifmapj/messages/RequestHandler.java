@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,16 +48,16 @@ import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
 /**
  * Provides functionality to generically handle {@link Request} instances and
  * response parsing.
- * 
+ *
  * @author aw
  * @since 0.1.4
  */
 public interface RequestHandler<T extends Request> {
-	
+
 	/**
 	 * Marshals a given {@link Request} instance to XML form and returns the
 	 * {@link Element} to be attached to the soap:Body element.
-	 * 
+	 *
 	 * @param req the {@link Request} instance to be marshalled.
 	 * @param doc a {@link Document} instance to be used to create new
 	 *	{@link Element} instances.
@@ -75,16 +68,16 @@ public interface RequestHandler<T extends Request> {
 	 * @throws MarshalException
 	 */
 	Element toElement(Request req, Document doc) throws MarshalException;
-	
+
 	/**
 	 * Unmarshals a given response in XML form to a {@link Result} instance.
 	 * The given {@link Element} instance is the ifmap:response element. It
 	 * might have an errorResult element attached. An implementation has to
 	 * check for this condition and throw an appropriate
 	 * {@link IfmapErrorResult}.
-	 * 
+	 *
 	 * @see {@link Requests.Helpers#getResponseContentErrorCheck(Element)}.
-	 * 
+	 *
 	 * @param response the {@link Element} under <ifmap:response>
 	 * @return an appropriate {@link Result} implementation or null if there is
 	 *	 no real result, but everything was good.
@@ -92,7 +85,7 @@ public interface RequestHandler<T extends Request> {
 	 * @throws {@link IfmapErrorResult} if an errorResult was found
 	 */
 	Result fromElement(Element response) throws UnmarshalException, IfmapErrorResult;
-		
+
 	/**
 	 * @return the {@link Class} object associated with the {@link Request}
 	 *	 instance this {@link RequestHandler} is able to cope with.

@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
@@ -56,7 +49,7 @@ import de.hshannover.f4.trust.ifmapj.IfmapJHelper;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
 
 public class IfmapJHelperTest extends TestCase {
-	
+
 	@Test
 	public void testGetKeyManagersOk() {
 		// set necessary system properties
@@ -69,12 +62,12 @@ public class IfmapJHelperTest extends TestCase {
 			assertFalse(e.getMessage(), true);
 		}
 	}
-	
+
 	@Test
 	public void testGetKeyManagersFail() {
 		System.setProperty("javax.net.ssl.keyStore", Config.KEY_STORE_PATH);
 		System.setProperty("javax.net.ssl.keyStorePassword", Config.KEY_STORE_PASSWORD);
-		
+
 		System.clearProperty("javax.net.ssl.keyStore");
 		try {
 			IfmapJHelper.getKeyManagers();
@@ -82,7 +75,7 @@ public class IfmapJHelperTest extends TestCase {
 		} catch (InitializationException e) {
 			assertTrue(true);
 		}
-		
+
 		System.setProperty("javax.net.ssl.keyStore", Config.KEY_STORE_PATH);
 		System.clearProperty("javax.net.ssl.keyStorePassword");
 		try {
@@ -91,7 +84,7 @@ public class IfmapJHelperTest extends TestCase {
 		} catch (InitializationException e) {
 			assertTrue(true);
 		}
-		
+
 		System.clearProperty("javax.net.ssl.keyStore");
 		try {
 			IfmapJHelper.getKeyManagers();
@@ -100,7 +93,7 @@ public class IfmapJHelperTest extends TestCase {
 			assertTrue(true);
 		}
 	}
-	
+
 	@Test
 	public void testGetTrustManagersOk() {
 		// set necessary system properties
@@ -114,12 +107,12 @@ public class IfmapJHelperTest extends TestCase {
 			assertFalse(e.getMessage(), true);
 		}
 	}
-	
+
 	@Test
 	public void testGetTrustManagersFail() {
 		System.setProperty("javax.net.ssl.trustStore", Config.TRUST_STORE_PATH);
 		System.setProperty("javax.net.ssl.trustStorePassword", Config.TRUST_STORE_PASSWORD);
-		
+
 		System.clearProperty("javax.net.ssl.trustStore");
 		try {
 			IfmapJHelper.getTrustManagers();
@@ -127,7 +120,7 @@ public class IfmapJHelperTest extends TestCase {
 		} catch (InitializationException e) {
 			assertTrue(true);
 		}
-		
+
 		System.setProperty("javax.net.ssl.trustStore", Config.TRUST_STORE_PATH);
 		System.clearProperty("javax.net.ssl.trustStorePassword");
 		try {
@@ -136,7 +129,7 @@ public class IfmapJHelperTest extends TestCase {
 		} catch (InitializationException e) {
 			assertTrue(true);
 		}
-		
+
 		System.clearProperty("javax.net.ssl.trustStore");
 		try {
 			IfmapJHelper.getTrustManagers();
@@ -145,5 +138,5 @@ public class IfmapJHelperTest extends TestCase {
 			assertTrue(true);
 		}
 	}
-	
+
 }

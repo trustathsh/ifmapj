@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,7 +48,7 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
 
 /**
  * Implementation of interface {@link RequestFactory}
- * 
+ *
  * @author aw
  * @deprecated
  * Will be gone soon
@@ -66,7 +59,7 @@ class RequestFactoryImpl implements RequestFactoryInternal, RequestFactory {
 	public PublishRequest createPublishReq() {
 		return Requests.createPublishReq();
 	}
-	
+
 	@Override
 	public PublishRequest createPublishReq(PublishElement el) {
 		return Requests.createPublishReq(el);
@@ -106,7 +99,7 @@ class RequestFactoryImpl implements RequestFactoryInternal, RequestFactory {
 	public SubscribeRequest createSubscribeReq() {
 		return Requests.createSubscribeReq();
 	}
-	
+
 	@Override
 	public SubscribeRequest createSubscribeReq(SubscribeElement el) {
 		return Requests.createSubscribeReq(el);
@@ -125,7 +118,7 @@ class RequestFactoryImpl implements RequestFactoryInternal, RequestFactory {
 	@Override
 	public SearchRequest createSearchRequest(String matchLinks, Integer maxDepth,
 			String termIdents, Integer maxSize, String resultFilter, Identifier start) {
-		
+
 		return Requests.createSearchReq(matchLinks, maxDepth, termIdents,
 				maxSize, resultFilter, start);
 	}
@@ -139,7 +132,7 @@ class RequestFactoryImpl implements RequestFactoryInternal, RequestFactory {
 	public PublishUpdate createPublishUpdate(Identifier i1, Document md) {
 		return Requests.createPublishUpdate(i1, md);
 	}
-	
+
 	@Override
 	public PublishUpdate createPublishUpdate(Identifier i1, Document md,
 			MetadataLifetime lifetime) {
@@ -181,7 +174,7 @@ class RequestFactoryImpl implements RequestFactoryInternal, RequestFactory {
 			Collection<Document> mdlist, MetadataLifetime lifetime) {
 		return Requests.createPublishUpdate(i1, i2, mdlist, lifetime);
 	}
-	
+
 	@Override
 	public PublishNotify createPublishNotify() {
 		return Requests.createPublishNotify();
@@ -210,7 +203,7 @@ class RequestFactoryImpl implements RequestFactoryInternal, RequestFactory {
 			Collection<Document> mdlist) {
 		return Requests.createPublishNotify(i1, i2, mdlist);
 	}
-	
+
 	@Override
 	public PublishDelete createPublishDelete() {
 		return Requests.createPublishDelete();
@@ -241,7 +234,7 @@ class RequestFactoryImpl implements RequestFactoryInternal, RequestFactory {
 	public SubscribeUpdate createSubscribeUpdate() {
 		return Requests.createSubscribeUpdate();
 	}
-	
+
 	@Override
 	public SubscribeUpdate createSubscribeUpdate(String name,
 			String matchLinks, Integer maxDepth, String termIdents,

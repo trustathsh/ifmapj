@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import static org.junit.Assert.*;
 
@@ -66,13 +59,13 @@ import de.hshannover.f4.trust.ifmapj.messages.Result;
 import util.DomHelpers;
 
 public class PurgePublisherRequestHandlerTest {
-	
+
 	private static RequestHandler<? extends Request> sHandler = makeHandler();
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static final String REQ_EL_NAME = "purgePublisher";
 	private static final String RES_EL_NAME = "purgePublisherReceived";
 	private static final String IFMAP_URI = "http://www.trustedcomputinggroup.org/2010/IFMAP/2";
-	
+
 	private static Request makeRequest() {
 		return new PurgePublisherRequestImpl();
 	}
@@ -80,7 +73,7 @@ public class PurgePublisherRequestHandlerTest {
 	private static RequestHandler<? extends Request> makeHandler() {
 		return new PurgePublisherRequestHandler();
 	}
-	
+
 	@Test
 	public void testToElementGood() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
@@ -104,7 +97,7 @@ public class PurgePublisherRequestHandlerTest {
 		Element ret = sHandler.toElement(req, doc);
 		assertNull(ret);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementEmptySessionId() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
@@ -114,7 +107,7 @@ public class PurgePublisherRequestHandlerTest {
 		Element ret = sHandler.toElement(req, doc);
 		assertNull(ret);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementNullPublisherId() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
@@ -123,7 +116,7 @@ public class PurgePublisherRequestHandlerTest {
 		Element ret = sHandler.toElement(req, doc);
 		assertNull(ret);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementEmptyPublisherId() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
@@ -152,7 +145,7 @@ public class PurgePublisherRequestHandlerTest {
 		Result res = sHandler.fromElement(response);
 		assertNull(res);	// This handler returns null on success
 	}
-	
+
 	@Test(expected=IfmapErrorResult.class)
 	public void testFromElementWithErrorResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();

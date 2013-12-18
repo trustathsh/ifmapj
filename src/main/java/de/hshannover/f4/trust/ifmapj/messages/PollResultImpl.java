@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,24 +48,24 @@ import de.hshannover.f4.trust.ifmapj.messages.SearchResult.Type;
 
 /**
  * Implementation of {@link PollResult}
- * 
+ *
  * @author aw
  *
  */
 class PollResultImpl implements PollResult {
-	
+
 	private final List<SearchResult> mResults;
 	private final Collection<IfmapErrorResult> mErrorResults;
-	
+
 	PollResultImpl (List<SearchResult> results, Collection<IfmapErrorResult> eres) {
-		
+
 		if (results == null || eres == null)
 			throw new NullPointerException("result list is null");
-			
+
 		mResults = new ArrayList<SearchResult>(results);
 		mErrorResults = new ArrayList<IfmapErrorResult>(eres);
 	}
-	
+
 	@Override
 	public List<SearchResult> getResults() {
 		return Collections.unmodifiableList(mResults);
@@ -105,11 +98,11 @@ class PollResultImpl implements PollResult {
 
 	private Collection<SearchResult> resultsOfType(Type type) {
 		List<SearchResult> ret = new ArrayList<SearchResult>();
-		
+
 		for (SearchResult sr : mResults)
 			if (sr.getType() == type)
 				ret.add(sr);
-		
+
 		return Collections.unmodifiableCollection(ret);
 	}
 }

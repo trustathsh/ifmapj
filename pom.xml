@@ -40,14 +40,8 @@
 	<!-- the core developers of the project -->
 	<developers>
 		<developer>
-			<id>aw</id>
-			<name>Arne Welzel</name>
-			<email>arne.welzel@googlemail.com</email>
-		</developer>
-		<developer>
-			<id>ib</id>
-			<name>Ingo Bente</name>
-			<email>ingo.bente@fh-hannover.de</email>
+			<name>Trust@HsH</name>
+			<email>trust@f4-i.fh-hannover.de</email>
 		</developer>
 	</developers>
 
@@ -55,7 +49,12 @@
 	<contributors>
 		<contributor>
 			<name>Joram Knaack</name>
-			<email>joram@knaack.name</email>
+		</contributor>
+		<contributor>
+			<name>Arne Welzel</name>
+		</contributor>
+		<contributor>
+			<name>Ingo Bente</name>
 		</contributor>
 	</contributors>
 
@@ -97,6 +96,7 @@
 				<version>1.4</version>
 				<configuration>
 					<licenseName>apache_v2</licenseName>
+					<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
 					<canUpdateDescription>true</canUpdateDescription>
 					<canUpdateCopyright>true</canUpdateCopyright>
 					<descriptionTemplate>${basedir}/src/license/description_template.ftl</descriptionTemplate>

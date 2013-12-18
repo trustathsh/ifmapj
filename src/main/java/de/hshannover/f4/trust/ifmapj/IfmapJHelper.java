@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,33 +60,33 @@ import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
  * To create a {@link SSRC} one needs to have {@link KeyManager} and
  * {@link TrustManager} instances. This is a helper class to make it
  * easy to get those.
- * 
+ *
  * @author aw
  *
  */
 public abstract class IfmapJHelper {
-	
+
 	/**
 	 * Creates {@link KeyManager} instances based on the javax.net.ssl.keyStore
 	 * and javax.net.ssl.keyStorePassword environment variables.
-	 * 
+	 *
 	 * @return an array of {@link KeyManager} instances.
 	 * @throws InitializationException
 	 */
 	public static KeyManager[] getKeyManagers() throws InitializationException {
 		String file = System.getProperty("javax.net.ssl.keyStore");
 		String pass = System.getProperty("javax.net.ssl.keyStorePassword");
-		
+
 		if (file == null || pass == null)
 			throw new InitializationException("javax.net.ssl.keyStore / " +
 					"javax.net.ssl.keyStorePassword not set");
-		
+
 		return getKeyManagers(file, pass);
 	}
 
 	/**
 	 * Creates {@link KeyManager} instances based on the given parameters.
-	 * 
+	 *
 	 * @param keyStoreFile path to keyStore file
 	 * @param pass password for keyStore
 	 * @return an array of {@link KeyManager} instances
@@ -103,20 +96,20 @@ public abstract class IfmapJHelper {
 			throws InitializationException {
 		return getKeyManagers(getFileAsInputStream(keyStoreFile), pass);
 	}
-			
+
 	/**
 	 * Creates {@link KeyManager} instances based on the given parameters.
-	 * 
+	 *
 	 * @param keyStoreIs {@link InputStream} representing contents of a keyStore
 	 * @param pass password for the keyStore
 	 * @return an array of {@link KeyManager} instances
-	 * @throws InitializationException 
+	 * @throws InitializationException
 	 */
 	public static KeyManager[] getKeyManagers(InputStream keyStoreIs, String pass)
 	throws InitializationException {
 		if (keyStoreIs == null || pass == null)
 			throw new NullPointerException("parameters null?");
-		
+
 		try {
 			String defaultAlgo = KeyManagerFactory.getDefaultAlgorithm();
 			KeyManagerFactory kmf = KeyManagerFactory.getInstance(defaultAlgo);
@@ -131,41 +124,41 @@ public abstract class IfmapJHelper {
 	/**
 	 * Creates {@link TrustManager} instances based on the javax.net.ssl.trustStore
 	 * and javax.net.ssl.trustStorePassword environment variables.
-	 * 
+	 *
 	 * @return an array of {@link TrustManager} instances
 	 * @throws InitializationException
 	 */
 	public static TrustManager[] getTrustManagers() throws InitializationException {
 		String file = System.getProperty("javax.net.ssl.trustStore");
 		String pass = System.getProperty("javax.net.ssl.trustStorePassword");
-		
+
 		if (file == null || pass == null)
 			throw new InitializationException("javax.net.ssl.trustStore / " +
 					"javax.net.ssl.trustStorePassword not set");
-		
+
 		return getTrustManagers(file, pass);
 	}
-	
+
 	/**
 	 * Creates {@link TrustManager} instances based on the given parameters.
-	 * 
+	 *
 	 * @param trustStorePath path to trustStore
 	 * @param pass password for trustStore
 	 * @return an array of {@link TrustManager} instances
 	 * @throws InitializationException
 	 */
-	public static TrustManager[] getTrustManagers(String trustStorePath, String pass) 
+	public static TrustManager[] getTrustManagers(String trustStorePath, String pass)
 			throws InitializationException {
 			return getTrustManagers(getFileAsInputStream(trustStorePath), pass);
 	}
 
 	/**
 	 * Creates {@link TrustManager} instances based on the given parameters.
-	 * 
+	 *
 	 * @param trustStoreIs {@link InputStream} representing contents of a trustStore
 	 * @param pass password for the trustStore
 	 * @return an array of {@link TrustManager} instances
-	 * @throws InitializationException 
+	 * @throws InitializationException
 	 */
 	public static TrustManager[] getTrustManagers(InputStream trustStoreIs, String pass)
 			throws InitializationException {
@@ -182,10 +175,10 @@ public abstract class IfmapJHelper {
 			throw new InitializationException(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Helper to load a {@link KeyStore} instance.
-	 * 
+	 *
 	 * @param is {@link InputStream} representing contents of a keyStore
 	 * @param pass the password of the keyStore
 	 * @return an instance of the new loaded {@link KeyStore}
@@ -204,7 +197,7 @@ public abstract class IfmapJHelper {
 
 	/**
 	 * Helper to open a usual File to get the content as {@link InputStream}
-	 * 
+	 *
 	 * @param file the name of the file
 	 * @return an {@link InputStream} that points to the file
 	 * @throws InitializationException

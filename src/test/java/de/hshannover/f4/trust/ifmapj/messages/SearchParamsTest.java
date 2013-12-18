@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -73,22 +66,22 @@ import util.DomHelpers;
 
 @RunWith(Parameterized.class)
 public class SearchParamsTest {
-	
+
 	private static final DocumentBuilder sDb = DomHelpers.newDocumentBuilder();
 	private static final SearchRequestHandler sHandler = new SearchRequestHandler();
 	private static Identifier mStartIdentifier;
-	
+
 	@BeforeClass
 	public static void setUp() {
 		mStartIdentifier = TestHelpers.ip("192.168.0.1", null, null);
 	}
-	
+
 	private final String mMatchLinksSet;
 	private final String mMatchLinksExpected;
 
 	private final String mResultFilterSet;
 	private final String mResultFilterExpected;
-	
+
 	private final Integer mMaxDepthSet;
 	private final String mMaxDepthExpected;
 
@@ -97,7 +90,7 @@ public class SearchParamsTest {
 
 	private final String mTerminalIdentsSet;
 	private final String mTerminalIdentsExpected;
-	
+
 
 	public SearchParamsTest(String matchLinksSet,
 			String matchLinksExpected, String resultFilterSet,
@@ -105,7 +98,7 @@ public class SearchParamsTest {
 			String maxDepthExpected, Integer maxSizeSet,
 			String maxSizeExpected, String terminalIdentsSet,
 			String terminalIdentsExpected) {
-		
+
 		mMatchLinksSet = matchLinksSet;
 		mMatchLinksExpected = matchLinksExpected;
 		mResultFilterSet = resultFilterSet;
@@ -136,16 +129,16 @@ public class SearchParamsTest {
 				{"urgs", "urgs", "urgs", "urgs", 4711, "4711", 1200, "1200", "mac-address", "mac-address"},
 		});
 	}
-	
+
 	@Test
 	public void testToElement() throws MarshalException {
 		SearchRequest req = makeRequest();
 		Document doc = sDb.newDocument();
-		
+
 		Element res = sHandler.toElement(req, doc);
-		
+
 		assertEquals("search", res.getLocalName());
-		
+
 		Attr attribNode;
 		int cntNotNull = 0;
 
@@ -184,7 +177,7 @@ public class SearchParamsTest {
 			assertNotNull(attribNode);
 			assertEquals(mMaxSizeExpected, attribNode.getValue());
 		}
-		
+
 		attribNode = res.getAttributeNode("terminal-identifier-type");
 		if (mTerminalIdentsExpected == null) {
 			assertNull(attribNode);
@@ -193,7 +186,7 @@ public class SearchParamsTest {
 			assertNotNull(attribNode);
 			assertEquals(mTerminalIdentsExpected, attribNode.getValue());
 		}
-		
+
 		// session-id included!
 		assertEquals(cntNotNull + 1, res.getAttributes().getLength());
 	}

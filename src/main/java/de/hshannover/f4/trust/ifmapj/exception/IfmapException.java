@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.exception;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.exception;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,10 +36,11 @@ package de.hshannover.f4.trust.ifmapj.exception;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.exception;
 
 /**
  * General Exception thrown by the IfmapJ library.
- * 
+ *
  * @author aw
  *
  */
@@ -57,30 +50,30 @@ public class IfmapException extends Exception {
 	 * auto-generated
 	 */
 	private static final long serialVersionUID = 8922597065336001241L;
-	
+
 	/**
 	 * describes what kind of exception it is.
 	 */
 	private final String mDescription;
-	
+
 	public IfmapException(String desc, String msg) {
 		super(msg);
-		
+
 		if (desc == null)
 			throw new NullPointerException();
-		
+
 		mDescription = desc;
 	}
 
 	public IfmapException(String desc, Exception e) {
 		super(e);
-		
+
 		if (desc == null)
 			throw new NullPointerException();
-		
+
 		mDescription = desc;
 	}
-	
+
 	public String getDescription() {
 		return mDescription;
 	}

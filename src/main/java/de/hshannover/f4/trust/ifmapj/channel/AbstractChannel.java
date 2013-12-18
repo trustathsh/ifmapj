@@ -1,6 +1,3 @@
-
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -21,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -45,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import java.io.InputStream;
 import java.net.InetAddress;
@@ -85,7 +77,7 @@ import de.hshannover.f4.trust.ifmapj.messages.Result;
 /**
  * Encapsulate functionality needed by both {@link SSRC} and {@link ARC}
  * implementations.
- * 
+ *
  * @author aw
  *
  */
@@ -93,7 +85,7 @@ abstract class AbstractChannel implements IfmapChannel {
 
 	public static final String VERIFY_PEER_CERT_PROPERTY = "ifmapj.communication.verifypeercert";
 	public static final String VERIFY_PEER_HOST_PROPERTY = "ifmapj.communication.verifypeerhost";
-	
+
 	/**
 	 * represents the handler used for communication to be used
 	 */
@@ -103,31 +95,31 @@ abstract class AbstractChannel implements IfmapChannel {
 	 * Represents the url in string form
 	 */
 	private final String mUrlStr;
-	
+
 	/**
 	 * user to be used for basic authentication, null for certificate-based
 	 */
 	private final String mUser;
-	
+
 	/**
 	 * password to be used for basic authentication, null for certificate-based
 	 */
 	private final String mPassword;
-	
+
 	/**
 	 * whether this channel uses basic authentication or certificate-based
 	 * authentication
 	 */
 	private final boolean mBasicAuth;
-	
+
 	/**
 	 * {@link DocumentBuilder} to create {@link Document} instances for requests.
 	 */
 	private final DocumentBuilder mDocumentBuilder;
-	
+
 	/**
 	 * Construct a {@link AbstractChannel} object in the most general form.
-	 * 
+	 *
 	 * @param url
 	 * @param user
 	 * @param pass
@@ -137,25 +129,25 @@ abstract class AbstractChannel implements IfmapChannel {
 	 */
 	private AbstractChannel(String url, String user, String pass, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException  {
-		
+
 		if (url == null)
 			throw new InitializationException("URL not allowed to be null");
-	
+
 		// check only trustmanager
 		if (tms == null)
 			throw new InitializationException("keystore and truststore need " +
 					"to be set");
-	
-		// If basic authentication  is used, make sure user and pass are set 
+
+		// If basic authentication  is used, make sure user and pass are set
 		if ((user != null && pass == null) || (user == null && pass != null))
 			throw new InitializationException("One basic auth parameter is null");
-		
-		
+
+
 		mUrlStr = url;
 		mUser = user;
 		mPassword = pass;
 		mBasicAuth = !(mUser == null && mPassword == null);
-		
+
 		mDocumentBuilder = DomHelpers.newDocumentBuilder();
 		SSLSocketFactory sslSocketFactory = initSslSocketFactory(kms, tms);
 		HostnameVerifier verifier = initHostnameVerifier();
@@ -165,7 +157,7 @@ abstract class AbstractChannel implements IfmapChannel {
 
 	/**
 	 * Used for basic-authentication
-	 * 
+	 *
 	 * @param url
 	 * @param user
 	 * @param pass
@@ -175,7 +167,7 @@ abstract class AbstractChannel implements IfmapChannel {
 	AbstractChannel(String url, String user, String pass, TrustManager[] tms) throws InitializationException {
 		this(url, user, pass, null, tms);
 	}
-	
+
 	/**
 	 * Used for cert-based authentication
 	 * @param url
@@ -201,21 +193,21 @@ abstract class AbstractChannel implements IfmapChannel {
 		Document docReq, docRes;
 		Element elBody, content;
 		RequestHandler<? extends Request> reqhandler = Requests.getHandlerFor(req);
-		
+
 		if (reqhandler == null)
 			throw new MarshalException("No handler for " + req.getClass());
-		
-		
+
+
 		docReq = mDocumentBuilder.newDocument();
 		elBody = addSoapEnvelopeBody(docReq);
 		content = reqhandler.toElement(req, docReq);
 		elBody.appendChild(content);
-		
+
 		docRes = parseDocument(doHttpRequest(DomHelpers.toInputStream(docReq)));
-		
+
 		return reqhandler.fromElement(findResponseElement(docRes));
 	}
-	
+
 	/**
 	 * Build the soap:Envelope and soap:Body things and return the {@link Element}
 	 * for the soap:Body.
@@ -227,7 +219,7 @@ abstract class AbstractChannel implements IfmapChannel {
 				IfmapStrings.SOAP_PREFIXED_BODY_EL_NAME);
 		doc.appendChild(env);
 		env.appendChild(body);
-		
+
 		return body;
 	}
 
@@ -239,46 +231,46 @@ abstract class AbstractChannel implements IfmapChannel {
 			throw new UnmarshalException(e.getMessage());
 		}
 	}
-	
+
 	private Element findResponseElement(Document doc) throws UnmarshalException {
 		Element env, body, response;
 		env = DomHelpers.findElementInChildren(doc, IfmapStrings.SOAP_ENV_EL_NAME,
 				IfmapStrings.SOAP_ENV_NS_URI);
-		
+
 		if (env == null)
 			throw new UnmarshalException("Could not find SOAP Envelope");
-		
+
 		body = DomHelpers.findElementInChildren(env, IfmapStrings.SOAP_BODY_EL_NAME,
 				IfmapStrings.SOAP_ENV_NS_URI);
 
 		if (body == null)
 			throw new UnmarshalException("Could not find SOAP Body");
-		
+
 		response = DomHelpers.findElementInChildren(body,
 				IfmapStrings.RESPONSE_EL_NAME, IfmapStrings.BASE_NS_URI);
 
 		if (response == null)
 			throw new UnmarshalException("Could not find IF-MAP response element");
-		
+
 		return response;
 	}
 
 	private InputStream doHttpRequest(InputStream is) throws CommunicationException {
 		return mCommunicationHandler.doRequest(is);
 	}
-	
+
 	public String getUrl() {
 		return mUrlStr;
 	}
-	
+
 	public String getUser() {
 		return mUser;
 	}
-	
+
 	public String getPassword() {
 		return mPassword;
 	}
-	
+
 	@Override
 	public void setGzip(boolean useGzip) {
 		mCommunicationHandler.setGzip(useGzip);
@@ -288,7 +280,7 @@ abstract class AbstractChannel implements IfmapChannel {
 	public boolean usesGzip() {
 		return mCommunicationHandler.usesGzip();
 	}
-	
+
 	/**
 	 * @return whether the channel uses basic authentication
 	 */
@@ -300,21 +292,21 @@ abstract class AbstractChannel implements IfmapChannel {
 	public void closeTcpConnection() throws CommunicationException {
 		mCommunicationHandler.closeTcpConnection();
 	}
-	
+
 	/**
 	 * get a {@link SSLSocketFactory} based on the {@link KeyManager} and
 	 * {@link TrustManager} objects we got.
-	 * 
+	 *
 	 * @throws InitializationException
 	 */
 	private SSLSocketFactory initSslSocketFactory(KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException {
-		
+
 		SSLContext ctx = null;
-		
+
 		String verify = System.getProperty(VERIFY_PEER_CERT_PROPERTY);
-		
-	
+
+
 		// If VERIFY_PEER_PROPERTY is set to false, we don't want verification
 		// of the other sides certificate
 		if (verify != null &&  verify.equals("false")) {
@@ -322,14 +314,14 @@ abstract class AbstractChannel implements IfmapChannel {
 		} else if (verify == null || (verify != null && verify.equals("true"))) {
 			// use the given tms
 		} else {
-			throw new InitializationException("Bad value for " + 
+			throw new InitializationException("Bad value for " +
 					VERIFY_PEER_CERT_PROPERTY +  " property. Expected: true|false");
 		}
-		
+
 		if (!isBasicAuth() && kms == null)
 			throw new InitializationException("certificate-based auth needs a KeyManager");
-		
-		
+
+
 		try {
 			ctx = SSLContext.getInstance("TLS");
 			ctx.init(kms, tms, new SecureRandom());
@@ -341,21 +333,21 @@ abstract class AbstractChannel implements IfmapChannel {
 		}
 		return ctx.getSocketFactory();
 	}
-	
+
 	private TrustManager[] getTrustAllKeystore() {
 		return new TrustManager[] { new TrustAllManager() };
 	}
 
 	private HostnameVerifier initHostnameVerifier() {
 		String verify = System.getProperty(VERIFY_PEER_HOST_PROPERTY);
-		
+
 		if (verify != null && verify.equals("true")) {
 			return new X509CommonNameHostnameVerifier();
 		} else { /* verify is not set or to something else than true */
 			return new AllOkHostnameVerifier();
 		}
 	}
-			
+
 
 	// http://exampledepot.com/egs/javax.net.ssl/TrustAll.html :)
 	private class TrustAllManager implements X509TrustManager {
@@ -377,7 +369,7 @@ abstract class AbstractChannel implements IfmapChannel {
 			return null;
 		}
 	};
-	
+
 	private class AllOkHostnameVerifier implements HostnameVerifier {
 
 		@Override
@@ -385,15 +377,15 @@ abstract class AbstractChannel implements IfmapChannel {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Simple class to extract the common name from a X509Certificate
 	 * and compare all IP address received from hosts.txt/DNS/...
 	 * for the common name with all IP addresses received for the
 	 * given hostname.
-	 * 
+	 *
 	 * TODO: is this really what we want?
-	 * 
+	 *
 	 * @return true if one pair of IP addresses matches...
 	 */
 	private class X509CommonNameHostnameVerifier implements HostnameVerifier {
@@ -408,50 +400,50 @@ abstract class AbstractChannel implements IfmapChannel {
 			String certCN = null;
 			Certificate certs[];
 			int idx;
-			
+
 			try {
 				certs = session.getPeerCertificates();
 			} catch (SSLPeerUnverifiedException e) {
 				return false;
 			}
-			
+
 			if (certs.length == 0)
 				return false;
-			
+
 			if (!(certs[0] instanceof X509Certificate))
 				return false;
-			
+
 			cert0 = (X509Certificate)certs[0];
 			principal = cert0.getSubjectX500Principal();
-			
+
 			if (principal == null)
 				return false;
-			
+
 			name = principal.getName();
-		
+
 			// assuming it always does
 			if (!name.startsWith("CN="))
 				return false;
-			
+
 			idx = name.indexOf(',');
-			
+
 			if (idx < 0 || idx < 3)
 				return false;
-			
+
 			certCN = name.substring(3, idx);
-			
+
 			try {
 				hostIps = InetAddress.getAllByName(hostname);
 				certIps = InetAddress.getAllByName(certCN);
 			} catch (UnknownHostException e) {
 				return false;
 			}
-			
+
 			for (InetAddress hostIp : hostIps)
 				for (InetAddress certIp : certIps)
 					if (hostIp.equals(certIp))
 							return true;
-			
+
 			return false;
 		}
 	}

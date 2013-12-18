@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -64,7 +57,7 @@ import de.hshannover.f4.trust.ifmapj.identifier.IdentityType;
 
 /**
  * Test functionality provided by the {@link Identifiers} class.
- * 
+ *
  * @author aw
  *
  */
@@ -72,7 +65,7 @@ public class IdentifiersTest {
 
 	@Test
 	public void testQueryDefaultHandlers() throws MarshalException {
-		
+
 		assertNotNull(Identifiers.getHandlerFor(Identifiers.createAr("AR100")));
 		assertNotNull(Identifiers.getHandlerFor(Identifiers.createDev("DEV100")));
 		assertNotNull(Identifiers.getHandlerFor(Identifiers.createIdentity(
@@ -84,7 +77,7 @@ public class IdentifiersTest {
 				"address=\"192.168.0.0\" netmask=\"255.255.255.0\" " +
 				"xmlns:ns=\"http://trust.inform.fh-hannover.de/NETWORK-IDENTITY\" />")));
 	}
-	
+
 	@Test
 	public void testQueryUnknownHandler() {
 		assertNull(Identifiers.getHandlerFor(new Identifier() { /* anonymous */}));
@@ -102,7 +95,7 @@ public class IdentifiersTest {
 
 	@Test(expected=RuntimeException.class)
 	public void testRegisterCustomHandlerTwice() {
-		
+
 		class CustomIdent implements Identifier { };
 		class CustomIdentHandler implements IdentifierHandler<CustomIdent> {
 			@Override
@@ -121,20 +114,20 @@ public class IdentifiersTest {
 			public Class<CustomIdent> handles() {
 				return CustomIdent.class;
 			}
-		}	
-		
+		}
+
 		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
 		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
 	}
 
-	
+
 	@Test
 	public void testRegisterGoodHandler() {
-		
+
 		class CustomIdent implements Identifier {
-			
+
 		};
-		
+
 		class CustomIdentHandler implements IdentifierHandler<CustomIdent> {
 
 			@Override
@@ -154,20 +147,20 @@ public class IdentifiersTest {
 				return CustomIdent.class;
 			}
 		}
-		
+
 		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
-		
+
 		assertNotNull(Identifiers.getHandlerFor(new CustomIdent()));
 	}
-	
-	
+
+
 	@Test(expected=NullPointerException.class)
 	public void testRegisterHandlesNullHandler() {
-		
+
 		class CustomIdent implements Identifier {
-			
+
 		};
-		
+
 		class CustomIdentHandler implements IdentifierHandler<CustomIdent> {
 
 			@Override
@@ -187,22 +180,22 @@ public class IdentifiersTest {
 				//return CustomIdent.class;
 				return null;
 			}
-			
+
 		}
-	
+
 		// will throw NullPointers, because handles returns null
 		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
 	}
-	
+
 	@Test
 	public void testToElementNewHandler() {
-		
+
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
-		
+
 		class CustomIdent implements Identifier {
-			
+
 		};
-		
+
 		class CustomIdentHandler implements IdentifierHandler<CustomIdent> {
 
 			@Override
@@ -221,27 +214,27 @@ public class IdentifiersTest {
 			public Class<CustomIdent> handles() {
 				return CustomIdent.class;
 			}
-			
+
 		}
-		
+
 		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
-		
+
 		Element element = Identifiers.tryToElement(new CustomIdent(), doc);
-		
+
 		assertEquals("customident", element.getLocalName());
 	}
-	
+
 	@Test
 	public void testFromElementNewHandler() throws UnmarshalException {
-		
+
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
 		Element el = DomHelpers.createNonNsElement(doc, "customident");
 		doc.appendChild(el);
-		
+
 		class CustomIdent implements Identifier {
-			
+
 		};
-		
+
 		class CustomIdentHandler implements IdentifierHandler<CustomIdent> {
 
 			@Override
@@ -255,7 +248,7 @@ public class IdentifiersTest {
 					throws UnmarshalException {
 				if (el.getLocalName().equals("customident"))
 					return new CustomIdent();
-				
+
 				return null;
 			}
 
@@ -263,56 +256,56 @@ public class IdentifiersTest {
 			public Class<CustomIdent> handles() {
 				return CustomIdent.class;
 			}
-			
+
 		}
-		
+
 		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
-		
+
 		Identifier i = Identifiers.tryFromElement(el);
-	
+
 		assertNotNull(i);
 		assertEquals(CustomIdent.class, i.getClass());
 	}
-	
+
 	@Test
 	public void testTryFromElementReturnsNull() throws UnmarshalException {
-		
+
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
 		Element el = DomHelpers.createNonNsElement(doc, "customident2");
 		doc.appendChild(el);
-		
+
 		Identifier i = Identifiers.tryFromElement(el);
 		assertNull(i);
 	}
 
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementThrows() throws UnmarshalException {
-		
+
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
 		Element el = DomHelpers.createNonNsElement(doc, "customident2");
 		doc.appendChild(el);
-		
+
 		Identifier i = Identifiers.fromElement(el);
 		assertNull(i);
 	}
-	
+
 	@Test
 	public void testTryToElementReturnsNull() {
-		
+
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
 		class CustomIdent implements Identifier { };
-		
-		
+
+
 		Element el = Identifiers.tryToElement(new CustomIdent(), doc);
 		assertNull(el);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementThrows() throws MarshalException {
-		
+
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
 		class CustomIdent implements Identifier { };
-		
+
 		Element el = Identifiers.toElement(new CustomIdent(), doc);
 		assertNull(el);
 	}

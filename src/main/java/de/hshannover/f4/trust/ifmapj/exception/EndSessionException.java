@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.exception;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.exception;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.exception;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.exception;
 
 import de.hshannover.f4.trust.ifmapj.channel.ARC;
 import de.hshannover.f4.trust.ifmapj.channel.SSRC;
@@ -52,11 +45,11 @@ import de.hshannover.f4.trust.ifmapj.messages.Result;
 /**
  * This exception is only thrown by the method {@link ARC#poll()} to indicate
  * that the underlying IF-MAP session ended while a poll was in progress.
- * 
+ *
  * This can, for example, happen if a call to {@link ARC#poll()} was done, i.e.
  * a poll is pending, and on the associated {@link SSRC} {@link SSRC#newSession()}
  * or {@link SSRC#endSession()} is called.
- * 
+ *
  * @author aw
  */
 public class EndSessionException extends Exception implements Result {

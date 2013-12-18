@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.List;
 
@@ -53,22 +46,22 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
 
 /**
  * Implementation of {@link ResultItem}
- * 
+ *
  * @author aw
  *
  */
 class ResultItemImpl extends MetadataHolderImpl implements ResultItem {
-	
+
 	ResultItemImpl(Identifier id1, Identifier id2, List<Document> mdlist) {
 		if (id1 == null)
 			throw new NullPointerException("id1 not allowed to be null");
-		
+
 		if (mdlist == null)
 			throw new NullPointerException("metadata list not allowed to be null");
-		
+
 		setIdentifier1(id1);
 		setIdentifier2(id2);
-		
+
 		for (Document doc : mdlist)
 			this.addMetadata(doc);
 	}
@@ -76,7 +69,7 @@ class ResultItemImpl extends MetadataHolderImpl implements ResultItem {
 	ResultItemImpl(Identifier id1, List<Document> mdlist) {
 		this(id1, null, mdlist);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ri{");
@@ -85,7 +78,7 @@ class ResultItemImpl extends MetadataHolderImpl implements ResultItem {
 				sb.append(id);
 				sb.append(", ");
 			}
-		
+
 		sb.append("#metadata=");
 		sb.append(getMetadata().size());
 		sb.append("}");

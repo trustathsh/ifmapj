@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj;
 
 import java.io.IOException;
 
@@ -67,53 +60,53 @@ import de.hshannover.f4.trust.ifmapj21.ClockSkewDetector;
 
 /**
  * Entry class to do IF-MAP 2.0 communication using IfmapJ.
- * 
+ *
  * @author aw
  *
  */
 @SuppressWarnings("deprecation")
 public class IfmapJ {
-	
+
 	/**
 	 * Create a new {@link SSRC} object to operate on the given url
 	 * using basic authentication.
-	 * 
+	 *
 	 * @param url the URL to connect to
 	 * @param user basic authentication user
 	 * @param pass basic authentication password
 	 * @param tms TrustManager instances to initialize the {@link SSLContext} with.
 	 * @return a new {@link SSRC} that uses basic authentication
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static SSRC createSSRC(String url, String user, String pass, TrustManager[] tms)
 			throws InitializationException {
 		return new SsrcImpl(url, user, pass, tms);
 	}
-	
+
 	/**
 	 * Create a new {@link SSRC} object to operate on the given URL
 	 * using certificate-based authentication.
-	 * 
+	 *
 	 * The keystore and truststore to be used have to be set using
 	 * the {@link System#setProperty(String, String)} method using
 	 * the keys javax.net.ssl.keyStore, and javax.net.ssl.trustStore
 	 * respectively.
-	 * 
+	 *
 	 * @param url the URL to connect to
 	 * @param kms TrustManager instances to initialize the {@link SSLContext} with.
 	 * @param tms KeyManager instances to initialize the {@link SSLContext} with.
 	 * @return a new {@link SSRC} that uses certificate-based authentication
-	 * @throws IOException 
+	 * @throws IOException
 	 */
 	public static SSRC createSSRC(String url, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException {
 		return new SsrcImpl(url, kms, tms);
 	}
-	
+
 	/**
 	 * Create a new {@link RequestFactory} object to create IF-MAP requests
 	 * to be used with the methods provided by the {@link SSRC} class.
-	 * 
+	 *
 	 * @return a new {@link RequestFactory} that is used to create IF-MAP requests
 	 * @deprecated
 	 * Use {@link Requests} directly.
@@ -121,11 +114,11 @@ public class IfmapJ {
 	public static RequestFactory createRequestFactory() {
 		return Requests.getRequestFactory();
 	}
-	
+
 	/**
 	 * Create a {@link IdentifierFactory} object to create different types
 	 * of {@link Identifier} implementations.
-	 * 
+	 *
 	 * @return a new {@link IdentifierFactory} that is used to create IF-MAP identifiers
 	 * @deprecated
 	 * Use {@link Identifiers} directly.
@@ -133,21 +126,21 @@ public class IfmapJ {
 	public static IdentifierFactory createIdentifierFactory() {
 		return Identifiers.getIdentifierFactory();
 	}
-	
+
 	/**
 	 * Create a new {@link StandardIfmapMetadataFactory} object to create
 	 * standard metadata defined by IF-MAP 2.0.
-	 * 
+	 *
 	 * @return a new {@link StandardIfmapMetadataFactory} to create metadata
 	 */
 	public static StandardIfmapMetadataFactory createStandardMetadataFactory() {
 		return new StandardIfmapMetadataFactoryImpl();
 	}
-	
+
 	/**
 	 * Create a {@link ClockSkewDetector} instance which can be used to
 	 * synchronize the time with the MAPS.
-	 * 
+	 *
 	 * @param ssrc the {@link SSRC} instance to be used for synchronization
 	 * @param dev the {@link Device} used for time synchronization
 	 * @return

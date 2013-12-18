@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,24 +36,24 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
-
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 /**
  * Represents an IF-MAP access-request identifier
- * 
+ *
  * @author aw
  * @author jk
  *
  */
 public class AccessRequest extends IdentifierWithAd {
-	
+
 	private /* final */ String mName;
 
 	/**
 	 * Package constructor with name and administrative domain
 	 * @param admDom administrative domain
 	 * @param name identifier name
-	 * 
+	 *
 	 * Theoretically deprecated as an administrative domain is not allowed
 	 * for access-request with IF-MAP 2.1
 	 */
@@ -72,7 +64,7 @@ public class AccessRequest extends IdentifierWithAd {
 
 	/**
 	 * Package constructor with name
-	 * @param name 
+	 * @param name
 	 * @since 0.1.5
 	 */
 	AccessRequest(String name) {
@@ -81,7 +73,7 @@ public class AccessRequest extends IdentifierWithAd {
 
 	/**
 	 * Set an access request name
-	 * 
+	 *
 	 * @param name
 	 * @deprecated
 	 */
@@ -89,7 +81,7 @@ public class AccessRequest extends IdentifierWithAd {
 	public final void setName(String name) {
 			mName = name;
 	}
-	
+
 	/**
 	 * Get the access requests name
 	 * @return String
@@ -97,7 +89,7 @@ public class AccessRequest extends IdentifierWithAd {
 	public String getName() {
 		return mName;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */

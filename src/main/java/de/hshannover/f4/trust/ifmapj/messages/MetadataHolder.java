@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.List;
 
@@ -51,26 +44,26 @@ import org.w3c.dom.Document;
 
 /**
  * Interface to access metadata containing elements.
- * 
+ *
  * An element containing a metadata element, as it is the case for
  * {@link PublishUpdate}, {@link PublishNotify} and {@link ResultItem} objects.
- * 
+ *
  * Access to metadata is provided through the {@link Document} class. That is,
  * metadata can be accessed using the org.w3c.dom functionality.
- * 
+ *
  * @author aw
  */
 public interface MetadataHolder extends IdentifierHolder {
-	
+
 	/**
 	 * @param md the metadata object to be added.
 	 * @throws NullPointerException if the metadata object is null;
 	 */
 	public void addMetadata(Document md);
-	
+
 	/**
 	 * <b>Note:</b> The returned {@link List} is unmodifiable.
-	 * 
+	 *
 	 * @return the list of {@link Document} objects representing metadata.
 	 */
 	public List<Document> getMetadata();

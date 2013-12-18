@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.binding;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.binding;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.binding;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.binding;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -54,13 +47,13 @@ import org.junit.Ignore;
 
 @Ignore
 public class TestResponseCreator {
-	
+
 	public static final String IFMAP_NS_URI =  "http://www.trustedcomputinggroup.org/2010/IFMAP/2";
 	public static final String STD_META_NS_URI =  "http://www.trustedcomputinggroup.org/2010/IFMAP-METADATA/2";
 	public static final String IFMAP_PREFIX =  "ifmap";
 	public static final String SOAP_PREFIX = "env";
 	public static final String SOAP_NS_URI =  "http://www.w3.org/2003/05/soap-envelope";
-	
+
 	private static final String ENV_HEAD = "<" + SOAP_PREFIX + ":Envelope"
 		+ " xmlns:" + SOAP_PREFIX + "=\"" + SOAP_NS_URI + "\""
 		+ " xmlns:" + IFMAP_PREFIX + "=\"" + IFMAP_NS_URI + "\">";
@@ -68,11 +61,11 @@ public class TestResponseCreator {
 	private static final String BODY_HEAD = "<" + SOAP_PREFIX + ":Body>";
 	private static final String RESPONSE_HEAD = "<" + IFMAP_PREFIX + ":response>";
 	private static final String RESPONSE_TAIL = "</" + IFMAP_PREFIX + ":response>";
-	
+
 	private static final String BODY_TAIL = "</" + SOAP_PREFIX + ":Body>";
 	private static final String ENV_TAIL = "</" + SOAP_PREFIX + ":Envelope>";
-	
-	
+
+
 	String createProlog() {
 		StringBuffer sb = new StringBuffer();
 		sb.append(ENV_HEAD);
@@ -88,7 +81,7 @@ public class TestResponseCreator {
 		sb.append(ENV_TAIL);
 		return sb.toString();
 	}
-	
+
 	InputStream createSearchResultResponse(String resultItem) {
 		List<String> list = new LinkedList<String>();
 		list.add(resultItem);
@@ -100,7 +93,7 @@ public class TestResponseCreator {
 		list.add(resultItem);
 		return createSearchResult(name, list);
 	}
-	
+
 	InputStream createSearchResultResponse(List<String> resultItems) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(createProlog());
@@ -108,7 +101,7 @@ public class TestResponseCreator {
 		sb.append(createEpilog());
 		return new ByteArrayInputStream(sb.toString().getBytes());
 	}
-	
+
 	private String createSearchResult(String type, String name,
 			List<String> resultItems) {
 		StringBuffer sb = new StringBuffer();
@@ -120,44 +113,44 @@ public class TestResponseCreator {
 			sb.append("\"");
 		}
 		sb.append(">");
-		
+
 		for (String ri : resultItems) {
 			sb.append("<resultItem>");
 			sb.append(ri);
 			sb.append("</resultItem>");
 		}
-		
+
 		sb.append("</");
 		sb.append(type);
 		sb.append(">");
 		return sb.toString();
 	}
-	
-	
+
+
 	String createSearchResult(String name, List<String> resultItems) {
 		return createSearchResult("searchResult", name , resultItems);
 	}
-	
+
 	String createUpdateResult(String name, List<String> resultItems) {
 		return createSearchResult("updateResult", name , resultItems);
 	}
-	
+
 	String createDeleteResult(String name, List<String> resultItems) {
 		return createSearchResult("deleteResult", name , resultItems);
 	}
-	
+
 	String createNotifyResult(String name, List<String> resultItems) {
 		return createSearchResult("notifyResult", name , resultItems);
 	}
-	
+
 	InputStream createPollResultResponse(List<String> results) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(createProlog());
 		sb.append("<pollResult>");
-		
+
 		for (String result : results)
 			sb.append(result);
-		
+
 		sb.append("</pollResult>");
 		sb.append(createEpilog());
 		return new ByteArrayInputStream(sb.toString().getBytes());

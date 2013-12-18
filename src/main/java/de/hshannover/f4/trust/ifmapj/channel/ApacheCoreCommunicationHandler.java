@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -66,22 +59,22 @@ import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
 /**
  * Implementation of the {@link CommunicationHandler} interface using
  * Apache's httpcomponent-core package only.
- * 
+ *
  * @author aw
  *
  */
 class ApacheCoreCommunicationHandler extends AbstractCommunicationHandler {
-	
+
 	private final BasicHttpParams mBasicHttpParams;
 	private DefaultHttpClientConnection mHttpConnection;
 	private boolean mResponseGzip;
 	private BasicHttpEntityEnclosingRequest mHttpPost;
-	
+
 	ApacheCoreCommunicationHandler(String url, String user, String pass,
 			SSLSocketFactory sslSocketFactory, HostnameVerifier verifier)
 			throws InitializationException {
 		super(url, user, pass, sslSocketFactory, verifier);
-		
+
 		mBasicHttpParams = new BasicHttpParams();
 	}
 
@@ -93,12 +86,12 @@ class ApacheCoreCommunicationHandler extends AbstractCommunicationHandler {
 		Header hdr = null;
 		HttpEntity respEntity = null;
 		StatusLine status = null;
-		
-		
+
+
 		ise = new InputStreamEntity(is, is.available());
 		ise.setChunked(false);
 		mHttpPost.setEntity(ise);
-		
+
 		// do the actual request
 		try {
 			mHttpConnection.sendRequestHeader(mHttpPost);
@@ -113,24 +106,24 @@ class ApacheCoreCommunicationHandler extends AbstractCommunicationHandler {
 		status = response.getStatusLine();
 		if (status.getStatusCode() != 200) {
 			throw new IOException("HTTP Status Code: "
-					+ status.getStatusCode() + " " 
+					+ status.getStatusCode() + " "
 					+ status.getReasonPhrase());
 		}
-		
+
 		// check whether the response uses gzip
 		hdr = response.getFirstHeader("Content-Encoding");
 		mResponseGzip = (hdr == null) ? false : hdr.getValue().contains("gzip");
 		respEntity = response.getEntity();
-		
+
 		if (respEntity != null)
 			ret = respEntity.getContent();
-		
+
 		if (ret == null)
 			throw new IOException("no content in response");
-		
+
 		return ret;
 	}
-	
+
 	@Override
 	protected void prepareCommunication() throws IOException {
 		if (mHttpConnection == null) {
@@ -158,20 +151,20 @@ class ApacheCoreCommunicationHandler extends AbstractCommunicationHandler {
 	protected boolean replyIsGzipped() throws IOException {
 		return mResponseGzip;
 	}
-	
+
 	@Override
 	public void closeTcpConnectionImpl() throws IOException {
-	
+
 		IOException tmp = null;
 		try {
-			if (mHttpConnection != null) 
+			if (mHttpConnection != null)
 				mHttpConnection.close();
 		} catch (IOException e) {
 			tmp = e;
 		} finally {
 			mHttpConnection = null;
 		}
-		
+
 		if (tmp != null)
 			throw tmp;
 	}

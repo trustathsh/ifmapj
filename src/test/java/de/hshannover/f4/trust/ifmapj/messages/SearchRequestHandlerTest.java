@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -76,7 +69,7 @@ import de.hshannover.f4.trust.ifmapj.messages.SearchRequestImpl;
 import de.hshannover.f4.trust.ifmapj.messages.SearchResult;
 
 public class SearchRequestHandlerTest {
-	
+
 	private static RequestHandler<? extends Request> sHandler = makeHandler();
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static final String REQ_EL_NAME = "search";
@@ -86,7 +79,7 @@ public class SearchRequestHandlerTest {
 	private static SearchHolder makeSearchHolder() {
 		return new SearchHolderImpl();
 	}
-	
+
 	private static Request makeRequest(SearchHolder sh) {
 		return new SearchRequestImpl(sh);
 	}
@@ -100,7 +93,7 @@ public class SearchRequestHandlerTest {
 		sh.setStartIdentifier(TestHelpers.ip("192.168.0.1", IpAddressType.IPv4, "mydomain"));
 		return makeRequest(sh);
 	}
-	
+
 	@Test
 	public void testToElementGood() throws MarshalException {
 		Request req = makeSimpleRequest();
@@ -121,7 +114,7 @@ public class SearchRequestHandlerTest {
 		Element ret = sHandler.toElement(req, doc);
 		assertNull(ret);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementEmptySessionId() throws MarshalException {
 		Request req = makeSimpleRequest();
@@ -146,7 +139,7 @@ public class SearchRequestHandlerTest {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
 		TestHelpers.addGoodSingleResultItemSearchResult(doc, response);
-		
+
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
 		assertTrue(res instanceof SearchResult);
@@ -195,9 +188,9 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	
-	
-	
+
+
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementNonResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
@@ -208,7 +201,7 @@ public class SearchRequestHandlerTest {
 		Result res = sHandler.fromElement(response);
 		assertNull(res);
 	}
-	
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementEmptyResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
@@ -225,10 +218,10 @@ public class SearchRequestHandlerTest {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
 		Element ri = TestHelpers.resultItem(doc);
-		
+
 		for (int i = 0; i < 3; i++)
 			ri.appendChild(TestHelpers.macElement(doc, "aa:bb:cc:dd:ee:ff", null));
-			
+
 		Element sres = TestHelpers.searchResult(doc, ri);
 		response.appendChild(sres);
 		Result res = sHandler.fromElement(response);
@@ -242,13 +235,13 @@ public class SearchRequestHandlerTest {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
 		Element sres = TestHelpers.searchResult(doc);
-		
+
 		for (int i = 0; i < 4; i++) {
 			Element ri = TestHelpers.resultItem(doc, TestHelpers.macElement(
 					doc,"aa:bb:cc:dd:ee:ff", null));
 			sres.appendChild(ri);
 		}
-			
+
 		response.appendChild(sres);
 		Result res = sHandler.fromElement(response);
 		assertNotNull(res);
@@ -262,7 +255,7 @@ public class SearchRequestHandlerTest {
 		Element ri = TestHelpers.resultItem(doc);
 		Element md1 = doc.createElementNS(null, "somemetadata");
 		ri.appendChild(TestHelpers.metadata(doc, md1));
-			
+
 		Element sres = TestHelpers.searchResult(doc, ri);
 		response.appendChild(sres);
 		Result res = sHandler.fromElement(response);
@@ -276,10 +269,10 @@ public class SearchRequestHandlerTest {
 		Element ri = TestHelpers.resultItem(doc);
 		Element md1 = doc.createElementNS(null, "somemetadata");
 		Element md2 = doc.createElementNS(null, "somemetadata");
-		
+
 		ri.appendChild(TestHelpers.metadata(doc, md1));
 		ri.appendChild(TestHelpers.metadata(doc, md2));
-			
+
 		Element sres = TestHelpers.searchResult(doc, ri);
 		response.appendChild(sres);
 		Result res = sHandler.fromElement(response);
@@ -292,11 +285,11 @@ public class SearchRequestHandlerTest {
 		Element response = TestHelpers.makeResponse(doc);
 		Element ri = TestHelpers.resultItem(doc);
 		Element md1 = doc.createElementNS(null, "somemetadata");
-		
+
 		ri.appendChild(TestHelpers.macElement(doc, "aa:bb:cc:dd:ee:ff", null));
 		ri.appendChild(TestHelpers.metadata(doc, md1));
 		ri.appendChild(doc.createElementNS(null, "notallowed"));
-			
+
 		Element sres = TestHelpers.searchResult(doc, ri);
 		response.appendChild(sres);
 		Result res = sHandler.fromElement(response);
@@ -309,32 +302,32 @@ public class SearchRequestHandlerTest {
 		Element response = TestHelpers.makeResponse(doc);
 		Element ri = TestHelpers.resultItem(doc);
 		Element md1 = doc.createElementNS(null, "somemetadata");
-		
+
 		ri.appendChild(TestHelpers.macElement(doc, "aa:bb:cc:dd:ee:ff", null));
 		ri.appendChild(TestHelpers.metadata(doc, md1));
-			
+
 		Element sres = TestHelpers.searchResult(doc, ri);
 		sres.setAttribute("name", "mysearch");
 		response.appendChild(sres);
 		Result res = sHandler.fromElement(response);
 		assertNull(res);
 	}
-	
+
 	@Test
 	public void testFromElementGood() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
 		Element ri = TestHelpers.resultItem(doc);
 		Element md1 = doc.createElementNS(null, "somemetadata");
-		
+
 		ri.appendChild(TestHelpers.macElement(doc, "aa:bb:cc:dd:ee:ff", null));
 		ri.appendChild(TestHelpers.ipElement(doc, "192.168.0.1", "IPv4", null));
 		ri.appendChild(TestHelpers.metadata(doc, md1));
-			
+
 		Element sres = TestHelpers.searchResult(doc, ri);
 		response.appendChild(sres);
 		Result res = sHandler.fromElement(response);
-		
+
 		assertNotNull(res);
 		assertTrue(res instanceof SearchResult);
 		SearchResult sr = (SearchResult) res;

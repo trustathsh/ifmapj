@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,46 +36,47 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 /**
  * This interface describes all request creation methods a user should not use.
- * 
+ *
  * @author aw
  * @deprecated
  */
 public interface RequestFactoryInternal {
-	
+
 	/**
 	 * For internal use only.
 	 */
 	public NewSessionRequest createNewSessionReq();
-	
-	/**
-	 * For internal use only.
-	 * 
-	 * @return the new {@link EndSessionRequest}
-	 */
-	public EndSessionRequest createEndSessionReq();
-	
-	/**
-	 * For internal use only.
-	 * 
-	 * @return thew new {@link RenewSessionRequest}
-	 */
-	public RenewSessionRequest createRenewSessionReq();
-	
 
 	/**
 	 * For internal use only.
-	 * 
+	 *
+	 * @return the new {@link EndSessionRequest}
+	 */
+	public EndSessionRequest createEndSessionReq();
+
+	/**
+	 * For internal use only.
+	 *
+	 * @return thew new {@link RenewSessionRequest}
+	 */
+	public RenewSessionRequest createRenewSessionReq();
+
+
+	/**
+	 * For internal use only.
+	 *
 	 * @return the new {@link PurgePublisherRequest}
 	 */
 	public PurgePublisherRequest createPurgePublisherReq();
 
-	
+
 	/**
 	 * For internal use only.
-	 * 
+	 *
 	 * @return the new {@link PollRequest}
 	 */
 	public PollRequest createPollReq();

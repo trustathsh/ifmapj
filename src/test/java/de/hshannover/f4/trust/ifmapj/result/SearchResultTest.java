@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.result;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.result;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,20 +36,20 @@ package de.hshannover.f4.trust.ifmapj.result;
  * limitations under the License.
  * #L%
  */
-
+package de.hshannover.f4.trust.ifmapj.result;
 
 /**
  * Trivial tests for class {@link SearchResult}.
- * 
+ *
  * @author ibente
- * 
+ *
  * TODO: It doesn't really work like that anymore... :(
- * 
+ *
  * ResultFactory is now used to create Results which are visible
  * for the user. It is not possible to modify these results after
  * they have been created...
  * I'm too tired right now to write real tests...
- * 
+ *
  * FIXME: It's still no real test.
  *
  *
@@ -65,29 +57,29 @@ public class SearchResultTest {
 
 	private ResultFactory rf = new ResultFactoryImpl();
 	private StandardIfmapMetadataFactory mf = IfmapJ.createStandardMetadataFactory();
-	
+
 	@Test (expected=NullPointerException.class)
 	public void testAddResultItemNull() {
 		SearchResult sr = rf.createSearchRes(null);
 		sr.getName();
 	}
-	
+
 	@Test
 	public void testAddResultItem() {
 		IdentifierFactory iFactory = IfmapJ.createIdentifierFactory();
 		List<ResultItem> rlist = new LinkedList<ResultItem>();
 		List<Document> mdlist = new LinkedList<Document>();
-		
+
 		IpAddress ip = iFactory.createIp4("192.168.0.1");
 		MacAddress mac = iFactory.createMac("11:22:33:aa:bb:cc");
 		mdlist.add(mf.createIpMac());
-		
+
 		ResultItem ri = rf.createResultItem(ip, mac, mdlist);
 		ri.addMetadata(mf.createIpMac());
 		rlist.add(ri);
-		
+
 		SearchResult sr = rf.createSearchRes(rlist);
-	
+
 		assertTrue(ri.holdsLink());
 		assertEquals(1, sr.getResultItems().size());
 		assertTrue(sr.getResultItems().contains(ri));

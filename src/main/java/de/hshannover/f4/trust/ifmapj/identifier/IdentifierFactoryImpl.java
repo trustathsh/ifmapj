@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
@@ -54,9 +47,9 @@ import util.DomHelpers;
 
 /**
  * Simple implementation of the {@link IdentifierFactory} interface.
- * 
+ *
  * @author aw
- * 
+ *
  * @deprecated
  * Simply use {@link Identifiers} directly.
  *
@@ -108,7 +101,7 @@ class IdentifierFactoryImpl implements IdentifierFactory {
 	public Identity createIdentity(String name, String admDom, String otherTypeDef) {
 		return createIdentity(IdentityType.other, name, admDom, otherTypeDef);
 	}
-	
+
 	@Override
 	public Identity createIdentity(Document doc)
 			throws MarshalException {
@@ -117,13 +110,13 @@ class IdentifierFactoryImpl implements IdentifierFactory {
 		ret = createIdentity(name, null, IfmapStrings.OTHER_TYPE_EXTENDED_IDENTIFIER);
 		return ret;
 	}
-	
+
 	@Override
 	public Identity createIdentity(IdentityType type, String name, String admDom,
 			String otherTypeDef) {
 		return Identifiers.createIdentity(type, name, admDom, otherTypeDef);
 	}
-	
+
 	@Override
 	public IpAddress createIp4() {
 		return createIp4(null, null);
@@ -153,7 +146,7 @@ class IdentifierFactoryImpl implements IdentifierFactory {
 	public IpAddress createIp6(String value, String admDom) {
 		return createIp(IpAddressType.IPv6, value, admDom);
 	}
-	
+
 	@Override
 	public IpAddress createIp(IpAddressType type, String value, String admDom) {
 		return Identifiers.createIp(type, value, admDom);

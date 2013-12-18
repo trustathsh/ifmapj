@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.Collection;
 import java.util.List;
@@ -52,24 +45,24 @@ import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 
 /**
  * Interface to access {@link SearchResult} objects contained in a {@link PollResult}.
- * 
+ *
  * <b>Note:</b> All returned collections should be assumed to be unmodifiable.
- * 
+ *
  * @author aw
- * 
+ *
  * FIXME: We have to return the SearchResults in ordered...!!!
  *
  */
 public interface PollResult extends Result {
-	
+
 	/**
 	 * Get all {@link SearchResult} objects that were received after the initial
 	 * poll has been sent to the MAPS.
-	 * 
+	 *
 	 * @return an unmodifiable collection of {@link SearchResult} objects
-	 * 
+	 *
 	 * @deprecated
-	 * No ordering enforced. Replace with {@link #getResults()} and 
+	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
 	public Collection<SearchResult> getSearchResults();
@@ -77,11 +70,11 @@ public interface PollResult extends Result {
 	/**
 	 * Get all {@link SearchResult} objects for new metadata that has been
 	 * published to the MAPS since the last poll.
-	 * 
+	 *
 	 * @return an unmodifiable collection of {@link SearchResult} objects
-	 * 
+	 *
 	 * @deprecated
-	 * No ordering enforced. Replace with {@link #getResults()} and 
+	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
 	public Collection<SearchResult> getUpdateResults();
@@ -89,11 +82,11 @@ public interface PollResult extends Result {
 	/**
 	 * Get all {@link SearchResult} objects for metadata that has been
 	 * deleted from the MAPS since the last poll.
-	 * 
+	 *
 	 * @return an unmodifiable collection of {@link SearchResult} objects
-	 * 
+	 *
 	 * @deprecated
-	 * No ordering enforced. Replace with {@link #getResults()} and 
+	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
 	public Collection<SearchResult> getDeleteResults();
@@ -102,11 +95,11 @@ public interface PollResult extends Result {
 	 * Get all {@link SearchResult} objects for metadata that has been
 	 * published to the MAPS by using the publish notify request since the last
 	 * poll.
-	 * 
+	 *
 	 * @return an unmodifiable collection of {@link SearchResult} objects
-	 * 
+	 *
 	 * @deprecated
-	 * No ordering enforced. Replace with {@link #getResults()} and 
+	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
 	public Collection<SearchResult> getNotifyResults();
@@ -114,11 +107,11 @@ public interface PollResult extends Result {
 	/**
 	 * Get all {@link IfmapErrorResult} objects that indicate errors that
 	 * occured since the last poll.
-	 * 
+	 *
 	 * @return an unmodifiable collection of {@link IfmapErrorResult} objects
 	 */
 	public Collection<IfmapErrorResult> getErrorResults();
-	
+
 	/**
 	 * @return an unmodifieable list of {@link SearchResult} instances,
 	 * ordered the way they were received from the MAPS.

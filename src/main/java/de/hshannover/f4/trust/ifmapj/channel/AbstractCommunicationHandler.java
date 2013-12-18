@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -65,14 +58,14 @@ import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
 
 /**
  * Template-method pattern for {@link CommunicationHandler} implementations.
- * 
+ *
  * The method {@link #doRequest(InputStream)} is used as template, all methods
  * defined abstract in this class need to be implemented by a subclass.
- * 
+ *
  * @author aw
  */
 abstract class AbstractCommunicationHandler implements CommunicationHandler {
-	
+
 	private final SSLSocketFactory mSocketFactory;
 	private SSLSocket mSocket;
 	private final String mAuthHeaderValue;
@@ -86,20 +79,20 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	AbstractCommunicationHandler(String url, String user, String pass,
 			SSLSocketFactory sslSocketFactory,
 			HostnameVerifier verifier) throws InitializationException {
-		
+
 		if (url == null)
 			throw new NullPointerException("url is null");
-		
+
 		if (sslSocketFactory == null)
 			throw new NullPointerException("sslSocketFactory is null");
-		
+
 		if (verifier == null)
 			throw new NullPointerException("verifier is null");
-	
+
 		try {
 			mUrl = new URL(url);
 		} catch (MalformedURLException e) {
-			throw new InitializationException("Malformed URL [" 
+			throw new InitializationException("Malformed URL ["
 					+ e.getMessage() + "]");
 		}
 		// fix up the path in case non is given
@@ -110,7 +103,7 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 
 		// check whether we use basicauth
 		mBasicAuth = !(user == null || pass == null);
-	
+
 		// if we do, prepare the Authorization header value
 		if (mBasicAuth)
 			mAuthHeaderValue = "Basic " + Base64.encodeToString((user + ":" + pass).getBytes(), false);
@@ -118,79 +111,79 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 			mAuthHeaderValue = null;
 
 		mSocketFactory = sslSocketFactory;
-		
+
 		mHostnameVerifier = verifier;
 	}
-	
+
 	/*
 	 * Template method.
-	 * 
+	 *
 	 * (non-Javadoc)
 	 * @see de.fhhannover.inform.trust.ifmapj.channel.CommunicationHandler#doRequest(java.io.InputStream)
 	 */
 	@Override
 	public final InputStream doRequest(InputStream httpBody) throws CommunicationException {
 		InputStream reply = null;
-		
+
 		try {
-			
+
 			getSocket();
-			
+
 			prepareCommunication();
-			
+
 			createPostRequest(getPath());
-			
+
 			writeHostLine();
-			
+
 			writeContentTypeHeaders();
-		
+
 			if (usesGzip()) {
 				httpBody = compressInputStream(httpBody);
 				writeGzipHeaders();
 			}
-			
+
 			if (usesBasicAuth())
 				writeAuthHeader();
-			
+
 			writeContentLengthHeader(httpBody.available());
-			
+
 			finishHeaders();
-			
+
 			reply = doActualRequest(httpBody);
-			
+
 			if (replyIsGzipped())
 				reply = new GZIPInputStream(reply);
-			
+
 			return reply;
-			
+
 		} catch (IOException e) {
 			throw new CommunicationException(e.getMessage());
 		}
 	}
-	
+
 	private void writeHostLine() throws IOException {
 		addHeader("Host", getUrl().getHost() + ":" + getPort());
 	}
-	
+
 	private void writeContentTypeHeaders() throws IOException {
 		addHeader("Accept-Type", "application/soap+xml");
 		addHeader("Content-Type", "application/soap+xml");
 	}
-	
+
 	private void writeGzipHeaders() throws IOException {
 		addHeader("Accept-Encoding", "gzip");
 		addHeader("Content-Encoding", "gzip");
-		
+
 	}
 
 	private void writeAuthHeader() throws IOException {
 		addHeader("Authorization", getAuthHeaderValue());
 	}
-	
+
 	private void writeContentLengthHeader(int length) throws IOException {
 		addHeader("Content-Length", "" + length);
 	}
-	
+
 	@Override
 	public void setGzip(boolean gzip) {
 		mGzip = gzip;
@@ -200,7 +193,7 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	public boolean usesGzip() {
 		return mGzip;
 	}
-	
+
 	protected SSLSocket getSocket() throws IOException {
 		if (mSocket == null) {
 			try {
@@ -216,7 +209,7 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	/**
 	 * Before we allocate a new socket, try to delete the old one.
 	 * closeTcpConnection() needs to be a nop for non-opened connections.
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
@@ -225,15 +218,15 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 				getPort());
 		ret.setTcpNoDelay(true);
 		ret.setWantClientAuth(true);
-		
+
 		// Check if all is good... Will throw IOException if we don't
 		// like the other end...
 		ret.getSession().getPeerCertificates();
-		
+
 		if (!mHostnameVerifier.verify(mUrl.getHost(), ret.getSession()))
 			throw new IOException("Hostname Verification failed! "
 					+ "Did you set ifmapj.communication.verifypeerhost?");
-		
+
 		return ret;
 	}
 
@@ -259,42 +252,42 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 
 	/**
 	 * Subclasses should set up sockets and stuff here.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	protected abstract void prepareCommunication() throws IOException;
-	
+
 	/**
 	 * Subclasses should create the POST requests or already write something
 	 * to the server.
-	 * 
+	 *
 	 * @param path
 	 * @throws IOException
 	 */
 	protected abstract void createPostRequest(String path) throws IOException;
-	
+
 	/**
 	 * Subclasses should add headers or send them to the other server
 	 * already.
-	 * 
+	 *
 	 * @param key
 	 * @param value
 	 * @throws IOException
 	 */
 	protected abstract void addHeader(String key, String value) throws IOException;
-	
+
 	/**
 	 * Indicates that now headers will follow anymore
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	protected abstract void finishHeaders() throws IOException;
-	
-	
+
+
 	/**
 	 * Do the actual httpRequest. Return a {@link InputStream} instance
 	 * representing the content of the HTTP body.
-	 * 
+	 *
 	 * @param in
 	 * @return
 	 */
@@ -304,13 +297,13 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	/**
 	 * Returns whether the last doActualRequest() invocation lead returned
 	 * a gzip compressed stream.
-	 * 
+	 *
 	 * @return
 	 * @throws IOException
 	 */
 	protected abstract boolean replyIsGzipped() throws IOException;
 
-	
+
 	/**
 	 * Do whatever has to be done for cleaning up a TCP connection.
 	 */
@@ -327,17 +320,17 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 			tmpException = e;
 		} finally {
 			try {
-				
+
 				if (mSocket != null)
 					mSocket.close();
-				
+
 			} catch (IOException e) {
 				tmpException = e;
 			} finally {
 				mSocket = null;
 			}
 		}
-		
+
 		if (tmpException != null)
 			throw new CommunicationException(tmpException);
 	}
@@ -347,7 +340,7 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	 * We do copying here, but I'm not sure whether there is a way around it anyway,
 	 * because we need to know the number of bytes to send out, before we can
 	 * start sending them. (no chunked encoding)
-	 * 
+	 *
 	 * @param is
 	 * @return
 	 * @throws IOException if something goes wrong while working on
@@ -357,10 +350,10 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 		int next = -1;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		OutputStream os = new GZIPOutputStream(baos);
-		
+
 		while ((next = is.read()) >= 0)
 			os.write(next);
-		
+
 		baos.close();
 		os.close();
 		is.close();

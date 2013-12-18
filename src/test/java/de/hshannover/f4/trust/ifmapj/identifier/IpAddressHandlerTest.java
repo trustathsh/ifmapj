@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -65,10 +58,10 @@ import de.hshannover.f4.trust.ifmapj.identifier.IpAddressType;
 import util.DomHelpers;
 
 public class IpAddressHandlerTest {
-	
+
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static IpAddressHandler sIpAddressHandler = new IpAddressHandler();
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWithNullValue() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -76,7 +69,7 @@ public class IpAddressHandlerTest {
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNull(res);
 	}
-		
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWithEmptyValue() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -84,99 +77,99 @@ public class IpAddressHandlerTest {
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNull(res);
 	}
-	
+
 	@Test
 	public void testToElementNullTypeIPv4() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
-		
+
 		IpAddress ip = Identifiers.createIp(null, "192.168.0.1", "");
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("192.168.0.1", res.getAttribute("value"));
-	
+
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv4", res.getAttribute("type"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 	}
 
 	/**
 	 * This shouldn't show the administrative-domain
-	 * @throws MarshalException 
+	 * @throws MarshalException
 	 */
 	@Test
 	public void testToElementWithEmptyAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp4("192.168.0.1", "");
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("192.168.0.1", res.getAttribute("value"));
-	
+
 		// default is IPv4
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv4", res.getAttribute("type"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 	}
-		
-	
+
+
 	@Test
 	public void testToElementWithValueIPv46() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp(IpAddressType.IPv4, "192.168.0.1", null);
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("192.168.0.1", res.getAttribute("value"));
-		
+
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv4", res.getAttribute("type"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 
 		ip = Identifiers.createIp(IpAddressType.IPv6, "192.168.0.1", null);
 		// for simplicity we leave a IPv4 value, it's not checked...
-		
+
 		res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("192.168.0.1", res.getAttribute("value"));
-		
+
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv6", res.getAttribute("type"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 	}
@@ -186,44 +179,44 @@ public class IpAddressHandlerTest {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp(IpAddressType.IPv4, "192.168.0.1",
 				"mydomain");
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("192.168.0.1", res.getAttribute("value"));
-		
+
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv4", res.getAttribute("type"));
-		
+
 		assertNotNull(res.getAttributeNode("administrative-domain"));
 		assertEquals("mydomain", res.getAttribute("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(3, res.getAttributes().getLength());
 
 		// for simplicity we leave a IPv4 value, it's not checked...
 		ip = Identifiers.createIp(IpAddressType.IPv6, "192.168.0.1",
 				"mydomain");
-		
+
 		res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("192.168.0.1", res.getAttribute("value"));
-		
+
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv6", res.getAttribute("type"));
-		
+
 		assertNotNull(res.getAttributeNode("administrative-domain"));
 		assertEquals("mydomain", res.getAttribute("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(3, res.getAttributes().getLength());
 	}
@@ -232,16 +225,16 @@ public class IpAddressHandlerTest {
 	public void testFromElementWithValueIPv46() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "ip-address");
-		
+
 		xmlIp.setAttribute("value", "192.168.0.1");
 		xmlIp.setAttribute("type", "IPv4");
-		
+
 		IpAddress ip = sIpAddressHandler.fromElement(xmlIp);
 		assertNotNull(ip);
 		assertNotNull(ip.getValue());
 		assertEquals("192.168.0.1", ip.getValue());
 		assertEquals(IpAddressType.IPv4, ip.getType());
-		
+
 		assertNull(ip.getAdministrativeDomain());
 
 		// again, leave the value IPv4, it's not checked
@@ -270,11 +263,11 @@ public class IpAddressHandlerTest {
 		IpAddress ip = Identifiers.createIp4("333.168.0.1", "");
 		assertNotNull(ip);
 		//assertNull(ip.getValue());
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 	}
-		
+
 	@Test(expected=MarshalException.class)
 	@Ignore // We don't have checks for this
 	public void testToElementWithInvalidValueIPv6() throws MarshalException {
@@ -282,11 +275,11 @@ public class IpAddressHandlerTest {
 		IpAddress ip = Identifiers.createIp6("XX80::0202:B3YY:ZZ1E:8329", "");
 		assertNotNull(ip);
 		assertNull(ip.getValue());
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNull(res);
 	}
-		
+
 	@Test
 	@Ignore // We don't do canocalization in (in favor of clients)
 	public void testToElementWithCanonicalizationIPv4() throws MarshalException {
@@ -295,25 +288,25 @@ public class IpAddressHandlerTest {
 		assertNotNull(ip);
 		assertNotNull(ip.getValue());
 		assertEquals(ip.getValue(), "192.168.0.1");
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("192.168.0.1", res.getAttribute("value"));
-		
+
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv4", res.getAttribute("type"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 	}
-		
+
 	@Test
 	@Ignore // We don't do canocilaziation (in favor of clients)
 	public void testToElementWithCanonicalizationIPv6() throws MarshalException {
@@ -322,25 +315,25 @@ public class IpAddressHandlerTest {
 		assertNotNull(ip);
 		assertNotNull(ip.getValue());
 		assertEquals(ip.getValue(), "fe80:0:0:0:202:b3ff:fe1e:8329");
-		
+
 		Element res = sIpAddressHandler.toElement(ip, doc);
 		assertNotNull(res);
 		assertEquals("ip-address", res.getLocalName());
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
-		
+
 		assertNotNull(res.getAttributeNode("value"));
 		assertEquals("fe80:0:0:0:202:b3ff:fe1e:8329", res.getAttribute("value"));
-		
+
 		assertNotNull(res.getAttributeNode("type"));
 		assertEquals("IPv6", res.getAttribute("type"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 	}
-		
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementWithBadType() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -355,11 +348,11 @@ public class IpAddressHandlerTest {
 	public void testFromElementWithValueAndAdIPv46() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "ip-address");
-		
+
 		xmlIp.setAttribute("value", "192.168.0.1");
 		xmlIp.setAttribute("type", "IPv4");
 		xmlIp.setAttribute("administrative-domain", "mydomain");
-		
+
 		IpAddress ip = sIpAddressHandler.fromElement(xmlIp);
 		assertNotNull(ip);
 		assertNotNull(ip.getValue());
@@ -402,16 +395,16 @@ public class IpAddressHandlerTest {
 		IpAddress ip = sIpAddressHandler.fromElement(xmlIp);
 		assertNull(ip);
 	}
-		
+
 	@Test
 	public void testNotResponsible() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "access-request");
-		
+
 		IpAddress ip = sIpAddressHandler.fromElement(xmlIp);
 		assertNull(ip);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWrongIdentifierType() throws UnmarshalException, MarshalException {
 		Document doc = sDocBuilder.newDocument();

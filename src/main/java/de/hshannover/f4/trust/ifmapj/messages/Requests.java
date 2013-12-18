@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -71,26 +64,26 @@ import de.hshannover.f4.trust.ifmapj.messages.SearchResult.Type;
 
 /**
  * Provides access to {@link Request} associated classes.
- * 
+ *
  * @since 0.1.4
  * @author aw
  */
 public class Requests {
-	
+
 	private static Map<Class<? extends Request>, RequestHandler<? extends Request>>
 			sRequestHandlers;
-	
+
 	@SuppressWarnings("deprecation")
 	private static RequestFactory sRequestFactoryInstance;
 
 	// Not to be instanced
 	private Requests() { }
-	
+
 	private static void initializeDefaultHandlers() {
 
 		sRequestHandlers = new HashMap<Class<? extends Request>,
 			RequestHandler<? extends Request>>();
-		
+
 		registerRequestHandler(new NewSessionRequestHandler());
 		registerRequestHandler(new EndSessionRequestHandler());
 		registerRequestHandler(new PurgePublisherRequestHandler());
@@ -100,35 +93,35 @@ public class Requests {
 		registerRequestHandler(new SubscribeRequestHandler());
 		registerRequestHandler(new SearchRequestHandler());
 	}
-	
+
 	/**
 	 * Register a custom request handler.
-	 * 
+	 *
 	 * @param rh
 	 */
 	public static void registerRequestHandler(RequestHandler<? extends Request> rh) {
 		if (rh == null)
 			throw new NullPointerException("rh is null");
-		
+
 		if (rh.handles() == null)
 			throw new NullPointerException("rh.handles() returns null");
-		
+
 		if (sRequestHandlers == null)
 			initializeDefaultHandlers();
-		
+
 		if (sRequestHandlers.containsKey(rh.handles()))
 			throw new RuntimeException("RequestHandler already registered for "
 					+ rh.handles());
-		
+
 		sRequestHandlers.put(rh.handles(), rh);
 	}
-	
+
 	public static RequestHandler<? extends Request> getHandlerFor(Request req) {
-		
+
 		if (sRequestHandlers == null)
 			initializeDefaultHandlers();
-		
-		for (Entry<Class<? extends Request>, 
+
+		for (Entry<Class<? extends Request>,
 				RequestHandler<? extends Request>> entry : sRequestHandlers.entrySet())
 			if (entry.getKey().isInstance(req))
 				return entry.getValue();
@@ -136,7 +129,7 @@ public class Requests {
 		return null;
 	}
 
-	
+
 	/**
 	 * @return
 	 * @deprecated
@@ -145,40 +138,40 @@ public class Requests {
 	public static RequestFactory getRequestFactory() {
 		if (sRequestFactoryInstance == null)
 			sRequestFactoryInstance = new RequestFactoryImpl();
-		
+
 		return sRequestFactoryInstance;
 	}
-	
+
 	// REQUEST CREATION
 	/**
 	 * Create an empty {@link PublishRequest}
-	 * 
+	 *
 	 * @return the new {@link PublishRequest}
 	 */
 	public static PublishRequest createPublishReq() {
 		return new PublishRequestImpl();
 	}
-	
+
 	/**
 	 * Create a new {@link PublishRequest} that contains the given {@link PublishElement}
-	 * 
+	 *
 	 * @param el the {@link PublishElement} that is added to the new {@link PublishRequest}
 	 * @return the new {@link PublishRequest}
 	 */
 	public static PublishRequest createPublishReq(PublishElement el) {
 		if (el == null)
 			throw new NullPointerException("el is not allowed to be null");
-		
+
 		PublishRequest ret = createPublishReq();
 		ret.addPublishElement(el);
 		return ret;
 	}
 
-	
+
 	/**
 	 * Create a new {@link PublishRequest} that contains the given list of
 	 * {@link PublishElement} instances.
-	 * 
+	 *
 	 * @param list the list of {@link PublishElement} instances that are added
 	 * 		  to the new {@link PublishRequest}
 	 * @return the new {@link PublishRequest}
@@ -190,7 +183,7 @@ public class Requests {
 		PublishRequest ret = createPublishReq();
 		for (PublishElement el : list)
 			ret.addPublishElement(el);
-		
+
 		return ret;
 	}
 
@@ -216,7 +209,7 @@ public class Requests {
 
 	/**
 	 * Create an empty {@link SubscribeRequest}
-	 * 
+	 *
 	 * @return the new {@link SubscribeRequest} instance
 	 */
 	public static SubscribeRequest createSubscribeReq() {
@@ -225,17 +218,17 @@ public class Requests {
 
 	/**
 	 * Create a {@link SubscribeRequest} with one {@link SubscribeElement}.
-	 * 
+	 *
 	 * @param el the {@link SubscribeElement} that is added to the new
 	 * {@link SubscribeRequest}. This can either be {@link SubscribeUpdate} or
 	 * {@link SubscribeDelete}.
-	 * 
+	 *
 	 * @return the new {@link SubscribeRequest}
 	 */
 	public static SubscribeRequest createSubscribeReq(SubscribeElement el) {
 		if (el == null)
 			throw new NullPointerException("el is not allowed to be null");
-		
+
 		SubscribeRequest ret = createSubscribeReq();
 		ret.addSubscribeElement(el);
 		return ret;
@@ -253,11 +246,11 @@ public class Requests {
 	public static SubscribeRequest createSubscribeReq(List<SubscribeElement> list) {
 		if (list == null)
 			throw new NullPointerException("list is not allowed to be null");
-		
+
 		SubscribeRequest ret = createSubscribeReq();
 		for (SubscribeElement el : list)
 			ret.addSubscribeElement(el);
-		
+
 		return ret;
 	}
 
@@ -265,16 +258,16 @@ public class Requests {
 	 * Create a {@link SearchRequest} with default values. You need to set at
 	 * least the start {@link Identifier} with
 	 * {@link SearchRequest#setStartIdentifier(Identifier)} afterwards!
-	 * 
+	 *
 	 * @return the new {@link SearchRequest} instance
 	 */
 	public static SearchRequest createSearchReq() {
 		return new SearchRequestImpl(new SearchHolderImpl());
 	}
-	
+
 	/**
 	 * Create a new {@link SearchRequest} in order to perform an IF-MAP search.
-	 * 
+	 *
 	 * @param matchLinks the match-links filter (null means match-all, an empty
 	 * 		  {@link String} means match-nothing)
 	 * @param maxDepth max-depth of the search (default is left out)
@@ -282,7 +275,7 @@ public class Requests {
 	 * 		  types (for example 'identity,device')
 	 * @param maxSize max-size of search result (default is left out)
 	 * @param resultFilter the result-filter filter (null means match-all, an
-	 * 		  empty {@link String} means match-nothing) 
+	 * 		  empty {@link String} means match-nothing)
 	 * @param start the start {@link Identifier}
 	 * @return the new {@link SearchRequest} instance
 	 */
@@ -305,7 +298,7 @@ public class Requests {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return the new {@link PublishUpdate} instance
 	 */
 	public static PublishUpdate createPublishUpdate() {
@@ -316,7 +309,7 @@ public class Requests {
 	 * Create a new {@link PublishUpdate} instance that is used to publish
 	 * metadata to an {@link Identifier}. The {@link MetadataLifetime} of the
 	 * new metadata is set to {@link MetadataLifetime#session}.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} to which the given metadata is published to
 	 * @param md the metadata that shall be published
 	 * @return the new {@link PublishUpdate} instance
@@ -324,11 +317,11 @@ public class Requests {
 	public static PublishUpdate createPublishUpdate(Identifier i1, Document md) {
 		return createPublishUpdate(i1, md, MetadataLifetime.session);
 	}
-	
+
 	/**
 	 * Create a new {@link PublishUpdate} instance that is used to publish
 	 * metadata on an {@link Identifier} with a specific {@link MetadataLifetime}.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} to which the given metadata is published to
 	 * @param md the metadata that shall be published
 	 * @param lifetime the lifetime of the new metadata
@@ -343,7 +336,7 @@ public class Requests {
 	 * Create a new {@link PublishUpdate} instance that is used to publish
 	 * metadata on a link between two {@link Identifier} instances. The
 	 * {@link MetadataLifetime} of the new metadata is set to {@link MetadataLifetime#session}.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @param md the metadata that shall be published
@@ -358,7 +351,7 @@ public class Requests {
 	 * Create a new {@link PublishUpdate} instance that is used to publish
 	 * metadata on a link between two {@link Identifier} instances with a specific
 	 * {@link MetadataLifetime}.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @param md the metadata that shall be published
@@ -369,17 +362,17 @@ public class Requests {
 			Document md, MetadataLifetime lifetime) {
 		if (md == null)
 			throw new NullPointerException("md not allowed to be null");
-		
+
 		List<Document> list = new ArrayList<Document>(1);
 		list.add(md);
-		
+
 		return createPublishUpdate(i1, i2, list, lifetime);
 	}
 
 	/**
 	 * Create a new {@link PublishUpdate} instance that is used to publish
 	 * a list of metadata instances with a specific {@link MetadataLifetime}.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} to which the given metadata is published to
 	 * @param mdlist a list of metadata objects
 	 * @param lifetime the lifetime of the new metadata
@@ -394,7 +387,7 @@ public class Requests {
 	 * Create a new {@link PublishUpdate} instance that is used to publish
 	 * a list of metadata instances. The {@link MetadataLifetime} of the new
 	 * metadata is set to {@link MetadataLifetime#session}.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} to which the given metadata is published to
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishUpdate} instance
@@ -409,12 +402,12 @@ public class Requests {
 	 * a list of metadata on a link between two {@link Identifier} instances.
 	 * The {@link MetadataLifetime} of the new metadata is set to
 	 * {@link MetadataLifetime#session}.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishUpdate} instance
-	 */	
+	 */
 	public static PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
 			Collection<Document> mdlist) {
 		return createPublishUpdate(i1, i2, mdlist, MetadataLifetime.session);
@@ -424,13 +417,13 @@ public class Requests {
 	 * Create a new {@link PublishUpdate} instance that is used to publish
 	 * a list of metadata on a link between two {@link Identifier} instances
 	 * with a specific {@link MetadataLifetime}.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @param mdlist a list of metadata objects
 	 * @param lifetime the lifetime of the new metadata
 	 * @return the new {@link PublishUpdate} instance
-	 */	
+	 */
 	public static PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
 			Collection<Document> mdlist, MetadataLifetime lifetime) {
 		if (mdlist == null)
@@ -440,10 +433,10 @@ public class Requests {
 		pu.setLifeTime(lifetime);
 		return pu;
 	}
-	
+
 	/**
 	 * Create a new, empty {@link PublishNotify} instance.
-	 * 
+	 *
 	 * @return the new {@link PublishNotify} instance
 	 */
 	public static PublishNotify createPublishNotify() {
@@ -453,7 +446,7 @@ public class Requests {
 	/**
 	 * Create a new {@link PublishNotify} instance that is used to publish
 	 * metadata to an {@link Identifier}.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} to which the given metadata is published to
 	 * @param md the metadata that shall be published
 	 * @return the new {@link PublishNotify} instance
@@ -465,7 +458,7 @@ public class Requests {
 	/**
 	 * Create a new {@link PublishNotify} instance that is used to publish
 	 * a list of metadata instances.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} to which the given metadata is published to
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishNotify} instance
@@ -478,7 +471,7 @@ public class Requests {
 	/**
 	 * Create a new {@link PublishNotify} instance that is used to publish
 	 * metadata on a link between two {@link Identifier} instances.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @param md the metadata that shall be published
@@ -486,13 +479,13 @@ public class Requests {
 	 */
 	public static PublishNotify createPublishNotify(Identifier i1, Identifier i2,
 			Document md) {
-		
+
 		if (md == null)
 			throw new NullPointerException("md is null");
 
 		List<Document> mdlist = new ArrayList<Document>(1);
 		mdlist.add(md);
-		
+
 		return createPublishNotify(i1, i2, mdlist);
 	}
 
@@ -501,28 +494,28 @@ public class Requests {
 	 * a list of metadata on a link between two {@link Identifier} instances.
 	 * The {@link MetadataLifetime} of the new metadata is set to
 	 * {@link MetadataLifetime#session}.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishNotify} instance
-	 */	
+	 */
 	public static PublishNotify createPublishNotify(Identifier i1, Identifier i2,
 			Collection<Document> mdlist) {
-		
+
 		if (mdlist == null)
 			throw new NullPointerException("mdlist is null");
-		
+
 		PublishNotify pn = createPublishNotify();
 		fillMetadataHolder(pn, i1, i2, mdlist);
 		return pn;
 	}
-	
+
 	private static void fillMetadataHolder(MetadataHolder holder, Identifier i1,
 			Identifier i2, Collection<Document> mdlist) {
-		
+
 		fillIdentifierHolder(holder, i1, i2);
-		
+
 		if (mdlist != null)
 			for (Document md : mdlist)
 				holder.addMetadata(md);
@@ -536,7 +529,7 @@ public class Requests {
 
 	/**
 	 * Create a new, empty {@link PublishDelete} instance.
-	 * 
+	 *
 	 * @return the new {@link PublishDelete} instance
 	 */
 	public static PublishDelete createPublishDelete() {
@@ -546,7 +539,7 @@ public class Requests {
 	/**
 	 * Create a new {@link PublishDelete} instance for a specific {@link Identifier}
 	 * in order to delete all of its metadata.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} that is the target of the delete request
 	 * @return the new {@link PublishDelete} instance
 	 */
@@ -557,7 +550,7 @@ public class Requests {
 	/**
 	 * Create a new {@link PublishDelete} instance for a link between two
 	 * {@link Identifier} instances in order to delete all metadata of the link.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @return the new {@link PublishDelete} instance
@@ -569,7 +562,7 @@ public class Requests {
 	/**
 	 * Create a new {@link PublishDelete} instance for a specific {@link Identifier}
 	 * in order to delete its metadata that matches the given filter.
-	 * 
+	 *
 	 * @param i1 the {@link Identifier} that is the target of the delete request
 	 * @param filter a filter that expresses the metadata that shall be deleted
 	 * @return the new {@link PublishDelete} instance
@@ -582,7 +575,7 @@ public class Requests {
 	 * Create a new {@link PublishDelete} instance for a link between two
 	 * {@link Identifier} instances in order to delete its metadata that matches
 	 * the given filter.
-	 * 
+	 *
 	 * @param i1 the first {@link Identifier} of the link
 	 * @param i2 the second {@link Identifier} of the link
 	 * @param filter a filter that expresses the metadata that shall be deleted
@@ -601,7 +594,7 @@ public class Requests {
 	 * to add the start {@link Identifier} with
 	 * {@link SubscribeUpdate#setStartIdentifier(Identifier)} and the name with
 	 * {@link SubscribeUpdate#setName(String)} afterwards!
-	 * 
+	 *
 	 * @return the new {@link SubscribeUpdate} instance
 	 */
 	public static SubscribeUpdate createSubscribeUpdate() {
@@ -610,7 +603,7 @@ public class Requests {
 
 	/**
 	 * Create a {@link SubscribeUpdate} instance with the given parameters.
-	 * 
+	 *
 	 * @param name the name of the subscription
 	 * @param matchLinks the match-links filter (null means match-all, an empty
 	 * 		  {@link String} means match-nothing)
@@ -619,7 +612,7 @@ public class Requests {
 	 * 		  types (for example 'identity,device')
 	 * @param maxSize max-size of search result (default is left out)
 	 * @param resultFilter the result-filter filter (null means match-all, an
-	 * 		  empty {@link String} means match-nothing) 
+	 * 		  empty {@link String} means match-nothing)
 	 * @param start the start {@link Identifier}
 	 * @return the new {@link SubscribeUpdate} instance
 	 */
@@ -631,11 +624,11 @@ public class Requests {
 		su.setName(name);
 		return su;
 	}
-	
+
 	/**
 	 * Create a {@link SubscribeDelete} instance with default values. You need
 	 * to set the name with {@link SubscribeDelete#setName(String)} afterwards!
-	 * 
+	 *
 	 * @return the new {@link SubscribeDelete} instance
 	 */
 	public static SubscribeDelete createSubscribeDelete() {
@@ -644,17 +637,17 @@ public class Requests {
 
 	/**
 	 * Create a new {@link SubscribeDelete} instance with the given name.
-	 * 
+	 *
 	 * @param name the name of the subscription that shall be deleted on the
 	 * MAPS.
 	 * @return the new {@link SubscribeDelete} instance
-	 */	
+	 */
 	public static SubscribeDelete createSubscribeDelete(String name) {
 		SubscribeDelete sd = createSubscribeDelete();
 		sd.setName(name);
 		return sd;
 	}
-	
+
 	/**
 	 * This class provides helpers for custom request implementations. It's not
 	 * a fixed API!
@@ -662,7 +655,7 @@ public class Requests {
 	public static class Helpers {
 
 		private Helpers() { }
-		
+
 
 		public static final String baseNsUri() {
 			return IfmapStrings.BASE_NS_URI;
@@ -742,13 +735,13 @@ public class Requests {
 			String name = null;
 
 			List<Element> elementChildren = DomHelpers.getChildElements(sres);
-			
+
 			if (elementChildren.size() == 0)
 				throw new UnmarshalException("searchResult with no resultItems");
 
 			for (Element child : elementChildren) {
 				if (!DomHelpers.elementMatches(child, IfmapStrings.RESULT_ITEM_EL_NAME))
-					throw new UnmarshalException("Found non " + 
+					throw new UnmarshalException("Found non " +
 							IfmapStrings.RESULT_ITEM_EL_NAME + " element in " +
 							"SearchResult: " + child.getLocalName());
 
@@ -781,7 +774,7 @@ public class Requests {
 				Identifier tmp = Identifiers.tryFromElement(child);
 
 				// If there was no identifier maybe there is some metadata
-				if (tmp == null && 
+				if (tmp == null &&
 						DomHelpers.elementMatches(child,
 								IfmapStrings.SEARCH_METADATA_EL_NAME)) {
 
@@ -838,7 +831,7 @@ public class Requests {
 			errStrElem = DomHelpers.findElementInChildren(el,
 					IfmapStrings.ERROR_RES_ERRSTR_EL_NAME, IfmapStrings.NO_URI);
 
-			errStr = (errStrElem == null) ? 
+			errStr = (errStrElem == null) ?
 					"IfmapJ: errorString not set" : errStrElem.getTextContent();
 
 			try {
@@ -855,7 +848,7 @@ public class Requests {
 			return new IfmapErrorResult(errCode, errStr, name);
 		}
 
-		public static void checkSimpleResult(Element el, String expected) 
+		public static void checkSimpleResult(Element el, String expected)
 				throws UnmarshalException, IfmapErrorResult {
 			Element content = Helpers.getResponseContentErrorCheck(el);
 
@@ -907,49 +900,49 @@ public class Requests {
 // REQUEST HANDLER IMPLEMENTATIONS
 
 class NewSessionRequestHandler implements RequestHandler<NewSessionRequest> {
-	
+
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		NewSessionRequest nsr = (NewSessionRequest)req;
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.NEW_SESSION_REQ_EL_NAME));
-		
+
 		if (nsr.getMaxPollResultSize() != null)
 			DomHelpers.addAttribute(ret,
 					IfmapStrings.NEW_SESSION_REQ_ATTR_MPRS,
 					nsr.getMaxPollResultSize().toString());
-		
+
 		return ret;
 	}
-	
+
 	@Override
 	public Result fromElement(Element res) throws UnmarshalException, IfmapErrorResult {
-		
+
 		Element content = Helpers.getResponseContentErrorCheck(res);
 
 		String sId, pId, mprsStr;
 		Integer mprs = null;
-		
+
 		if (!DomHelpers.elementMatches(content, IfmapStrings.NEW_SESSION_RES_EL_NAME))
 			throw new UnmarshalException("No newSession element found");
-			
+
 		sId = content.getAttribute( IfmapStrings.NEW_SESSION_RES_ATTR_SID);
 		pId = content.getAttribute(IfmapStrings.NEW_SESSION_RES_ATTR_PID);
 		mprsStr = content.getAttribute(IfmapStrings.NEW_SESSION_RES_ATTR_MPRS);
-			
+
 		if (sId == null || sId.length() == 0)
-			throw new UnmarshalException("No " + 
+			throw new UnmarshalException("No " +
 					IfmapStrings.NEW_SESSION_RES_ATTR_SID + " found");
-		
+
 		if (pId == null || pId.length() == 0)
-			throw new UnmarshalException("No " + 
+			throw new UnmarshalException("No " +
 					IfmapStrings.NEW_SESSION_RES_ATTR_PID + " found");
-		
+
 		if (mprsStr != null && mprsStr.length() > 0) {
 			try {
 				mprs = Integer.parseInt(mprsStr);
@@ -958,7 +951,7 @@ class NewSessionRequestHandler implements RequestHandler<NewSessionRequest> {
 						"max-poll-result-size. Was: " + mprsStr);
 			}
 		}
-			
+
 		return new NewSessionResultImpl(sId, pId, mprs);
 	}
 
@@ -973,15 +966,15 @@ class EndSessionRequestHandler implements RequestHandler<EndSessionRequest> {
 
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.END_SESSION_REQ_EL_NAME));
-		
+
 		Helpers.addSessionId(ret, req);
-		
+
 		return ret;
 	}
 
@@ -1001,25 +994,25 @@ class PurgePublisherRequestHandler implements RequestHandler<PurgePublisherReque
 
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		PurgePublisherRequest ppr = (PurgePublisherRequest)req;
 		String pId = ppr.getPublisherId();
 
 		if (pId == null || pId.length() == 0)
 			throw new MarshalException("No ifmap-publisher-id for " +
 					IfmapStrings.PURGE_PUBLISHER_REQ_EL_NAME + " set");
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.PURGE_PUBLISHER_REQ_EL_NAME));
-		
+
 		DomHelpers.addAttribute(ret, IfmapStrings.PUBLISHER_ID_ATTR,
 				ppr.getPublisherId());
-		
+
 		Helpers.addSessionId(ret, req);
-		
+
 		return ret;
 	}
 
@@ -1039,15 +1032,15 @@ class RenewSessionRequestHandler implements RequestHandler<RenewSessionRequest> 
 
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.RENEW_SESSION_REQ_EL_NAME));
-		
+
 		Helpers.addSessionId(ret, req);
-		
+
 		return ret;
 	}
 
@@ -1067,15 +1060,15 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.POLL_REQ_EL_NAME));
-		
+
 		Helpers.addSessionId(ret, req);
-		
+
 		return ret;
 	}
 
@@ -1093,17 +1086,17 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 		Type curType;
 		String curName;
 		SearchResult curSearchResult;
-		
+
 		if (DomHelpers.elementMatches(content, IfmapStrings.POLL_RES_EL_NAME)) {
 			List<Element> elementChildren = DomHelpers.getChildElements(content);
-			
+
 			if (elementChildren.size() == 0)
 				throw new UnmarshalException("No result elements in pollResult");
-			
+
 			for (Element child : elementChildren) {
 				curName = null;
 				curType = resultType(child);
-				
+
 				if (curType != null) {
 					curSearchResult = Helpers.parseSearchResult(child, curType);
 					curName = curSearchResult.getName();
@@ -1113,11 +1106,11 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 					curName = err.getName();
 					errorResults.add(err);
 				}
-				
+
 				if (curName == null)
 					throw new UnmarshalException("No name set for result " +
 							"in pollResult");
-					
+
 			}
 		} else if (DomHelpers.elementMatches(content, IfmapStrings.END_SESSION_RES_EL_NAME)) {
 			return new EndSessionException();
@@ -1128,7 +1121,7 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 			throw new UnmarshalException("Bad poll response: " +
 					content.getLocalName());
 		}
-		
+
 		return new PollResultImpl(sResults, errorResults);
 	}
 
@@ -1160,84 +1153,84 @@ class PublishRequestHandler implements RequestHandler<PublishRequest> {
 
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		PublishRequest pr = (PublishRequest)req;
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.PUBLISH_REQ_EL_NAME));
-		
+
 		addPublishElements(pr, doc, ret);
 
 		Helpers.addSessionId(ret, req);
-		
+
 		return ret;
 	}
 
 	private void addPublishElements(PublishRequest pr, Document doc, Element to)
 			throws MarshalException {
-		
+
 		if (pr.getPublishElements().size() == 0)
 			throw new MarshalException("No publish elements");
-		
+
 		for (PublishElement pubEl : pr.getPublishElements()) {
 			Element el;
-			
+
 			if (pubEl instanceof PublishUpdate) {
 				PublishUpdate pu = (PublishUpdate)pubEl;
 				MetadataLifetime lifetime = MetadataLifetime.session;
 				el = DomHelpers.createNonNsElement(doc,
 						IfmapStrings.PUBLISH_UPDATE_EL_NAME);
-				
+
 				if (pu.getLifeTime() != null)
 					lifetime = pu.getLifeTime();
-				
+
 				DomHelpers.addAttribute(el,
 						IfmapStrings.PUBLISH_UPDATE_ATTR_LIFETIME,
 						lifetime.toString());
-				
+
 			} else if (pubEl instanceof PublishDelete) {
 				PublishDelete pd = (PublishDelete)pubEl;
 				el = DomHelpers.createNonNsElement(doc,
 						IfmapStrings.PUBLISH_DELETE_EL_NAME);
-				
+
 				if (pd.getFilter() != null)
 					DomHelpers.addAttribute(el,
 							IfmapStrings.PUBLISH_DELETE_ATTR_FILTER,
 							pd.getFilter());
-				
+
 				DomHelpers.addXmlNamespaceDeclarations(pd, el);
-				
+
 			} else if (pubEl instanceof PublishNotify) {
 				el = DomHelpers.createNonNsElement(doc,
 						IfmapStrings.PUBLISH_NOTIFY_EL_NAME);
 			} else {
 				throw new MarshalException("Unknown PublishElement Implementation");
 			}
-			
+
 			if (pubEl instanceof IdentifierHolder)
 				Helpers.addIdentifiers((IdentifierHolder)pubEl, doc, el);
 			else
 				throw new MarshalException("No IdentifierHoldingRequest?");
-			
+
 			if (pubEl instanceof MetadataHolder)
 				addMetadataList((MetadataHolder)pubEl, doc, el);
-			
+
 			to.appendChild(el);
 		}
 	}
-	
+
 	private void addMetadataList(MetadataHolder mh, Document doc,
 			Element to) throws MarshalException {
-		
+
 		if (mh.getMetadata().size() == 0)
 			throw new MarshalException("No metadata to add");
-		
+
 		Element mlist = DomHelpers.createNonNsElement(doc,
 				IfmapStrings.PUBLISH_METADATA_EL_NAME);
-		
+
 		to.appendChild(mlist);
 
 		// clone Metadata in form of Document instances and append the to
@@ -1245,13 +1238,13 @@ class PublishRequestHandler implements RequestHandler<PublishRequest> {
 		for (Document md : mh.getMetadata()) {
 			Node node = md.getFirstChild();
 			Element toClone, clone;
-			
+
 			if (node == null)
 				throw new MarshalException("Metadata has no root Element?");
-			
+
 			if (!(node instanceof Element))
 				throw new MarshalException("Metadata root element not Element?");
-			
+
 			toClone = (Element)node;
 			clone = (Element)toClone.cloneNode(true);
 			doc.adoptNode(clone);
@@ -1276,37 +1269,37 @@ class SubscribeRequestHandler implements RequestHandler<SubscribeRequest> {
 
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		SubscribeRequest sr = (SubscribeRequest)req;
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.SUBSCRIBE_REQ_EL_NAME));
-		
+
 		addSubscribeElements(sr, doc, ret);
 
 		Helpers.addSessionId(ret, req);
-		
+
 		return ret;
 	}
 
 	private void addSubscribeElements(SubscribeRequest sr, Document doc,
 			Element to) throws MarshalException {
-		
+
 		if (sr.getSubscribeElements().size() == 0)
 			throw new MarshalException("No subscribe elements");
-		
+
 		for (SubscribeElement subEl : sr.getSubscribeElements()) {
 			Element el;
-			
+
 			if (subEl.getName() == null)
 				throw new MarshalException("subscription name null");
 
 			if (subEl.getName().length() == 0)
 				throw new MarshalException("subscription name empty");
-			
+
 			if (subEl instanceof SubscribeUpdate) {
 				el = DomHelpers.createNonNsElement(doc,
 						IfmapStrings.SUBSCRIBE_UPDATE_EL_NAME);
@@ -1316,13 +1309,13 @@ class SubscribeRequestHandler implements RequestHandler<SubscribeRequest> {
 			} else {
 				throw new MarshalException("Unknown SubscribeElement implementation");
 			}
-			
+
 			DomHelpers.addAttribute(el,
 					IfmapStrings.SUBSCRIBE_SUB_NAME_ATTR, subEl.getName());
-			
+
 			if (subEl instanceof SearchHolder)
 				Helpers.addSearchInfo((SearchHolder)subEl, doc, el);
-			
+
 			to.appendChild(el);
 		}
 	}
@@ -1333,7 +1326,7 @@ class SubscribeRequestHandler implements RequestHandler<SubscribeRequest> {
 		Helpers.checkSimpleResult(resp, IfmapStrings.SUBSCRIBE_RES_EL_NAME);
 		return null;
 	}
-	
+
 	@Override
 	public Class<SubscribeRequest> handles() {
 		return SubscribeRequest.class;
@@ -1344,19 +1337,19 @@ class SearchRequestHandler implements RequestHandler<SearchRequest> {
 
 	@Override
 	public Element toElement(Request req, Document doc) throws MarshalException {
-		
+
 		Helpers.checkRequestType(req, this);
-		
+
 		SearchRequest sr = (SearchRequest)req;
-		
+
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
 				DomHelpers.makeRequestFQName(
 						IfmapStrings.SEARCH_REQ_EL_NAME));
-		
+
 		Helpers.addSessionId(ret, req);
-		
+
 		Helpers.addSearchInfo(sr, doc, ret);
-		
+
 		return ret;
 	}
 
@@ -1367,7 +1360,7 @@ class SearchRequestHandler implements RequestHandler<SearchRequest> {
 		if (ret.getName() != null)
 			throw new UnmarshalException("Found name attribute in searchResult" +
 					" after normal search");
-		
+
 		return ret;
 	}
 

@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.result;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.result;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,42 +36,42 @@ package de.hshannover.f4.trust.ifmapj.result;
  * limitations under the License.
  * #L%
  */
-
+package de.hshannover.f4.trust.ifmapj.result;
 
 /*
  * Trivial tests for class {@link NewSessionResult}.
- * 
+ *
  * @author ibente
  *
  *
-	
+
 public class NewSessionResultTest {
 	private ResultFactory rF = new ResultFactoryImpl();
-	
+
 	@Test (expected=NullPointerException.class)
 	public void testNewSessionResultNull() {
 		@SuppressWarnings("unused")
 		NewSessionResult nsr = rF.createNewSessionRes(null, null);
 	}
-	
+
 	@Test (expected=NullPointerException.class)
 	public void testNewSessionResultNull2() {
 		@SuppressWarnings("unused")
 		NewSessionResult nsr = rF.createNewSessionRes(null, null, null);
 	}
-	
+
 	@Test
 	public void testNewSessionResult() {
 		String sid = "0123456789";
 		String pid = "publisher:0123456789";
 		Integer mprs = new Integer(10000);
 		NewSessionResult nsr;
-		
+
 		nsr = rF.createNewSessionRes(sid, pid);
 		assertEquals(pid, nsr.getPublisherId());
 		assertEquals(sid, nsr.getSessionId());
 		assertNull(nsr.getMaxPollResultSize());
-		
+
 		nsr = rF.createNewSessionRes(sid, pid, mprs);
 		assertEquals(pid, nsr.getPublisherId());
 		assertEquals(sid, nsr.getSessionId());

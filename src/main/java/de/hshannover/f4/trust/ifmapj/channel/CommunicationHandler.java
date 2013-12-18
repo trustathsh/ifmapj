@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,17 +47,17 @@ public interface CommunicationHandler {
 
 	/**
 	 * Use HTTP post to send the request.
-	 * 
+	 *
 	 * @param is request's HTTP body
 	 * @return response's HTTP body
-	 * @throws IOException 
-	 * @throws ProtocolException 
+	 * @throws IOException
+	 * @throws ProtocolException
 	 */
 	public InputStream doRequest(InputStream is) throws CommunicationException;
 
 	/**
 	 * Set to true if gzip should be used for the communication.
-	 * 
+	 *
 	 * @param gzip
 	 */
 	public void setGzip(boolean gzip);
@@ -73,7 +66,7 @@ public interface CommunicationHandler {
 	 * @return whether requests are gzipped.
 	 */
 	public boolean usesGzip();
-	
+
 	/**
 	 * Closes the underlying TCP connection.
 	 * @throws CommunicationException

@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.metadata;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.metadata;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.metadata;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.metadata;
 
 import java.util.HashMap;
 import java.util.List;
@@ -52,23 +45,23 @@ import org.w3c.dom.Document;
 
 /**
  * Inteface to create some of the standard metadata specified by IF-MAP 2.0.
- * 
+ *
  * @author aw
  * @author ib
  *
  */
 public interface StandardIfmapMetadataFactory {
-	
+
 	/**
 	 * Create a {@link Document} representing ip-mac metadata based on the given
 	 * parameters.
-	 * 
+	 *
 	 * <pre>
 	 *  ip-mac is link metadata that associates an
 	 *  ip-address identifier with a mac-address identifier
 	 *  and which includes optional DHCP lease information
 	 * </pre>
-	 * 
+	 *
 	 * @param startTime the start-time value or null
 	 * @param endTime  the end-time value or null
 	 * @param dhcpServer the dhcp-server value or null
@@ -78,123 +71,123 @@ public interface StandardIfmapMetadataFactory {
 
 	/**
 	 * Create a {@link Document} representing ip-mac metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  ip-mac is link metadata that associates an
 	 *  ip-address identifier with a mac-address identifier
 	 *  and which includes optional DHCP lease information
 	 * </pre>
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createIpMac();
-	
+
 
 	/**
 	 * Create a {@link Document} representing access-request-mac metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  access-request-mac is link metadata that
 	 *  associates an access-request identifier with
-	 *  a mac-address identifier 
+	 *  a mac-address identifier
 	 * </pre>
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createArMac();
-	
+
 	/**
 	 * Create a {@link Document} representing access-request-device metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  access-request-device is link metadata that
 	 *  associates an access-request identifier with
 	 *  a device identifier
 	 * </pre>
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createArDev();
-	
+
 	/**
 	 * Create a {@link Document} representing access-request-ip metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  access-request-ip is link metadata that
 	 *  associates an access-request identifier with
 	 *  an ip-address identifier
 	 * </pre>
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createArIp();
-	
+
 	/**
 	 * Create a {@link Document} representing authenticated-as metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  authenticated-as is link metadata that
 	 *  associates an access-request identifier with
 	 *  an identity identifier
 	 * </pre>
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createAuthAs();
 
 	/**
 	 * Create a {@link Document} representing authenticated-by metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  authenticated-by is link metadata that
 	 *  associates an access-request identifier with
 	 *  the device identifier of the PDP that
-	 *  authenticated the access-request 
+	 *  authenticated the access-request
 	 * </pre>
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createAuthBy(); 
-	
-	
+	public Document createAuthBy();
+
+
 	/**
 	 * Create a {@link Document} representing device-ip metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  device-ip is link metadata that associates a device
 	 *  identifier of a PDP with an IP address which it has
-	 *  authenticated 
+	 *  authenticated
 	 * </pre>
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createDevIp();
 
 	/**
 	 * Create a {@link Document} representing discovered-by metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  discovered-by is link metadata that associates
 	 *  an ip-address or mac-address identifier of an endpoint
 	 *  with the device identifier of a MAP Client that has
-	 *  noticed the endpoint on the network 
+	 *  noticed the endpoint on the network
 	 * </pre>
-	 * 
+	 *
 	 * @return  a {@link Document} that represents the metadata
 	 */
 	public Document createDiscoveredBy();
-	
-	
+
+
 	/**
 	 * Create a {@link Document} representing role metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  role is link metadata that associates an
 	 *  access-request identifier with an identity
 	 *  identifier and which names collections of
 	 *  privileges associated with the end-user
 	 * </pre>
-	 * 
+	 *
 	 * @param name the name of the role
 	 * @param administrativeDomain the administrative-domain or null
 	 * @return  a {@link Document} that represents the metadata
@@ -203,14 +196,14 @@ public interface StandardIfmapMetadataFactory {
 
 	/**
 	 * Create a {@link Document} representing role metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  role is link metadata that associates an
 	 *  access-request identifier with an identity
 	 *  identifier and which names collections of
 	 *  privileges associated with the end-user
 	 * </pre>
-	 * 
+	 *
 	 * @param name
 	 * @return  a {@link Document} that represents the metadata
 	 */
@@ -219,50 +212,50 @@ public interface StandardIfmapMetadataFactory {
 
 	/**
 	 * Create a {@link Document} representing device-attribute metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  device-attribute is link metadata that associates
 	 *  an access-request identifier with a device identifier
 	 *  and which includes information about the device such
-	 *  as its health 
+	 *  as its health
 	 * </pre>
-	 * 
+	 *
 	 * @param name the name of the attribute
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createDevAttr(String name);
-	
+
 	/**
 	 * Create a {@link Document} representing capability metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  capability metadata refers to a collection of privileges
 	 *  assigned to an endpoint as a result of an access request.
 	 * </pre>
-	 * 
+	 *
 	 * @param name the name of the capability
 	 * @param administrativeDomain the administrative-domain or null
-	 * 
+	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createCapability(String name, String administrativeDomain);
-	
+
 	/**
 	 * Create a {@link Document} representing capability metadata.
-	 * 
+	 *
 	 * <pre>
 	 *  capability metadata refers to a collection of privileges
 	 *  assigned to an endpoint as a result of an access request.
 	 * </pre>
-	 * 
+	 *
 	 * @param name the name of the capability
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createCapability(String name);
-	
+
 	/**
 	 * Create a {@link Document} representing device-characteristic metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   device-characteristic is metadata assigned to a specific endpoint
 	 *   by a MAP Client (usually a PDP or Sensor) to reflect an inherent
@@ -270,7 +263,7 @@ public interface StandardIfmapMetadataFactory {
 	 *   operating system it is running, along with what element discovered
 	 *   the information and what method of discovery was used.
 	 * </pre>
-	 * 
+	 *
 	 * @param manufacturer the manufacturer of the endpoint
 	 * @param model the model of the endpoint
 	 * @param os the operating system of the endpoint
@@ -285,10 +278,10 @@ public interface StandardIfmapMetadataFactory {
 	public Document createDevChar(String manufacturer,
 			String model, String os, String osVersion, String deviceType,
 			String discoveredTime, String discovererId, String discoveryMethod);
-	
+
 	/**
 	 * Create a {@link Document} representing enforcement-report metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   enforcement-report metadata is attached to a link to associate a
 	 *   specific mac-address identifier or ip-address identifier with a
@@ -298,19 +291,19 @@ public interface StandardIfmapMetadataFactory {
 	 *   association when it instructs a PEP to take enforcement action
 	 *   against an endpoint.
 	 * </pre>
-	 * 
+	 *
 	 * @param enforcementAction the enforcement action that should be taken
 	 * @param otherTypeDefinition this must not be null if action is
-	 * 	{@link EnforcementAction#block} 
+	 * 	{@link EnforcementAction#block}
 	 * @param enforcementReason the reason of the enforcement
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createEnforcementReport(EnforcementAction enforcementAction,
 			String otherTypeDefinition, String enforcementReason);
-	
+
 	/**
 	 * Create a {@link Document} representing event metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   event metadata refers to activity of interest detected on
 	 *   the network. Examples include network traffic that matches
@@ -335,61 +328,61 @@ public interface StandardIfmapMetadataFactory {
 			Integer magnitude, Integer confidence, Significance significance,
 			EventType type, String otherTypeDefinition, String information,
 			String vulnerabilityUri);
-	
+
 	/**
 	 * Create a {@link Document} representing custom metadata.
-	 * 
+	 *
 	 * <pre>
-	 *   any single metadata element can be added with one attribute 
+	 *   any single metadata element can be added with one attribute
 	 * </pre>
-	 * 
+	 *
 	 * @param elementName element name
 	 * @param qualifiedName namespace qualifier
 	 * @param uri namespace uri
 	 * @param cardinality ifmap cardinality
-	 * @return 
+	 * @return
 	 */
 	public Document create(String elementName, String qualifiedName, String uri,
 			Cardinality cardinality);
 
 	/**
 	 * Create a {@link Document} representing custom metadata.
-	 * 
+	 *
 	 * <pre>
-	 *   any single metadata element can be added with one attribute 
+	 *   any single metadata element can be added with one attribute
 	 * </pre>
-	 * 
+	 *
 	 * @param elementName element name
 	 * @param qualifiedName namespace qualifier
 	 * @param uri namespace uri
 	 * @param cardinality ifmap cardinality
 	 * @param attrName attribute name
 	 * @param attrValue attribute value
-	 * @return 
+	 * @return
 	 */
 	public Document create(String elementName, String qualifiedName, String uri,
 			Cardinality cardinality, String attrName, String attrValue);
 
 	/**
 	 * Create a {@link Document} representing custom metadata.
-	 * 
+	 *
 	 * <pre>
-	 *   any single metadata element can be added with attributes 
+	 *   any single metadata element can be added with attributes
 	 * </pre>
-	 * 
+	 *
 	 * @param elementName element name
 	 * @param qualifiedName namespace qualifier
 	 * @param uri namespace uri
 	 * @param cardinality ifmap cardinality
 	 * @param attributes hashmap with attributes
-	 * @return 
+	 * @return
 	 */
 	public Document create(String elementName, String qualifiedName, String uri,
 			Cardinality cardinality, HashMap<String, String> attributes);
 
 	/**
 	 * Create a {@link Document} representing layer2-information metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   layer2-information is attached to a link between an
 	 *   access-request and the device identifier of the PEP through
@@ -409,10 +402,10 @@ public interface StandardIfmapMetadataFactory {
 	 */
 	public Document createLayer2Information(Integer vlan, String vlanName,
 			Integer port, String administrativeDomain);
-	
+
 	/**
 	 * Create a {@link Document} representing location metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   The location metadata element represents a named region
 	 *   of space – usually a region with security import. The
@@ -421,16 +414,16 @@ public interface StandardIfmapMetadataFactory {
 	 * </pre>
 	 *
 	 * @param locationInformation list of all location information elements
-	 * @param discoveredTime the time the location information was discovered 
+	 * @param discoveredTime the time the location information was discovered
 	 * @param discovererId the entity that discovered the location information
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createLocation(List<LocationInformation> locationInformation,
 			String discoveredTime, String discovererId);
-	
+
 	/**
 	 * Create a {@link Document} representing request-for-investigation metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   request-for-investigation metadata indicates that specified
 	 *   device, which may be a PDP or other MAP Client, wants Sensors
@@ -442,10 +435,10 @@ public interface StandardIfmapMetadataFactory {
 	 * @return a {@link Document} that represents the metadata
 	 */
 	public Document createRequestForInvestigation(String qualifier);
-	
+
 	/**
 	 * Create a {@link Document} representing wlan-information metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   wlan-information is attached to a link to associate
 	 *   a specific access-request identifier with a specific
@@ -462,10 +455,10 @@ public interface StandardIfmapMetadataFactory {
 			List<WlanSecurityType> ssidUnicastSecurity,
 			WlanSecurityType ssidGroupSecurity,
 			List<WlanSecurityType> ssidManagementSecurity);
-	
+
 	/**
 	 * Create a {@link Document} representing unexpected-behavior metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   Unexpected-behavior metadata indicates that an endpoint
 	 *   is behaving in an unauthorized or unexpected manner (e.g.
@@ -491,13 +484,13 @@ public interface StandardIfmapMetadataFactory {
 
 	/**
 	 * Create a {@link Document} representing client time metadata.
-	 * 
+	 *
 	 * <pre>
 	 *   Client time metadata is used for clock skew detection. The
 	 *   clients timestamp can be compared to the servers timestamp
 	 *   in order to detect and compensate clock skew between both systems.
 	 * </pre>
-	 * 
+	 *
 	 * @param time the clients ISO-8601 UTC timestamp
 	 * @return a {@link Document} that represents the metadata
 	 */

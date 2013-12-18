@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -63,10 +56,10 @@ import de.hshannover.f4.trust.ifmapj.identifier.AccessRequestHandler;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 
 public class AccessRequestHandlerTest {
-	
+
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static AccessRequestHandler sAccessRequestHandler = new AccessRequestHandler();
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWithNullName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -87,13 +80,13 @@ public class AccessRequestHandlerTest {
 
 	/**
 	 * This shouldn't show the administrative-domain
-	 * @throws MarshalException 
+	 * @throws MarshalException
 	 */
 	@Test
 	public void testToElementWithEmptyAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		AccessRequest ar = Identifiers.createAr("AR100", "");
-		
+
 		Element res = sAccessRequestHandler.toElement(ar, doc);
 		assertNotNull(res);
 		assertEquals("access-request", res.getLocalName());
@@ -101,18 +94,18 @@ public class AccessRequestHandlerTest {
 		assertNull(res.getNamespaceURI());
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("AR100", res.getAttribute("name"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(1, res.getAttributes().getLength());
 	}
-		
+
 	@Test
 	public void testToElementWithNullAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		AccessRequest ar = Identifiers.createAr("AR100", null);
-		
+
 		Element res = sAccessRequestHandler.toElement(ar, doc);
 		assertNotNull(res);
 		assertEquals("access-request", res.getLocalName());
@@ -120,18 +113,18 @@ public class AccessRequestHandlerTest {
 		assertNull(res.getNamespaceURI());
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("AR100", res.getAttribute("name"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(1, res.getAttributes().getLength());
 	}
-		
+
 	@Test
 	public void testToElementWithName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		AccessRequest ar = Identifiers.createAr("AR100");
-		
+
 		Element res = sAccessRequestHandler.toElement(ar, doc);
 		assertNotNull(res);
 		assertEquals("access-request", res.getLocalName());
@@ -139,9 +132,9 @@ public class AccessRequestHandlerTest {
 		assertNull(res.getNamespaceURI());
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("AR100", res.getAttribute("name"));
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(1, res.getAttributes().getLength());
 	}
@@ -150,7 +143,7 @@ public class AccessRequestHandlerTest {
 	public void testToElementWithNameAndAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		AccessRequest ar = Identifiers.createAr("AR100", "mydomain");
-		
+
 		Element res = sAccessRequestHandler.toElement(ar, doc);
 		assertNotNull(res);
 		assertEquals("access-request", res.getLocalName());
@@ -158,10 +151,10 @@ public class AccessRequestHandlerTest {
 		assertNull(res.getNamespaceURI());
 		assertNotNull(res.getAttributeNode("name"));
 		assertEquals("AR100", res.getAttribute("name"));
-		
+
 		assertNotNull(res.getAttributeNode("administrative-domain"));
 		assertEquals("mydomain", res.getAttribute("administrative-domain"));
-		
+
 		assertEquals(0, res.getChildNodes().getLength());
 		assertEquals(2, res.getAttributes().getLength());
 	}
@@ -171,12 +164,12 @@ public class AccessRequestHandlerTest {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlAr = doc.createElementNS(null, "access-request");
 		xmlAr.setAttribute("name", "AR100");
-		
+
 		AccessRequest ar = sAccessRequestHandler.fromElement(xmlAr);
 		assertNotNull(ar);
 		assertNotNull(ar.getName());
 		assertEquals("AR100", ar.getName());
-		
+
 		assertNull(ar.getAdministrativeDomain());
 	}
 
@@ -186,17 +179,17 @@ public class AccessRequestHandlerTest {
 		Element xmlAr = doc.createElementNS(null, "access-request");
 		xmlAr.setAttribute("name", "AR100");
 		xmlAr.setAttribute("administrative-domain", "mydomain");
-		
+
 		AccessRequest ar = sAccessRequestHandler.fromElement(xmlAr);
 		assertEquals("AR100", ar.getName());
 		assertEquals("mydomain", ar.getAdministrativeDomain());
 	}
-	
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementWithNullName() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlAr = doc.createElementNS(null, "access-request");
-		
+
 		// throws
 		AccessRequest ar = sAccessRequestHandler.fromElement(xmlAr);
 		assertNull(ar);
@@ -212,16 +205,16 @@ public class AccessRequestHandlerTest {
 		AccessRequest ar = sAccessRequestHandler.fromElement(xmlAr);
 		assertNull(ar);
 	}
-	
+
 	@Test
 	public void testNotResponsible() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlAr = doc.createElementNS(null, "ip-address");
-		
+
 		AccessRequest ar = sAccessRequestHandler.fromElement(xmlAr);
 		assertNull(ar);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWrongIdentifierType() throws UnmarshalException, MarshalException {
 		Document doc = sDocBuilder.newDocument();

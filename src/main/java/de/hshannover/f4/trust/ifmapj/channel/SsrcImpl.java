@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.TrustManager;
@@ -65,12 +58,12 @@ import de.hshannover.f4.trust.ifmapj.messages.SearchResult;
 import de.hshannover.f4.trust.ifmapj.messages.SubscribeRequest;
 
 public class SsrcImpl extends AbstractChannel implements SSRC {
-	
+
 	/**
 	 * the session-id received after the last call to {@link #newSession()}
 	 */
 	private String mSessionId;
-	
+
 	/**
 	 * the publisher-id received after the last call to {@link #newSession()}
 	 */
@@ -81,20 +74,20 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	 * if any
 	 */
 	private Integer mMaxPollResultSize;
-	
+
 	/**
 	 * KeyManager instances to initialize the SSL Context.
 	 */
 	private KeyManager[] mKeyManagers;
-	
+
 	/**
 	 * TrustManager instances to initialize the SSL Context.
 	 */
 	private TrustManager[] mTrustManagers;
-	
+
 	/**
 	 * Basic-Auth constructor.
-	 * 
+	 *
 	 * @param url
 	 * @param user
 	 * @param pass
@@ -106,10 +99,10 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 		super(url, user, pass, tms);
 		mTrustManagers = tms;
 	}
-	
+
 	/**
 	 * Certificate-based constructor.
-	 * 
+	 *
 	 * @param url
 	 * @param kms
 	 * @param tms
@@ -130,25 +123,25 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	@Override
 	public void newSession(Integer maxPollResSize)
 			throws IfmapErrorResult, IfmapException {
-		
+
 		NewSessionRequest nsreq = Requests.createNewSessionReq();
-		
+
 		nsreq.setMaxPollResultSize(maxPollResSize);
-		
+
 		Result res = genericRequest(nsreq);
-		
+
 		if (!(res instanceof NewSessionResult))
 			throw new RuntimeException("wrong result-type");
-		
+
 		NewSessionResult nsres = (NewSessionResult) res;
-			
+
 		// reset session information
 		mSessionId = null;
 		mMaxPollResultSize = null;
 		mPublisherId = null;
 		mSessionId = nsres.getSessionId();
 		mPublisherId = nsres.getPublisherId();
-		
+
 		if (maxPollResSize != null) {
 			mMaxPollResultSize = nsres.getMaxPollResultSize();
 			if (mMaxPollResultSize == null)
@@ -161,7 +154,7 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	public void endSession() throws IfmapErrorResult, IfmapException {
 		EndSessionRequest esr = Requests.createEndSessionReq();
 		genericRequestWithSessionId(esr);
-			
+
 		mPublisherId = null;
 		mSessionId = null;
 		mMaxPollResultSize = null;
@@ -173,14 +166,14 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 		RenewSessionRequest rsr = Requests.createRenewSessionReq();
 		genericRequestWithSessionId(rsr);
 	}
-	
+
 	@Override
 	public void purgePublisher() throws IfmapErrorResult, IfmapException {
 		purgePublisher(getPublisherId());
 	}
 
 	@Override
-	public void purgePublisher(String publisherId) 
+	public void purgePublisher(String publisherId)
 			throws IfmapErrorResult, IfmapException {
 		PurgePublisherRequest ppr = Requests.createPurgePublisherReq();
 		ppr.setPublisherId(publisherId);
@@ -191,7 +184,7 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	public void publish(PublishRequest pr) throws IfmapErrorResult, IfmapException {
 		if (pr == null)
 			throw new NullPointerException();
-	
+
 		genericRequestWithSessionId(pr);
 	}
 
@@ -199,7 +192,7 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	public void subscribe(SubscribeRequest sr) throws IfmapErrorResult, IfmapException {
 		if (sr == null)
 			throw new NullPointerException();
-		
+
 		genericRequestWithSessionId(sr);
 	}
 
@@ -207,27 +200,27 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	public SearchResult search(SearchRequest sr) throws IfmapErrorResult, IfmapException {
 		if (sr == null)
 			throw new NullPointerException();
-		
+
 		Result res = genericRequestWithSessionId(sr);
-		
+
 		if (!(res instanceof SearchResult))
 				throw new RuntimeException("search returns no SearchResult?");
-		
+
 		return (SearchResult)res;
 	}
 
 	@Override
 	public ARC getArc() throws InitializationException {
 		ARC ret;
-		
+
 		if (isBasicAuth())
 			ret = new ArcImpl(this, getUrl(), getUser(), getPassword(), mTrustManagers);
 		else
 			ret = new ArcImpl(this, getUrl(), mKeyManagers, mTrustManagers);
-		
+
 		if (usesGzip())
 			ret.setGzip(true);
-		
+
 		return ret;
 	}
 

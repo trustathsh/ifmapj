@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
@@ -55,15 +48,15 @@ import util.StringHelpers;
 
 /**
  * Represents an IF-MAP identity identifier.
- * 
+ *
  * @author aw
  * @author jk
  *
  */
 public class Identity extends IdentifierWithAd {
-	
+
 	private /* final */ String mName;
-	
+
 	private /* final */ IdentityType mType;
 
 	private /* final */ String mOtherTypeDefinition;
@@ -74,7 +67,7 @@ public class Identity extends IdentifierWithAd {
 	Identity(IdentityType type, String name, String admDom,
 			String otherTypeDef) {
 		super(admDom);
-		
+
 		mType = type;
 		mOtherTypeDefinition = otherTypeDef;
 		setName(name);
@@ -90,7 +83,7 @@ public class Identity extends IdentifierWithAd {
 			mName = name;
 			return;
 		}
-			
+
 		// lowercase case-insensitive types
 		if (mType.equals(IdentityType.dnsName)
 				|| mType.equals(IdentityType.telUri)) {
@@ -129,15 +122,15 @@ public class Identity extends IdentifierWithAd {
 	@Override
 	public String toString() {
 		String otherTypeDef = "";
-		
+
 		if (getType() == IdentityType.other) {
 			otherTypeDef = ", " + getOtherTypeDefinition();
 		}
-		
+
 		return String.format("id{%s, %s%s%s}", getName(), getType(),
 				otherTypeDef, super.toString());
 	}
-	
+
 	/**
 	* Compare identifier
 	* @param i Second identifier
@@ -155,7 +148,7 @@ public class Identity extends IdentifierWithAd {
 		Identity i = (Identity) o;
 
 		// check if it is the same object
-		if(this == i) 
+		if(this == i)
 			return true;
 
 		// compare type and other type definition
@@ -186,10 +179,10 @@ public class Identity extends IdentifierWithAd {
 		// return true if all checks passed
 		return true;
 	}
-	
+
 	/**
 	 * Compare two extended identifiers
-	 * 
+	 *
 	 * @param eid1 Extended identifier XML string
 	 * @param eid2 Extended identifier XML string
 	 * @return boolean true if both are equal
@@ -203,10 +196,10 @@ public class Identity extends IdentifierWithAd {
 			return false;
 		}
 	}
-	
+
 	/**
-	 * Compare two DSN 
-	 * 
+	 * Compare two DSN
+	 *
 	 * @param dsn1 Distinguished name (X.500 DSN) string
 	 * @param dsn2 Distinguished name (X.500 DSN) string
 	 * @return boolean true if both DSN are equal

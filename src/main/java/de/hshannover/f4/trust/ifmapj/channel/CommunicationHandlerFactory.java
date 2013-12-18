@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.channel;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.channel;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.channel;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSocketFactory;
@@ -51,49 +44,49 @@ import javax.net.ssl.SSLSocketFactory;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
 
 public abstract class CommunicationHandlerFactory {
-	
+
 	public static final String HANDLER_PROPERTY = "ifmapj.communication.handler";
-	
+
 	/**
 	 * Create a {@link CommunicationHandler} instance.
-	 * 
+	 *
 	 * The {@link CommunicationHandler} implementation returned by this method
 	 * depends on the system property ifmapj.communication.handler. If it is
 	 * set to <b>java</b> an instance of {@link JavaCommunicationHandler} is
 	 * returned, if set to <b>apache</b> instead, {@link ApacheCoreCommunicationHandler}
 	 * is used. If it is not set, either one is returned, preferring
 	 * {@link ApacheCoreCommunicationHandler}.
-	 * 
+	 *
 	 * @param url The url to connect to.
 	 * @param user for basic auth, if user != null -> pass != null
 	 * @param pass for basic auth, if pass != null -> user != null
 	 * @param sslSocketFactory the {@link SSLSocketFactory} to be used
 	 * @return the new {@link CommunicationHandler}
-	 * @throws InitializationException 
+	 * @throws InitializationException
 	 */
 	public static CommunicationHandler newHandler(String url, String user,
 			String pass, SSLSocketFactory sslSocketFactory, HostnameVerifier verifier)
 			throws InitializationException {
-		
+
 		String handler = System.getProperty(HANDLER_PROPERTY);
-		
+
 		if (handler != null)
 			return newHandlerPreference(handler, url, user, pass, sslSocketFactory, verifier);
 		else
 			return newHandlerAuto(url, user, pass, sslSocketFactory, verifier);
 	}
-	
-	
+
+
 	/**
 	 * Helper to return an instance of the {@link ApacheCoreCommunicationHandler}.
 	 * If the {@link ApacheCoreCommunicationHandler} cannot be initialized, return
 	 * a {@link JavaCommunicationHandler} instance.
-	 * 
+	 *
 	 * @param url
 	 * @param user
 	 * @param pass
 	 * @param sslSocketFactory
-	 * @param verifier 
+	 * @param verifier
 	 * @return
 	 * @throws InitializationException
 	 */
@@ -107,25 +100,25 @@ public abstract class CommunicationHandlerFactory {
 					sslSocketFactory, verifier);
 		}
 	}
-	
+
 	/**
 	 * Helper to return the handler which is indicated by handlerProp
-	 * 
+	 *
 	 * @param handlerProp
 	 * @param url
 	 * @param user
 	 * @param pass
 	 * @param sslSocketFactory
-	 * @param verifier 
+	 * @param verifier
 	 * @return
-	 * @throws InitializationException 
+	 * @throws InitializationException
 	 */
 	private static CommunicationHandler newHandlerPreference(String handlerProp,
 			String url, String user, String pass,
 			SSLSocketFactory sslSocketFactory, HostnameVerifier verifier) throws InitializationException {
 		if (handlerProp == null)
 			throw new NullPointerException();
-		
+
 		if (handlerProp.equals("java")) {
 			return new JavaCommunicationHandler(url, user, pass,
 					sslSocketFactory, verifier);

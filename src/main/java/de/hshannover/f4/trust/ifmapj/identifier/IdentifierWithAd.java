@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,15 +36,16 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 /**
  * Represents an IF-MAP identifier with an administrative domain attribute.
- * 
+ *
  * @author aw
  *
  */
 public abstract class IdentifierWithAd implements Identifier {
-	
+
 	private /* final */ String mAdministrativeDomain;
 
 	protected IdentifierWithAd(String admDom) {
@@ -62,7 +55,7 @@ public abstract class IdentifierWithAd implements Identifier {
 	/**
 	 * Set to null or "" if no administrative-domain attribute is to be
 	 * included.
-	 * 
+	 *
 	 * @param administrativeDomain
 	 * @deprecated
 	 */
@@ -76,35 +69,35 @@ public abstract class IdentifierWithAd implements Identifier {
 
 	@Override
 	public boolean equals(Object o) {
-		
+
 		if (o == null)
 			return false;
-		
+
 		if (!(o instanceof IdentifierWithAd))
 			return false;
-			
+
 		IdentifierWithAd i = (IdentifierWithAd) o;
-		
+
 		if (this == i)
 			return true;
-	
+
 		// This is mainly here if both are set to null.
 		if (i.mAdministrativeDomain == mAdministrativeDomain)
 			return true;
-		
+
 		if (i.mAdministrativeDomain != null && mAdministrativeDomain != null)
 			return mAdministrativeDomain.equals(i.mAdministrativeDomain);
-		
+
 		return false;
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
 	@Override
 	public String toString() {
 		/* make life easier for the subclasses */
-		if (getAdministrativeDomain() == null 
+		if (getAdministrativeDomain() == null
 				|| getAdministrativeDomain().length() == 0)
 			return "";
 		else

@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -57,7 +50,7 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 
 /**
  * Trivial tests for {@link Device} class.
- * 
+ *
  * @author ibente
  *
  */
@@ -81,7 +74,7 @@ public class DeviceTest {
 		dev = Identifiers.createDev("abc");
 		assertEquals("dev{abc}", dev.toString());
 	}
-	
+
 	@Test
 	public void testDeviceWithRandomUUID() {
 		Device dev = Identifiers.createDevRandomUUID();
@@ -89,7 +82,7 @@ public class DeviceTest {
 		String regex_uuid = ("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
 		assertTrue(dev.getName().matches(regex_uuid));
 	}
-	
+
 	@Test
 	public void testDeviceWithPublisherId() {
 		Device dev = Identifiers.createDevPubPrefixed("uid", "publisherid");

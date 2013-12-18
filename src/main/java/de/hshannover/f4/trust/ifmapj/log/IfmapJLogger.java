@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.log;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.log;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,46 +36,47 @@ package de.hshannover.f4.trust.ifmapj.log;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.log;
 
 /**
  * Basic interface for logging.
- * 
+ *
  * @author aw
  *
  */
 public interface IfmapJLogger {
-	
+
 	/**
 	 * Print trace level message.
-	 * 
+	 *
 	 * @param msg the message
 	 */
 	public void trace(String msg);
-	
+
 	/**
 	 * Print debug level message.
-	 * 
+	 *
 	 * @param msg the message
 	 */
 	public void debug(String msg);
-	
+
 	/**
 	 * Print info level message.
-	 * 
+	 *
 	 * @param msg the message
 	 */
 	public void info(String msg);
-	
+
 	/**
 	 * Print warn level message.
-	 * 
+	 *
 	 * @param msg the message
 	 */
 	public void warn(String msg);
-	
+
 	/**
 	 * Print error level message.
-	 * 
+	 *
 	 * @param msg the message
 	 */
 	public void error(String msg);

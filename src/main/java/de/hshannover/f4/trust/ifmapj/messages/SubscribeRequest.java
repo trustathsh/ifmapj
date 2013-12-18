@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,33 +36,34 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.List;
 
 /**
  * Interface to access data concerning a {@link SubscribeRequest}.
- * 
+ *
  * MAPCs can subscribe to changes occurring on a MAPS. The underlying mechanism
  * are subscriptions. A {@link SubscribeRequest} provides a MAPC the ability
  * to create and delte subscriptions using {@link SubscribeUpdate} and
  * {@link SubscribeDelete} elements, respectively.
- * 
+ *
  * @author aw
  *
  */
 public interface SubscribeRequest extends Request {
-	
+
 	/**
 	 * @param se the element to add to the list
 	 * @throws NullPointerException if the element is null
 	 */
 	public void addSubscribeElement(SubscribeElement se);
-	
+
 	/**
 	 * <b>Note:</b> The returned collection is unmodifiable.
-	 * 
+	 *
 	 * @return the list of elements in the request
 	 */
 	public List<SubscribeElement> getSubscribeElements();
-	
+
 }

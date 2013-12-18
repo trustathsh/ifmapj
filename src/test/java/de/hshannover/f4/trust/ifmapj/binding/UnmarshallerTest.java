@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.binding;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.binding;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,31 +36,31 @@ package de.hshannover.f4.trust.ifmapj.binding;
  * limitations under the License.
  * #L%
  */
-
+package de.hshannover.f4.trust.ifmapj.binding;
 
 //public class UnmarshallerTest {
-//	
+//
 //	private final IdentifierFactory sIdentFac = IfmapJ.createIdentifierFactory();
 //	private final Unmarshaller sUnmarshaller = BindingFactory.newUnmarshaller();
 //	private final TestResponseCreator sRespCreator = new TestResponseCreator();
-//	
+//
 //	private final String ipElement = "<ip-address value=\"192.168.0.1\" type=\"IPv4\"/>";
 //	private final String arElement = "<access-request name=\"AR012\"/>";
-//	
+//
 //	@Test
 //	public void testGoodDeviceUnmarshalling() {
-//		
+//
 //		String resultItems[] = {
 //				"<device><name>xyz</name></device>",
 //				"\n\n<device>\n\t<name>xyz2</name>\n\t</device>\n\n",
 //				"\n\n<device>\n\t<name>xyz3</name>\n\t</device>\n\n" };
-//		
+//
 //		Device expectedDevcies[] = {
 //				sIdentFac.createDev("xyz"),
 //				sIdentFac.createDev("xyz2"),
 //				sIdentFac.createDev("xyz3")
 //		};
-//	
+//
 //		try {
 //			for (int i = 0; i < resultItems.length; i++) {
 //				InputStream is =  sRespCreator.createSearchResultResponse(resultItems[i]);
@@ -128,7 +120,7 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //			fail("Wrong exception");
 //		}
 //	}
-//	
+//
 //	@Test
 //	public void testParseGoodPollResult() {
 //		String resultItem = ipElement + arElement + "<metadata/>";
@@ -144,7 +136,7 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //			fail(e.getMessage());
 //		}
 //	}
-//	
+//
 //	@Test
 //	public void testInvalidPollElement() {
 //		String invalidResult = "<murxResult><somecontent/></murxResult>";
@@ -177,7 +169,7 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //			fail("Wrong Exception?");
 //		}
 //	}
-//	
+//
 //	@Test
 //	public void testEndSessionResultInPollResult() {
 //		// This give UnmarshalException, because endSessionResult is not supposed
@@ -194,7 +186,7 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //			fail("Wrong Exception?");
 //		}
 //	}
-//	
+//
 //	@Test
 //	public void testEndSessionResultInsteadPollResult() {
 //		String respString = sRespCreator.createProlog() + "<endSessionResult/>" +
@@ -221,7 +213,7 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //					ipElement + arElement + "<metadata><justsomething/><somethingmore/></metadata>",
 //					ipElement + arElement + "<metadata><justsomething><somethingmore/></justsomething></metadata>"
 //			};
-//			
+//
 //			int mdelements[] = {
 //					0,
 //					0,
@@ -229,25 +221,25 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //					2,
 //					1
 //			};
-//			
+//
 //			List<String> resultItemList = new LinkedList<String>();
-//			
+//
 //			for (String ri : resultItems)
 //				resultItemList.add(ri);
-//			
+//
 //			InputStream resp = sRespCreator.createSearchResultResponse(resultItemList);
 //			try {
 //				SearchResult sr = sUnmarshaller.unmarshalSearchResult(resp);
 //				assertEquals(5, sr.getResultItems().size());
 //				Iterator<ResultItem> rit = sr.getResultItems().iterator();
-//				
+//
 //				for (int i = 0; i < sr.getResultItems().size(); i++) {
 //					ResultItem ri = rit.next();
 //					assertEquals(mdelements[i], ri.getMetadata().size());
 //					assertNotNull(ri.getIdentifier1());
 //					assertNotNull(ri.getIdentifier2());
 //				}
-//				
+//
 //			} catch (UnmarshalException e) {
 //				fail(e.getMessage());
 //			} catch (IfmapErrorResult e) {
@@ -260,15 +252,15 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //		String emptyResponse =  sRespCreator.createProlog() + sRespCreator.createEpilog();
 //		failAllUnmarshalMethods(emptyResponse);
 //	}
-//	
+//
 //	@Test
 //	public void testNoMultipleElementsInResponse() {
-//		String emptyResponse =  sRespCreator.createProlog() + 
-//		"<endSessionResult/>\n<subscribeReceived/>" 
+//		String emptyResponse =  sRespCreator.createProlog() +
+//		"<endSessionResult/>\n<subscribeReceived/>"
 //		+ sRespCreator.createEpilog();
 //		failAllUnmarshalMethods(emptyResponse);
 //	}
-//	
+//
 //	private void failAllUnmarshalMethods(String response) {
 //		for (Method m : sUnmarshaller.getClass().getMethods()) {
 //			if (m.getName().startsWith("check") || m.getName().startsWith("unmarshal")) {
@@ -287,7 +279,7 @@ package de.hshannover.f4.trust.ifmapj.binding;
 //					} else {
 //						//System.out.println(e.getCause().getMessage());
 //					}
-//						
+//
 //				}
 //			}
 //		}

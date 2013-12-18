@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -64,15 +57,15 @@ import de.hshannover.f4.trust.ifmapj.identifier.DeviceHandler;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 
 public class DeviceHandlerTest {
-	
+
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static DeviceHandler sDevHandler = new DeviceHandler();
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWithNullName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Device dev = Identifiers.createDev(null);
-		
+
 		Element res = sDevHandler.toElement(dev, doc);
 		assertNotNull(res);
 	}
@@ -81,16 +74,16 @@ public class DeviceHandlerTest {
 	public void testToElementWithEmptyName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Device dev = Identifiers.createDev("");
-		
+
 		Element res = sDevHandler.toElement(dev, doc);
 		assertNotNull(res);
 	}
-		
+
 	@Test
 	public void testToElementWithName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Device dev = Identifiers.createDev("DEV100");
-		
+
 		Element xmlName = null;
 		Element res = sDevHandler.toElement(dev, doc);
 		assertNotNull(res);
@@ -102,9 +95,9 @@ public class DeviceHandlerTest {
 		assertNotNull(xmlName);
 		assertEquals("name", xmlName.getLocalName());
 		assertEquals("DEV100", xmlName.getTextContent());
-		
+
 		assertNull(res.getAttributeNode("administrative-domain"));
-		
+
 		assertEquals(1, res.getChildNodes().getLength());
 		assertEquals(0, res.getAttributes().getLength());
 		assertEquals(1, xmlName.getChildNodes().getLength());
@@ -119,7 +112,7 @@ public class DeviceHandlerTest {
 		Element xmlName = doc.createElementNS(null, "name");
 		xmlDev.appendChild(xmlName);
 		xmlName.setTextContent("DEV100");
-		
+
 		Device dev = sDevHandler.fromElement(xmlDev);
 		assertNotNull(dev);
 		assertNotNull(dev.getName());
@@ -154,7 +147,7 @@ public class DeviceHandlerTest {
 		Device dev = sDevHandler.fromElement(xmlDev);
 		assertNull(dev);
 	}
-	
+
 	@Test
 	public void testNotResponsible() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -162,7 +155,7 @@ public class DeviceHandlerTest {
 		Device dev = sDevHandler.fromElement(xmlAr);
 		assertNull(dev);
 	}
-	
+
 	@Test(expected=MarshalException.class)
 	public void testToElementWrongIdentifierType() throws UnmarshalException, MarshalException {
 		Document doc = sDocBuilder.newDocument();

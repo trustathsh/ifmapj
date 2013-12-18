@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -63,7 +56,7 @@ import de.hshannover.f4.trust.ifmapj.messages.Result;
 
 /**
  * Test the handler functionality provided by the {@link Requests} class.
- * 
+ *
  * @author aw
  *
  */
@@ -71,7 +64,7 @@ public class RequestsTest {
 
 	@Test
 	public void testQueryDefaultHandlers() {
-		
+
 		assertNotNull(Requests.getHandlerFor(Requests.createNewSessionReq()));
 		assertNotNull(Requests.getHandlerFor(Requests.createEndSessionReq()));
 		assertNotNull(Requests.getHandlerFor(Requests.createRenewSessionReq()));
@@ -81,16 +74,16 @@ public class RequestsTest {
 		assertNotNull(Requests.getHandlerFor(Requests.createSearchReq()));
 		assertNotNull(Requests.getHandlerFor(Requests.createPollReq()));
 	}
-	
+
 	@Test
 	public void testQueryUnknownHandler() {
 		assertNull(Requests.getHandlerFor(new Request() {
-			
+
 			@Override
 			public void setSessionId(String sessionId) {
 				// anonymous
 			}
-			
+
 			@Override
 			public String getSessionId() {
 				// anonymous
@@ -111,7 +104,7 @@ public class RequestsTest {
 
 	@Test(expected=RuntimeException.class)
 	public void testRegisterCustomHandlerTwice() {
-		
+
 		class CustomRequest implements Request  {
 
 			@Override
@@ -144,15 +137,15 @@ public class RequestsTest {
 			public Class<CustomRequest> handles() {
 				return CustomRequest.class;
 			}
-		}	
-		
+		}
+
 		Requests.registerRequestHandler(new CustomRequestHandler());
 		Requests.registerRequestHandler(new CustomRequestHandler());
 	}
 
 	@Test
 	public void testRegisterGoodCustomHandler() {
-		
+
 		class CustomRequest implements Request  {
 
 			@Override
@@ -166,7 +159,7 @@ public class RequestsTest {
 				return null;
 			}
 		}
-			
+
 		class CustomRequestHandler implements RequestHandler<CustomRequest> {
 
 			@Override
@@ -185,15 +178,15 @@ public class RequestsTest {
 			public Class<CustomRequest> handles() {
 				return CustomRequest.class;
 			}
-		}	
-		
+		}
+
 		Requests.registerRequestHandler(new CustomRequestHandler());
 		assertNotNull(Requests.getHandlerFor(new CustomRequest()));
 	}
-	
+
 	@Test(expected=NullPointerException.class)
 	public void testRegisterHandlesNullHandler() {
-	
+
 		class CustomRequest implements Request  {
 
 			@Override
@@ -227,7 +220,7 @@ public class RequestsTest {
 				return null;
 			}
 		}
-		
+
 		// will throw NullPointers, because handles() returns null
 		Requests.registerRequestHandler(new CustomRequestHandler());
 	}

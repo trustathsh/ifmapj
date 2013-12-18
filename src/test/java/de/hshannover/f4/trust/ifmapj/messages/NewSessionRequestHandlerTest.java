@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import static org.junit.Assert.*;
 
@@ -67,13 +60,13 @@ import de.hshannover.f4.trust.ifmapj.messages.Result;
 import util.DomHelpers;
 
 public class NewSessionRequestHandlerTest {
-	
+
 	private static RequestHandler<? extends Request> sHandler = makeHandler();
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static final String REQ_EL_NAME = "newSession";
 	private static final String RES_EL_NAME = "newSessionResult";
 	private static final String IFMAP_URI = "http://www.trustedcomputinggroup.org/2010/IFMAP/2";
-	
+
 	private static Request makeRequest() {
 		return new NewSessionRequestImpl();
 	}
@@ -81,7 +74,7 @@ public class NewSessionRequestHandlerTest {
 	private static RequestHandler<? extends Request> makeHandler() {
 		return new NewSessionRequestHandler();
 	}
-	
+
 	@Test
 	public void testToElementGoodNullMPRS() throws MarshalException {
 		NewSessionRequest req = (NewSessionRequest) makeRequest();
@@ -150,8 +143,8 @@ public class NewSessionRequestHandlerTest {
 		assertEquals("mypubid", nsr.getPublisherId());
 		assertEquals(new Integer(1000), nsr.getMaxPollResultSize());
 	}
-	
-	
+
+
 	@Test(expected=UnmarshalException.class)
 	public void testFromElementNoSessionId() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
@@ -186,7 +179,7 @@ public class NewSessionRequestHandlerTest {
 		Result res = sHandler.fromElement(response);
 		assertNull(res);
 	}
-	
+
 	@Test(expected=IfmapErrorResult.class)
 	public void testFromElementWithErrorResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();

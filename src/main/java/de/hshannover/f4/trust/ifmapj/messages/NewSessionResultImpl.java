@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,18 +36,19 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 /**
  * Encapsulate information about a newSessionResult.
- * 
+ *
  * Note, {@link #getMaxPollResultSize()} may return null if no max-poll-result-size
  * attribute was set in the newSessionResult element.
- * 
+ *
  * @author aw
  *
  */
 class NewSessionResultImpl implements NewSessionResult {
-	
+
 	private final String mSessionId;
 	private final String mPublisherId;
 	private final Integer mMaxPollResultSize;
@@ -63,11 +56,11 @@ class NewSessionResultImpl implements NewSessionResult {
 	NewSessionResultImpl(String sId, String pId, Integer mprs) {
 		if (sId == null || pId == null)
 			throw new NullPointerException();
-		
+
 		mSessionId = sId;
 		mPublisherId = pId;
 		mMaxPollResultSize = mprs;
-		
+
 	}
 
 	NewSessionResultImpl(String sId, String pId) {

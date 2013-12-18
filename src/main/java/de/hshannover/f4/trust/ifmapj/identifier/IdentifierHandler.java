@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.identifier;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,6 +36,7 @@ package de.hshannover.f4.trust.ifmapj.identifier;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.identifier;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -54,15 +47,15 @@ import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
 /**
  * Provides generic access to marshal and unmarshal a {@link Identifier}
  * implementation from or to {@link Element} representation.
- * 
+ *
  * @author aw
  *
  */
 public interface IdentifierHandler<T extends Identifier> {
-	
+
 	/**
 	 * Create a {@link Element} instance representing the given {@link Identifier}.
-	 * 
+	 *
 	 * @param i the {@link Identifier}
 	 * @param doc the root {@link Document} where the element is to be added.
 	 *		An implementation <b>must not</b> add the element to the given {@link Document}.
@@ -70,10 +63,10 @@ public interface IdentifierHandler<T extends Identifier> {
 	 * @throws MarshalException If some constraints for the {@link Identifier} are not fullfilled.
 	 */
 	public Element toElement(Identifier i, Document doc) throws MarshalException;
-	
+
 	/**
 	 * Create a {@link Identifier} instance from the given {@link Element}.
-	 * 
+	 *
 	 * @param el the {@link Element} instance
 	 * @return an {@link Identifier} instance representation of the given {@link Element},
 	 *	 or null if this {@link IdentifierHandler} was not able to parse
@@ -83,7 +76,7 @@ public interface IdentifierHandler<T extends Identifier> {
 	 *	 given XML, null has to be returned.</b>
 	 */
 	public T fromElement(Element el) throws UnmarshalException;
-	
+
 	/**
 	 * @return the {@link Class} object for the {@link Identifier} implementation
 	 *	 this implementation is able to handle.

@@ -1,5 +1,3 @@
-package de.hshannover.f4.trust.ifmapj.messages;
-
 /*
  * #%L
  * =====================================================
@@ -20,14 +18,8 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de
  * 
- * This file is part of IfmapJ, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
- * 
- * IfmapJ is a lightweight, platform-independent, easy-to-use IF-MAP client
- * library for Java. IF-MAP is an XML based protocol for sharing data across
- * arbitrary components, specified by the Trusted Computing Group. IfmapJ is
- * maintained by the Trust@HsH group at the Hochschule Hannover. IfmapJ
- * was developed within the ESUKOM research project.
  * %%
  * Copyright (C) 2010 - 2013 Trust@HsH
  * %%
@@ -44,33 +36,34 @@ package de.hshannover.f4.trust.ifmapj.messages;
  * limitations under the License.
  * #L%
  */
+package de.hshannover.f4.trust.ifmapj.messages;
 
 import java.util.List;
 
 /**
  * Interface to access data concerning a {@link PublishRequest}.
- * 
+ *
  * MAPCs can publish or delete metadata on a MAPS. A {@link PublishRequest}
  * is used to do these operations. A {@link PublishRequest} can hold one or
  * more of {@link PublishUpdate}, {@link PublishNotify}
  * and {@link PublishDelete} elements.
- * 
+ *
  * @author aw
  *
  */
 public interface PublishRequest extends Request {
-	
+
 	/**
 	 * Add a new {@link PublishElement} to the request
-	 * 
+	 *
 	 * @param pe the element to add to the list
 	 * @throws NullPointerException if the given element is null
 	 */
 	public void addPublishElement(PublishElement pe);
-	
+
 	/**
 	 * Get all {@link PublishElement} instances of this request
-	 * 
+	 *
 	 * @return the list of elements in the request. <b>Note:</b> The returned collection is unmodifiable.
 	 */
 	public List<PublishElement> getPublishElements();
