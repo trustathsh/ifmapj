@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
  * Use {@link Requests} directly to create differen {@link Request} implementations.
  *
  */
+@Deprecated
 public interface RequestFactory {
 
 	/**
@@ -67,7 +68,7 @@ public interface RequestFactory {
 	 *
 	 * @return the new {@link PublishRequest}
 	 */
-	public PublishRequest createPublishReq();
+	PublishRequest createPublishReq();
 
 	/**
 	 * Create a new {@link PublishRequest} that contains the given {@link PublishElement}
@@ -75,7 +76,7 @@ public interface RequestFactory {
 	 * @param el the {@link PublishElement} that is added to the new {@link PublishRequest}
 	 * @return the new {@link PublishRequest}
 	 */
-	public PublishRequest createPublishReq(PublishElement el);
+	PublishRequest createPublishReq(PublishElement el);
 
 	/**
 	 * Create a new {@link PublishRequest} that contains the given list of
@@ -85,14 +86,14 @@ public interface RequestFactory {
 	 * 		  to the new {@link PublishRequest}
 	 * @return the new {@link PublishRequest}
 	 */
-	public PublishRequest createPublishReq(Collection<PublishElement> list);
+	PublishRequest createPublishReq(Collection<PublishElement> list);
 
 	/**
 	 * Create a new, empty {@link PublishUpdate} instance.
 	 *
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate();
+	PublishUpdate createPublishUpdate();
 
 	/**
 	 * Create a new {@link PublishUpdate} instance that is used to publish
@@ -103,7 +104,7 @@ public interface RequestFactory {
 	 * @param md the metadata that shall be published
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1, Document md);
+	PublishUpdate createPublishUpdate(Identifier i1, Document md);
 
 	/**
 	 * Create a new {@link PublishUpdate} instance that is used to publish
@@ -114,7 +115,7 @@ public interface RequestFactory {
 	 * @param lifetime the lifetime of the new metadata
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1, Document md,
+	PublishUpdate createPublishUpdate(Identifier i1, Document md,
 			MetadataLifetime lifetime);
 
 	/**
@@ -127,7 +128,7 @@ public interface RequestFactory {
 	 * @param md the metadata that shall be published
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1, Identifier i2, Document md);
+	PublishUpdate createPublishUpdate(Identifier i1, Identifier i2, Document md);
 
 	/**
 	 * Create a new {@link PublishUpdate} instance that is used to publish
@@ -140,7 +141,7 @@ public interface RequestFactory {
 	 * @param lifetime the lifetime of the new metadata
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
+	PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
 			Document md, MetadataLifetime lifetime);
 
 	/**
@@ -152,7 +153,7 @@ public interface RequestFactory {
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1,
+	PublishUpdate createPublishUpdate(Identifier i1,
 			Collection<Document> mdlist);
 
 	/**
@@ -164,7 +165,7 @@ public interface RequestFactory {
 	 * @param lifetime the lifetime of the new metadata
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1,
+	PublishUpdate createPublishUpdate(Identifier i1,
 			Collection<Document> mdlist, MetadataLifetime lifetime);
 
 	/**
@@ -178,7 +179,7 @@ public interface RequestFactory {
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
+	PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
 			Collection<Document> mdlist);
 
 	/**
@@ -192,7 +193,7 @@ public interface RequestFactory {
 	 * @param lifetime the lifetime of the new metadata
 	 * @return the new {@link PublishUpdate} instance
 	 */
-	public PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
+	PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
 			Collection<Document> mdlist, MetadataLifetime lifetime);
 
 	/**
@@ -200,7 +201,7 @@ public interface RequestFactory {
 	 *
 	 * @return the new {@link PublishDelete} instance
 	 */
-	public PublishDelete createPublishDelete();
+	PublishDelete createPublishDelete();
 
 	/**
 	 * Create a new {@link PublishDelete} instance for a specific {@link Identifier}
@@ -209,7 +210,7 @@ public interface RequestFactory {
 	 * @param i1 the {@link Identifier} that is the target of the delete request
 	 * @return the new {@link PublishDelete} instance
 	 */
-	public PublishDelete createPublishDelete(Identifier i1);
+	PublishDelete createPublishDelete(Identifier i1);
 
 	/**
 	 * Create a new {@link PublishDelete} instance for a link between two
@@ -219,7 +220,7 @@ public interface RequestFactory {
 	 * @param i2 the second {@link Identifier} of the link
 	 * @return the new {@link PublishDelete} instance
 	 */
-	public PublishDelete createPublishDelete(Identifier i1, Identifier i2);
+	PublishDelete createPublishDelete(Identifier i1, Identifier i2);
 
 	/**
 	 * Create a new {@link PublishDelete} instance for a specific {@link Identifier}
@@ -229,7 +230,7 @@ public interface RequestFactory {
 	 * @param filter a filter that expresses the metadata that shall be deleted
 	 * @return the new {@link PublishDelete} instance
 	 */
-	public PublishDelete createPublishDelete(Identifier i1, String filter);
+	PublishDelete createPublishDelete(Identifier i1, String filter);
 
 	/**
 	 * Create a new {@link PublishDelete} instance for a link between two
@@ -241,14 +242,14 @@ public interface RequestFactory {
 	 * @param filter a filter that expresses the metadata that shall be deleted
 	 * @return the new {@link PublishDelete} instance
 	 */
-	public PublishDelete createPublishDelete(Identifier i1, Identifier i2, String filter);
+	PublishDelete createPublishDelete(Identifier i1, Identifier i2, String filter);
 
 	/**
 	 * Create a new, empty {@link PublishNotify} instance.
 	 *
 	 * @return the new {@link PublishNotify} instance
 	 */
-	public PublishNotify createPublishNotify();
+	PublishNotify createPublishNotify();
 
 	/**
 	 * Create a new {@link PublishNotify} instance that is used to publish
@@ -258,7 +259,7 @@ public interface RequestFactory {
 	 * @param md the metadata that shall be published
 	 * @return the new {@link PublishNotify} instance
 	 */
-	public PublishNotify createPublishNotify(Identifier i1, Document md);
+	PublishNotify createPublishNotify(Identifier i1, Document md);
 
 	/**
 	 * Create a new {@link PublishNotify} instance that is used to publish
@@ -269,7 +270,7 @@ public interface RequestFactory {
 	 * @param md the metadata that shall be published
 	 * @return the new {@link PublishNotify} instance
 	 */
-	public PublishNotify createPublishNotify(Identifier i1, Identifier i2, Document md);
+	PublishNotify createPublishNotify(Identifier i1, Identifier i2, Document md);
 
 	/**
 	 * Create a new {@link PublishNotify} instance that is used to publish
@@ -279,7 +280,7 @@ public interface RequestFactory {
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishNotify} instance
 	 */
-	public PublishNotify createPublishNotify(Identifier i1,
+	PublishNotify createPublishNotify(Identifier i1,
 			Collection<Document> mdlist);
 
 	/**
@@ -293,7 +294,7 @@ public interface RequestFactory {
 	 * @param mdlist a list of metadata objects
 	 * @return the new {@link PublishNotify} instance
 	 */
-	public PublishNotify createPublishNotify(Identifier i1, Identifier i2,
+	PublishNotify createPublishNotify(Identifier i1, Identifier i2,
 			Collection<Document> mdlist);
 
 	/**
@@ -303,7 +304,7 @@ public interface RequestFactory {
 	 *
 	 * @return the new {@link SearchRequest} instance
 	 */
-	public SearchRequest createSearchRequest();
+	SearchRequest createSearchRequest();
 
 	/**
 	 * Create a new {@link SearchRequest} in order to perform an IF-MAP search.
@@ -319,7 +320,7 @@ public interface RequestFactory {
 	 * @param start the start {@link Identifier}
 	 * @return the new {@link SearchRequest} instance
 	 */
-	public SearchRequest createSearchRequest(String matchLinks, Integer maxDepth,
+	SearchRequest createSearchRequest(String matchLinks, Integer maxDepth,
 			String terminalIdentifiers, Integer maxSize, String resultFilter,
 			Identifier start);
 
@@ -328,7 +329,7 @@ public interface RequestFactory {
 	 *
 	 * @return the new {@link SubscribeRequest} instance
 	 */
-	public SubscribeRequest createSubscribeReq();
+	SubscribeRequest createSubscribeReq();
 
 	/**
 	 * Create a {@link SubscribeRequest} with one {@link SubscribeElement}.
@@ -339,7 +340,7 @@ public interface RequestFactory {
 	 *
 	 * @return the new {@link SubscribeRequest}
 	 */
-	public SubscribeRequest createSubscribeReq(SubscribeElement el);
+	SubscribeRequest createSubscribeReq(SubscribeElement el);
 
 	/**
 	 * Create a {@link SubscribeRequest} with a list of {@link SubscribeElement}
@@ -350,7 +351,7 @@ public interface RequestFactory {
 	 * are either {@link SubscribeUpdate} or {@link SubscribeDelete} instances.
 	 * @return the new {@link SubscribeRequest}
 	 */
-	public SubscribeRequest createSubscribeReq(List<SubscribeElement> list);
+	SubscribeRequest createSubscribeReq(List<SubscribeElement> list);
 
 	/**
 	 * Create a {@link SubscribeUpdate} instance with default values. You need
@@ -360,7 +361,7 @@ public interface RequestFactory {
 	 *
 	 * @return the new {@link SubscribeUpdate} instance
 	 */
-	public SubscribeUpdate createSubscribeUpdate();
+	SubscribeUpdate createSubscribeUpdate();
 
 	/**
 	 * Create a {@link SubscribeUpdate} instance with the given parameters.
@@ -377,7 +378,7 @@ public interface RequestFactory {
 	 * @param start the start {@link Identifier}
 	 * @return the new {@link SubscribeUpdate} instance
 	 */
-	public SubscribeUpdate createSubscribeUpdate(String name, String matchLinks,
+	SubscribeUpdate createSubscribeUpdate(String name, String matchLinks,
 			Integer maxDepth, String terminalIdentifiers, Integer maxSize,
 			String resultFilter, Identifier start);
 
@@ -387,7 +388,7 @@ public interface RequestFactory {
 	 *
 	 * @return the new {@link SubscribeDelete} instance
 	 */
-	public SubscribeDelete createSubscribeDelete();
+	SubscribeDelete createSubscribeDelete();
 
 	/**
 	 * Create a new {@link SubscribeDelete} instance with the given name.
@@ -396,7 +397,7 @@ public interface RequestFactory {
 	 * MAPS.
 	 * @return the new {@link SubscribeDelete} instance
 	 */
-	public SubscribeDelete createSubscribeDelete(String name);
+	SubscribeDelete createSubscribeDelete(String name);
 
 
 }

@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,6 @@ import util.DateHelpers;
 import de.hshannover.f4.trust.ifmapj.IfmapJ;
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 import de.hshannover.f4.trust.ifmapj.channel.SSRC;
-import de.hshannover.f4.trust.ifmapj.exception.EndSessionException;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapException;
 import de.hshannover.f4.trust.ifmapj.identifier.Device;
@@ -76,7 +75,7 @@ import de.hshannover.f4.trust.ifmapj.metadata.StandardIfmapMetadataFactory;
  * @author jk
  * @since 0.1.5
  */
-public class ClockSkewDetector {
+public final class ClockSkewDetector {
 
 	/**
 	 * The SSRC to be used for time synchronization.
@@ -122,11 +121,13 @@ public class ClockSkewDetector {
 	 */
 	private ClockSkewDetector(SSRC ssrc, Device dev) {
 
-		if (ssrc == null)
+		if (ssrc == null) {
 			throw new NullPointerException();
+		}
 
-		if (dev == null)
+		if (dev == null) {
 			throw new NullPointerException();
+		}
 
 		mSsrc = ssrc;
 		mDev = dev;
@@ -165,8 +166,7 @@ public class ClockSkewDetector {
 	 * @throws IfmapException
 	 * @throws EndSessionException
 	 */
-	public long performClockSkewDetection(Calendar clientTime)
-			throws IfmapErrorResult, IfmapException {
+	public long performClockSkewDetection(Calendar clientTime) throws IfmapErrorResult, IfmapException {
 
 		publishTime(clientTime);
 		Element time = searchTime();
@@ -256,8 +256,9 @@ public class ClockSkewDetector {
 	 * @return date and time of last successful call to {@link publishClientTime}.
 	 */
 	public Calendar getClockLastSynchronization() {
-		if (getClockSynchronized())
-			return (Calendar)mLastTimeSynchronization.clone();
+		if (getClockSynchronized()) {
+			return (Calendar) mLastTimeSynchronization.clone();
+		}
 		return null;
 	}
 
@@ -270,8 +271,7 @@ public class ClockSkewDetector {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	private void publishTime(Calendar clientTime)
-			throws IfmapErrorResult, IfmapException {
+	private void publishTime(Calendar clientTime) throws IfmapErrorResult, IfmapException {
 		PublishElement pu;
 		PublishRequest pr;
 		String date = DateHelpers.getUtcTimeAsIso8601(clientTime);
@@ -299,8 +299,7 @@ public class ClockSkewDetector {
 		List<Document> mlist;
 		Node node;
 
-		String resultFilter = IfmapStrings.OP_METADATA_PREFIX +
-			":client-time[@" + IfmapStrings.PUBLISHER_ID_ATTR
+		String resultFilter = IfmapStrings.OP_METADATA_PREFIX + ":client-time[@" + IfmapStrings.PUBLISHER_ID_ATTR
 			+ " = \"" + mSsrc.getPublisherId() + "\"]";
 
 
@@ -313,21 +312,25 @@ public class ClockSkewDetector {
 		items = res.getResultItems();
 
 
-		if (items.size() > 1)
+		if (items.size() > 1) {
 			IfmapJLog.warn("time sync: weird result item count: " + items.size());
+		}
 
-		if (items.size() == 0)
+		if (items.size() == 0) {
 			throw new IfmapException("time sync", "No ResultItems for search!");
+		}
 
 		ri = items.get(0);
 
 		mlist = ri.getMetadata();
 
-		if (mlist.size() > 1)
+		if (mlist.size() > 1) {
 			IfmapJLog.warn("time sync: multiple client-time elements: " + mlist.size());
+		}
 
-		if (mlist.size() == 0)
+		if (mlist.size() == 0) {
 			throw new IfmapException("time sync", "No client-time metadata!");
+		}
 
 
 		// Take the last one in the list, hoping that it is the most current
@@ -336,24 +339,22 @@ public class ClockSkewDetector {
 
 		node = clientTime.getFirstChild();
 
-		if (node.getNodeType() != Node.ELEMENT_NODE)
+		if (node.getNodeType() != Node.ELEMENT_NODE) {
 			throw new IfmapException("time sync", "Metadata is not element");
+		}
 
-		return (Element)node;
+		return (Element) node;
 	}
 
 	/**
 	 * Delete all current-time metadata objects attached to the {{@link #mDev}
 	 * identifier provided they have "our" publisher-id.
 	 *
-	 * @param clientTime the supplied client time, use null for current time
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	private void deleteTimes()
-			throws IfmapErrorResult, IfmapException {
-		String filter = IfmapStrings.OP_METADATA_PREFIX +
-			":client-time[@" + IfmapStrings.PUBLISHER_ID_ATTR
+	private void deleteTimes() throws IfmapErrorResult, IfmapException {
+		String filter = IfmapStrings.OP_METADATA_PREFIX + ":client-time[@" + IfmapStrings.PUBLISHER_ID_ATTR
 			+ " = \"" + mSsrc.getPublisherId() + "\"]";
 		PublishDelete pd = Requests.createPublishDelete(mDev, filter);
 		pd.addNamespaceDeclaration(IfmapStrings.OP_METADATA_PREFIX,

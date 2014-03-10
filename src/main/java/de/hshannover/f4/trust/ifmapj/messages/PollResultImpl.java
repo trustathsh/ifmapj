@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,10 +57,11 @@ class PollResultImpl implements PollResult {
 	private final List<SearchResult> mResults;
 	private final Collection<IfmapErrorResult> mErrorResults;
 
-	PollResultImpl (List<SearchResult> results, Collection<IfmapErrorResult> eres) {
+	PollResultImpl(List<SearchResult> results, Collection<IfmapErrorResult> eres) {
 
-		if (results == null || eres == null)
+		if (results == null || eres == null) {
 			throw new NullPointerException("result list is null");
+		}
 
 		mResults = new ArrayList<SearchResult>(results);
 		mErrorResults = new ArrayList<IfmapErrorResult>(eres);
@@ -99,9 +100,11 @@ class PollResultImpl implements PollResult {
 	private Collection<SearchResult> resultsOfType(Type type) {
 		List<SearchResult> ret = new ArrayList<SearchResult>();
 
-		for (SearchResult sr : mResults)
-			if (sr.getType() == type)
+		for (SearchResult sr : mResults) {
+			if (sr.getType() == type) {
 				ret.add(sr);
+			}
+		}
 
 		return Collections.unmodifiableCollection(ret);
 	}

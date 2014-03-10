@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,10 @@
  */
 package de.hshannover.f4.trust.ifmapj.messages;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -48,27 +52,19 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
-
-import static org.junit.Assert.*;
-
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
-import de.hshannover.f4.trust.ifmapj.messages.SearchHolder;
-import de.hshannover.f4.trust.ifmapj.messages.SearchHolderImpl;
-import de.hshannover.f4.trust.ifmapj.messages.SearchRequest;
-import de.hshannover.f4.trust.ifmapj.messages.SearchRequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.SearchRequestImpl;
 import util.DomHelpers;
 
 @RunWith(Parameterized.class)
 public class SearchParamsTest {
 
-	private static final DocumentBuilder sDb = DomHelpers.newDocumentBuilder();
-	private static final SearchRequestHandler sHandler = new SearchRequestHandler();
+	private static final DocumentBuilder DB = DomHelpers.newDocumentBuilder();
+	private static final SearchRequestHandler HANDLER = new SearchRequestHandler();
 	private static Identifier mStartIdentifier;
 
 	@BeforeClass
@@ -133,9 +129,9 @@ public class SearchParamsTest {
 	@Test
 	public void testToElement() throws MarshalException {
 		SearchRequest req = makeRequest();
-		Document doc = sDb.newDocument();
+		Document doc = DB.newDocument();
 
-		Element res = sHandler.toElement(req, doc);
+		Element res = HANDLER.toElement(req, doc);
 
 		assertEquals("search", res.getLocalName());
 

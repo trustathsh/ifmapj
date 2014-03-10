@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,33 +55,31 @@ public interface IdentifierHolder {
 	/**
 	 * @return the first identifier attached to this element.
 	 */
-	public Identifier getIdentifier1();
+	Identifier getIdentifier1();
 
 	/**
 	 * @param id the {@link Identifier} to be set.
-	 * @throws NullPointerException if the given {@link Identifier} is null.
 	 */
-	public void setIdentifier1(Identifier id);
+	void setIdentifier1(Identifier id);
 
 	/**
 	 * @return the second identifier attached to this element.
 	 */
-	public Identifier getIdentifier2();
+	Identifier getIdentifier2();
 
 	/**
 	 * @param id the {@link Identifier} to be set.
-	 * @throws NullPointerException if the given {@link Identifier} is null.
 	 */
-	public void setIdentifier2(Identifier id);
+	void setIdentifier2(Identifier id);
 
 	/**
 	 * @return an array of size 2, containing references to both identifiers,
 	 *	 or null entries if appropriate
 	 */
-	public Identifier[] getIdentifier();
+	Identifier[] getIdentifier();
 
 	/**
 	 * @return true if both identifiers are non-null.
 	 */
-	public boolean holdsLink();
+	boolean holdsLink();
 }

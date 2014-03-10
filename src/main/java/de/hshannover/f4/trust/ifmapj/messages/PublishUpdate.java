@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,13 +49,12 @@ public interface PublishUpdate extends PublishElement, IdentifierHolder, Metadat
 	/**
 	 * @param lt set the lifetime for the metadata in this update.
 	 *
-	 * @throws NullPointerException if the given lifetime is null.
 	 */
-	public void setLifeTime(MetadataLifetime lt);
+	void setLifeTime(MetadataLifetime lt);
 
 	/**
 	 * @return the lifetime for the metadata in this update.
 	 */
-	public MetadataLifetime getLifeTime();
+	MetadataLifetime getLifeTime();
 
 }

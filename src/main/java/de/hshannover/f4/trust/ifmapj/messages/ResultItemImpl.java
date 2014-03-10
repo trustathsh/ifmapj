@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,17 +53,20 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
 class ResultItemImpl extends MetadataHolderImpl implements ResultItem {
 
 	ResultItemImpl(Identifier id1, Identifier id2, List<Document> mdlist) {
-		if (id1 == null)
+		if (id1 == null) {
 			throw new NullPointerException("id1 not allowed to be null");
+		}
 
-		if (mdlist == null)
+		if (mdlist == null) {
 			throw new NullPointerException("metadata list not allowed to be null");
+		}
 
 		setIdentifier1(id1);
 		setIdentifier2(id2);
 
-		for (Document doc : mdlist)
+		for (Document doc : mdlist) {
 			this.addMetadata(doc);
+		}
 	}
 
 	ResultItemImpl(Identifier id1, List<Document> mdlist) {
@@ -73,11 +76,12 @@ class ResultItemImpl extends MetadataHolderImpl implements ResultItem {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("ri{");
-		for (Identifier id : getIdentifier())
+		for (Identifier id : getIdentifier()) {
 			if (id != null) {
 				sb.append(id);
 				sb.append(", ");
 			}
+		}
 
 		sb.append("#metadata=");
 		sb.append(getMetadata().size());

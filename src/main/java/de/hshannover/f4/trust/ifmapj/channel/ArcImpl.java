@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -66,8 +66,9 @@ public class ArcImpl extends AbstractChannel implements ARC {
 	ArcImpl(SSRC ssrc, String url, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException {
 		super(url, kms, tms);
-		if (ssrc == null)
+		if (ssrc == null) {
 			throw new NullPointerException("Need a valid SSRC instance");
+		}
 
 		mSsrc = ssrc;
 	}
@@ -75,8 +76,9 @@ public class ArcImpl extends AbstractChannel implements ARC {
 	ArcImpl(SSRC ssrc, String url, String user, String password, TrustManager[] tms)
 			throws InitializationException {
 		super(url, user, password, tms);
-		if (ssrc == null)
+		if (ssrc == null) {
 			throw new NullPointerException("Need a valid SSRC instance");
+		}
 
 		mSsrc = ssrc;
 	}
@@ -87,13 +89,15 @@ public class ArcImpl extends AbstractChannel implements ARC {
 		PollRequest pollReq = Requests.createPollReq();
 		Result res = genericRequestWithSessionId(pollReq);
 
-		if (res instanceof EndSessionException)
-			throw (EndSessionException)res;
+		if (res instanceof EndSessionException) {
+			throw (EndSessionException) res;
+		}
 
-		if (!(res instanceof PollResult))
-				throw new RuntimeException("Wrong result type for poll?");
+		if (!(res instanceof PollResult)) {
+			throw new RuntimeException("Wrong result type for poll?");
+		}
 
-		return (PollResult)res;
+		return (PollResult) res;
 	}
 
 	@Override

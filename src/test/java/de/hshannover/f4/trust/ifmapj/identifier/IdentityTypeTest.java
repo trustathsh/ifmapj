@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -56,10 +56,6 @@ import org.w3c.dom.Element;
 import util.DomHelpers;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-import de.hshannover.f4.trust.ifmapj.identifier.Identity;
-import de.hshannover.f4.trust.ifmapj.identifier.IdentityHandler;
-import de.hshannover.f4.trust.ifmapj.identifier.IdentityType;
 
 @RunWith(Parameterized.class)
 public class IdentityTypeTest {
@@ -103,8 +99,9 @@ public class IdentityTypeTest {
 		xmlId.setAttribute("type", mString);
 
 		// otherwise parsing fails
-		if (mString.equals("other"))
+		if (mString.equals("other")) {
 			xmlId.setAttribute("other-type-definition", "OTHER_TYPE_DEF");
+		}
 
 		Identity i = sIdentityHandler.fromElement(xmlId);
 		assertNotNull(i);
@@ -117,10 +114,11 @@ public class IdentityTypeTest {
 		Document doc = sDocBuilder.newDocument();
 		Identity id;
 
-		if (mType == IdentityType.other)
+		if (mType == IdentityType.other) {
 			id = Identifiers.createOtherIdentity("USER100", null, "OTHER_TYPE_DEF");
-		else
+		} else {
 			id = Identifiers.createIdentity(mType, "USER100");
+		}
 
 
 

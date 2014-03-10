@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,10 @@
  */
 package de.hshannover.f4.trust.ifmapj.messages;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -49,14 +52,6 @@ import org.w3c.dom.Element;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.messages.NewSessionRequest;
-import de.hshannover.f4.trust.ifmapj.messages.NewSessionRequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.NewSessionRequestImpl;
-import de.hshannover.f4.trust.ifmapj.messages.NewSessionResult;
-import de.hshannover.f4.trust.ifmapj.messages.PublishRequestImpl;
-import de.hshannover.f4.trust.ifmapj.messages.Request;
-import de.hshannover.f4.trust.ifmapj.messages.RequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.Result;
 import util.DomHelpers;
 
 public class NewSessionRequestHandlerTest {
@@ -76,7 +71,7 @@ public class NewSessionRequestHandlerTest {
 	}
 
 	@Test
-	public void testToElementGoodNullMPRS() throws MarshalException {
+	public void testToElementGoodNullMprs() throws MarshalException {
 		NewSessionRequest req = (NewSessionRequest) makeRequest();
 		req.setMaxPollResultSize(null);
 		Document doc = sDocBuilder.newDocument();
@@ -88,7 +83,7 @@ public class NewSessionRequestHandlerTest {
 	}
 
 	@Test
-	public void testToElementGoodWithMPRS() throws MarshalException {
+	public void testToElementGoodWithMprs() throws MarshalException {
 		NewSessionRequest req = (NewSessionRequest) makeRequest();
 		req.setMaxPollResultSize(1000);
 		Document doc = sDocBuilder.newDocument();
@@ -100,7 +95,7 @@ public class NewSessionRequestHandlerTest {
 		assertEquals("1000", ret.getAttribute("max-poll-result-size"));
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWrongType() throws MarshalException {
 		Request req = new PublishRequestImpl();
 		req.setSessionId("1234");
@@ -110,7 +105,7 @@ public class NewSessionRequestHandlerTest {
 	}
 
 	@Test
-	public void testFromElementGoodNoMPRS() throws UnmarshalException, IfmapErrorResult {
+	public void testFromElementGoodNoMprs() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
 		Element result = doc.createElementNS(null, RES_EL_NAME);
@@ -127,7 +122,7 @@ public class NewSessionRequestHandlerTest {
 	}
 
 	@Test
-	public void testFromElementGoodMPRS() throws UnmarshalException, IfmapErrorResult {
+	public void testFromElementGoodMprs() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
 		Element result = doc.createElementNS(null, RES_EL_NAME);
@@ -145,7 +140,7 @@ public class NewSessionRequestHandlerTest {
 	}
 
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNoSessionId() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -156,7 +151,7 @@ public class NewSessionRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNoPublisherId() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -167,8 +162,8 @@ public class NewSessionRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
-	public void testFromElementNonNumericMPRS() throws UnmarshalException, IfmapErrorResult {
+	@Test(expected = UnmarshalException.class)
+	public void testFromElementNonNumericMprs() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
 		Element result = doc.createElementNS(null, RES_EL_NAME);
@@ -180,7 +175,7 @@ public class NewSessionRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=IfmapErrorResult.class)
+	@Test(expected = IfmapErrorResult.class)
 	public void testFromElementWithErrorResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -191,7 +186,7 @@ public class NewSessionRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNoResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -199,7 +194,7 @@ public class NewSessionRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWrongResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");

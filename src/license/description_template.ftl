@@ -14,7 +14,7 @@ Faculty IV, Dept. of Computer Science
 Ricklinger Stadtweg 118, 30459 Hannover, Germany
 
 Email: trust@f4-i.fh-hannover.de
-Website: http://trust.f4.hs-hannover.de
+Website: http://trust.f4.hs-hannover.de/
 
 This file is part of ${project.name}, version ${project.version}, implemented by the Trust@HsH
 research group at the Hochschule Hannover.

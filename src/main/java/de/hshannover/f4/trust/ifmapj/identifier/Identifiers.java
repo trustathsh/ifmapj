@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,6 @@
 package de.hshannover.f4.trust.ifmapj.identifier;
 
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
-import de.hshannover.f4.trust.ifmapj.exception.IfmapException;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifiers.Helpers;
@@ -51,8 +50,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.xml.transform.TransformerConfigurationException;
 
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
@@ -68,7 +65,7 @@ import util.StringHelpers;
  * @since 0.1.4
  * @author aw
  */
-public class Identifiers {
+public final class Identifiers {
 
 
 	@SuppressWarnings("deprecation")
@@ -80,39 +77,47 @@ public class Identifiers {
 
 	@SuppressWarnings("deprecation")
 	public static IdentifierFactory getIdentifierFactory() {
-		if (sIdentifierFactoryInstance == null)
+		if (sIdentifierFactoryInstance == null) {
 			sIdentifierFactoryInstance = new IdentifierFactoryImpl();
+		}
 
 		return sIdentifierFactoryInstance;
 	}
 
 	public static void registerIdentifierHandler(IdentifierHandler<? extends Identifier> ih) {
-		if (ih == null)
+		if (ih == null) {
 			throw new NullPointerException("ih is null");
+		}
 
-		if (ih.handles() == null)
+		if (ih.handles() == null) {
 			throw new NullPointerException("ih.handles() returns null");
+		}
 
-		if (sIdentifierHandlers == null)
+		if (sIdentifierHandlers == null) {
 			initializeDefaultHandlers();
+		}
 
-		if (sIdentifierHandlers.containsKey(ih.handles()))
+		if (sIdentifierHandlers.containsKey(ih.handles())) {
 			throw new RuntimeException("IdentifierHandler already registered for "
 					+ ih.handles());
+		}
 
 		sIdentifierHandlers.put(ih.handles(), ih);
 	}
 
 	public static IdentifierHandler<? extends Identifier> getHandlerFor(Identifier i) {
 
-		if (sIdentifierHandlers == null)
+		if (sIdentifierHandlers == null) {
 			initializeDefaultHandlers();
+		}
 
 		for (Entry<Class<? extends Identifier>,
-				IdentifierHandler<? extends Identifier>> entry :
-					sIdentifierHandlers.entrySet())
-			if (entry.getKey().isInstance(i))
+				IdentifierHandler<? extends Identifier>> entry
+				: sIdentifierHandlers.entrySet()) {
+			if (entry.getKey().isInstance(i)) {
 				return entry.getValue();
+			}
+		}
 
 		return null;
 	}
@@ -128,37 +133,39 @@ public class Identifiers {
 		registerIdentifierHandler(new MacAddressHandler());
 	}
 
-	public static final Identifier tryFromElement(Element el)
+	public static Identifier tryFromElement(Element el)
 			throws UnmarshalException {
 		Identifier ret = null;
 
-		if (sIdentifierHandlers == null)
+		if (sIdentifierHandlers == null) {
 			initializeDefaultHandlers();
+		}
 
 		for (IdentifierHandler<? extends Identifier> handler
 				: sIdentifierHandlers.values()) {
 
 			ret = handler.fromElement(el);
 
-			if (ret != null)
+			if (ret != null) {
 				break;
+			}
 		}
 
 		return ret;
 	}
 
-	public static final Identifier fromElement(Element el)
+	public static Identifier fromElement(Element el)
 			throws UnmarshalException {
 		Identifier ret = tryFromElement(el);
 
-		if (ret == null)
-			throw new UnmarshalException("No IdentifierHandler could parse" +
-					" element with name " + el.getLocalName() +
-					" in namespace " + el.getNamespaceURI());
+		if (ret == null) {
+			throw new UnmarshalException("No IdentifierHandler could parse element with name "
+					+ el.getLocalName() + " in namespace " + el.getNamespaceURI());
+		}
 		return ret;
 	}
 
-	public static final Element tryToElement(Identifier i, Document doc) {
+	public static Element tryToElement(Identifier i, Document doc) {
 
 		IdentifierHandler<? extends Identifier> ih = null;
 		Element elId = null;
@@ -178,28 +185,31 @@ public class Identifiers {
 			return null;
 		}
 
-		if (elId == null)
+		if (elId == null) {
 			IfmapJLog.warn("IdentifierHandler for " + i.getClass()
 					+ " returned null!");
+		}
 
 		return elId;
 	}
 
-	public static final Element toElement(Identifier i, Document doc)
+	public static Element toElement(Identifier i, Document doc)
 			throws MarshalException {
 		Element ret = tryToElement(i, doc);
 
-		if (ret == null)
-			throw new MarshalException("No IdentifierHandler or error during" +
-					" conversion of Identifier to Element");
+		if (ret == null) {
+			throw new MarshalException("No IdentifierHandler or error during conversion of Identifier to Element");
+		}
 
 		return ret;
 	}
 
-	public static final IdentityType getIdentityType(String s) {
-		for (IdentityType i : IdentityType.values())
-			if (i.toString().equals(s))
+	public static IdentityType getIdentityType(String s) {
+		for (IdentityType i : IdentityType.values()) {
+			if (i.toString().equals(s)) {
 				return i;
+			}
+		}
 		return null;
 	}
 
@@ -208,7 +218,7 @@ public class Identifiers {
 	 *
 	 * @return the new {@link AccessRequest} instance.
 	 */
-	public static AccessRequest createArRandomUUID() {
+	public static AccessRequest createArRandomUuid() {
 		return new AccessRequest(java.util.UUID.randomUUID().toString());
 	}
 
@@ -221,7 +231,7 @@ public class Identifiers {
 	 *			   anymore.
 	 */
 	@Deprecated
-	public static AccessRequest createArRandomUUID(String admDom) {
+	public static AccessRequest createArRandomUuid(String admDom) {
 		return new AccessRequest(java.util.UUID.randomUUID().toString(), admDom);
 	}
 
@@ -294,7 +304,6 @@ public class Identifiers {
 	 * Create an access-request identifier with with "pubId:name" as name.
 	 *
 	 * @param name the name of the access-request
-	 * @param admDom the administrative-domain of the access-request
 	 * @param pubId the publisher id
 	 * @return the new {@link AccessRequest} instance
 	 */
@@ -307,7 +316,7 @@ public class Identifiers {
 	 *
 	 * @return the new {@link Device} instance
 	 */
-	public static Device createDevRandomUUID() {
+	public static Device createDevRandomUuid() {
 		return new Device(java.util.UUID.randomUUID().toString());
 	}
 
@@ -339,7 +348,7 @@ public class Identifiers {
 	 * @return the new {@link Device} instance
 	 */
 	public static Device createDevPubPrefixed(String name, String pubId) {
-		return new Device(pubId+ ":" + name);
+		return new Device(pubId + ":" + name);
 	}
 
 	/**
@@ -417,12 +426,10 @@ public class Identifiers {
 	 * Create an extended {@link Identity} identifier
 	 * with empty administrative domain.
 	 *
-	 * @param extIdentDo the extended identifier XML
 	 * @return the new extended {@link Identity} instance
 	 * @throws TransformerConfigurationException
 	 */
-	public static Identity createExtendedIdentity(Document doc)
-			throws MarshalException {
+	public static Identity createExtendedIdentity(Document doc) throws MarshalException {
 		String idName = DomHelpers.prepareExtendedIdentifier(doc);
 		return createIdentity(IdentityType.other, idName, null,
 				IfmapStrings.OTHER_TYPE_EXTENDED_IDENTIFIER);
@@ -564,13 +571,13 @@ public class Identifiers {
 		return new MacAddress(value, admDom);
 	}
 
-	public static class Helpers {
+	public static final class Helpers {
 
 		private Helpers() { }
 
 		public static String getAdministrativeDomain(Element el) {
 			Attr node = el.getAttributeNode(IfmapStrings.IDENTIFIER_ATTR_ADMIN_DOMAIN);
-			return (node != null && node.getValue().length() > 0) ? node.getValue() : null;
+			return node != null && node.getValue().length() > 0 ? node.getValue() : null;
 		}
 
 		/**
@@ -585,9 +592,10 @@ public class Identifiers {
 				IdentifierHandler<? extends Identifier> ih) throws MarshalException {
 			Class<? extends Identifier> clazz = ih.handles();
 
-			if (!clazz.isInstance(i))
+			if (!clazz.isInstance(i)) {
 				throw new MarshalException("Handler for identifier of type "
 						+ ih.handles() + " got identifier of type " + i.getClass());
+			}
 		}
 
 		/**
@@ -599,9 +607,10 @@ public class Identifiers {
 		 */
 		public static void addAdministrativeDomain(Element to, IdentifierWithAd i) {
 			String adom = i.getAdministrativeDomain();
-			if (adom != null && adom.length() > 0)
+			if (adom != null && adom.length() > 0) {
 				DomHelpers.addAttribute(to,
 						IfmapStrings.IDENTIFIER_ATTR_ADMIN_DOMAIN, adom);
+			}
 		}
 	}
 }
@@ -616,14 +625,16 @@ class AccessRequestHandler implements IdentifierHandler<AccessRequest> {
 			throws MarshalException {
 
 		Helpers.checkIdentifierType(i, this);
-		AccessRequest ar = (AccessRequest)i;
+		AccessRequest ar = (AccessRequest) i;
 		String name = ar.getName();
 
-		if (name == null)
+		if (name == null) {
 			throw new MarshalException("AccessRequest with null name not allowed");
+		}
 
-		if(name.length() == 0)
+		if (name.length() == 0) {
 			throw new MarshalException("AccessRequest with empty name not allowed");
+		}
 
 		Element ret = DomHelpers.createNonNsElement(doc,
 				IfmapStrings.ACCESS_REQUEST_EL_NAME);
@@ -639,15 +650,16 @@ class AccessRequestHandler implements IdentifierHandler<AccessRequest> {
 		String name = null;
 
 		// Are we responsible? return null if not.
-		if (!DomHelpers.elementMatches(el, IfmapStrings.ACCESS_REQUEST_EL_NAME))
+		if (!DomHelpers.elementMatches(el, IfmapStrings.ACCESS_REQUEST_EL_NAME)) {
 			return null;
+		}
 
 		name = el.getAttribute(IfmapStrings.ACCESS_REQUEST_ATTR_NAME);
 
-		if (name == null || name.length() == 0)
-			throw new UnmarshalException("No or empty " +
-					IfmapStrings.ACCESS_REQUEST_ATTR_NAME + " found for " +
-					IfmapStrings.ACCESS_REQUEST_EL_NAME);
+		if (name == null || name.length() == 0) {
+			throw new UnmarshalException("No or empty " + IfmapStrings.ACCESS_REQUEST_ATTR_NAME + " found for "
+					+ IfmapStrings.ACCESS_REQUEST_EL_NAME);
+		}
 
 
 		return Identifiers.createAr(name, Helpers.getAdministrativeDomain(el));
@@ -666,14 +678,16 @@ class DeviceHandler implements IdentifierHandler<Device> {
 			throws MarshalException {
 
 		Helpers.checkIdentifierType(i, this);
-		Device dev = (Device)i;
+		Device dev = (Device) i;
 		String name = dev.getName();
 
-		if (name == null)
+		if (name == null) {
 			throw new MarshalException("Device with null name not allowed");
+		}
 
-		if(name.length() == 0)
+		if (name.length() == 0) {
 			throw new MarshalException("Device with empty name not allowed");
+		}
 
 		Element ret = DomHelpers.createNonNsElement(doc,
 				IfmapStrings.DEVICE_EL_NAME);
@@ -693,26 +707,29 @@ class DeviceHandler implements IdentifierHandler<Device> {
 		String name = null;
 
 		// Are we responsible? return null if not.
-		if (!DomHelpers.elementMatches(el, IfmapStrings.DEVICE_EL_NAME))
-				return null;
+		if (!DomHelpers.elementMatches(el, IfmapStrings.DEVICE_EL_NAME)) {
+			return null;
+		}
 
 		List<Element> children = DomHelpers.getChildElements(el);
 
-		if (children.size() != 1)
-			throw new UnmarshalException("Bad " + IfmapStrings.DEVICE_EL_NAME +
-					" element? Has " + children.size() + " child elements.");
+		if (children.size() != 1) {
+			throw new UnmarshalException("Bad " + IfmapStrings.DEVICE_EL_NAME
+					+ " element? Has " + children.size() + " child elements.");
+		}
 
 		child = children.get(0);
 
-		if (!DomHelpers.elementMatches(child, IfmapStrings.DEVICE_NAME_EL_NAME))
-			throw new UnmarshalException("Unknown child element in " +
-					IfmapStrings.DEVICE_EL_NAME + " element: " +
-					child.getLocalName());
+		if (!DomHelpers.elementMatches(child, IfmapStrings.DEVICE_NAME_EL_NAME)) {
+			throw new UnmarshalException("Unknown child element in " + IfmapStrings.DEVICE_EL_NAME + " element: "
+					+ child.getLocalName());
+		}
 
 		name = child.getTextContent();
 
-		if (name == null || name.length() == 0)
+		if (name == null || name.length() == 0) {
 			throw new UnmarshalException("No text content found");
+		}
 
 		return Identifiers.createDev(name);
 	}
@@ -729,19 +746,22 @@ class IdentityHandler implements IdentifierHandler<Identity> {
 	public Element toElement(Identifier i, Document doc)
 			throws MarshalException {
 		Helpers.checkIdentifierType(i, this);
-		Identity id = (Identity)i;
+		Identity id = (Identity) i;
 		String name = id.getName();
 		IdentityType type = id.getType();
 		String otherTypeDef = id.getOtherTypeDefinition();
 
-		if (type == null)
+		if (type == null) {
 			throw new MarshalException("No Identity type set");
+		}
 
-		if (name == null)
+		if (name == null) {
 			throw new MarshalException("Identity with null name not allowed");
+		}
 
-		if(name.length() == 0)
+		if (name.length() == 0) {
 			throw new MarshalException("Identity with empty name not allowed");
+		}
 
 		Element ret = DomHelpers.createNonNsElement(doc,
 				IfmapStrings.IDENTITY_EL_NAME);
@@ -750,15 +770,15 @@ class IdentityHandler implements IdentifierHandler<Identity> {
 		DomHelpers.addAttribute(ret, IfmapStrings.IDENTITY_ATTR_TYPE, type.toString());
 
 		if (type == IdentityType.other) {
-			if (otherTypeDef == null || otherTypeDef.length() == 0)
-				throw new MarshalException("Identity type=other requires " +
-						"other-type-definition");
+			if (otherTypeDef == null || otherTypeDef.length() == 0) {
+				throw new MarshalException("Identity type=other requires other-type-definition");
+			}
 			DomHelpers.addAttribute(ret, IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF,
 					otherTypeDef);
 		} else {
-			if (otherTypeDef != null && otherTypeDef.length() > 0)
-				throw new MarshalException("Identity other-type-definition " +
-						"is set, but type != other");
+			if (otherTypeDef != null && otherTypeDef.length() > 0) {
+				throw new MarshalException("Identity other-type-definition is set, but type != other");
+			}
 		}
 
 		Helpers.addAdministrativeDomain(ret, id);
@@ -775,20 +795,23 @@ class IdentityHandler implements IdentifierHandler<Identity> {
 		String otherTypeDef = null;
 
 		// Are we responsible? return null if not.
-		if (!DomHelpers.elementMatches(el, IfmapStrings.IDENTITY_EL_NAME))
+		if (!DomHelpers.elementMatches(el, IfmapStrings.IDENTITY_EL_NAME)) {
 			return null;
+		}
 
 		name = el.getAttribute(IfmapStrings.IDENTITY_ATTR_NAME);
 		type = el.getAttribute(IfmapStrings.IDENTITY_ATTR_TYPE);
 		otherTypeDef = el.getAttribute(IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF);
 
-		if (name == null || name.length() == 0)
-			throw new UnmarshalException(IfmapStrings.IDENTITY_ATTR_NAME +
-					" not set or empty for " + IfmapStrings.IDENTITY_EL_NAME);
+		if (name == null || name.length() == 0) {
+			throw new UnmarshalException(IfmapStrings.IDENTITY_ATTR_NAME
+					+ " not set or empty for " + IfmapStrings.IDENTITY_EL_NAME);
+		}
 
-		if (type == null || type.length() == 0)
-			throw new UnmarshalException(IfmapStrings.IDENTITY_ATTR_TYPE +
-					" not set or empty for " + IfmapStrings.IDENTITY_EL_NAME);
+		if (type == null || type.length() == 0) {
+			throw new UnmarshalException(IfmapStrings.IDENTITY_ATTR_TYPE
+					+ " not set or empty for " + IfmapStrings.IDENTITY_EL_NAME);
+		}
 
 		for (IdentityType t : IdentityType.values()) {
 			if (t.toString().equals(type)) {
@@ -797,24 +820,25 @@ class IdentityHandler implements IdentifierHandler<Identity> {
 			}
 		}
 
-		if (typeEnum == null)
-			throw new UnmarshalException("Illegal value for " +
-					IfmapStrings.IDENTITY_ATTR_TYPE + ":" + type);
+		if (typeEnum == null) {
+			throw new UnmarshalException("Illegal value for " +	IfmapStrings.IDENTITY_ATTR_TYPE + ":" + type);
+		}
 
-		if (typeEnum == IdentityType.other && otherTypeDef.length() == 0)
-			throw new UnmarshalException(IfmapStrings.IDENTITY_EL_NAME +
-					" with " + IfmapStrings.IDENTITY_ATTR_TYPE + "=other, but" +
-					IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF + " not set");
+		if (typeEnum == IdentityType.other && otherTypeDef.length() == 0) {
+			throw new UnmarshalException(IfmapStrings.IDENTITY_EL_NAME
+					+ " with " + IfmapStrings.IDENTITY_ATTR_TYPE + "=other, but"
+					+ IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF + " not set");
+		}
 
 
 		// NOTE: THIS CHECK IS PRETTY HARSH AND MIGHT THORW AN EXCEPTION WHEN A
 		// MAPS IS DOING SOMETHING WEIRD.
 		// This is not the robustness principle...
 		if (typeEnum != IdentityType.other
-				&& el.getAttributeNode(IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF) != null)
-			throw new UnmarshalException(IfmapStrings.IDENTITY_EL_NAME +
-					" with " + IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF +
-					" set, but type not other");
+				&& el.getAttributeNode(IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF) != null) {
+			throw new UnmarshalException(IfmapStrings.IDENTITY_EL_NAME + " with "
+				+ IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF + " set, but type not other");
+		}
 
 		return Identifiers.createIdentity(
 				typeEnum,
@@ -835,20 +859,22 @@ class IpAddressHandler implements IdentifierHandler<IpAddress> {
 	public Element toElement(Identifier i, Document doc)
 			throws MarshalException {
 		Helpers.checkIdentifierType(i, this);
-		IpAddress ip = (IpAddress)i;
+		IpAddress ip = (IpAddress) i;
 		String value = ip.getValue();
 		IpAddressType type = IpAddressType.IPv4;
 
-		if (value == null)
+		if (value == null) {
 			throw new MarshalException("IpAddress with null value not allowed");
+		}
 
-		if(value.length() == 0)
+		if (value.length() == 0) {
 			throw new MarshalException("IpAddress with empty value not allowed");
+		}
 
 		Element ret = DomHelpers.createNonNsElement(doc,
 				IfmapStrings.IP_ADDRESS_EL_NAME);
 
-		type = (ip.getType() != null) ? ip.getType() : type;
+		type = ip.getType() != null ? ip.getType() : type;
 
 		DomHelpers.addAttribute(ret, IfmapStrings.IP_ADDRESS_ATTR_VALUE, value);
 		DomHelpers.addAttribute(ret, IfmapStrings.IP_ADDRESS_ATTR_TYPE, type.toString());
@@ -865,26 +891,26 @@ class IpAddressHandler implements IdentifierHandler<IpAddress> {
 		IpAddressType typeEnum = IpAddressType.IPv4;
 
 		// Are we responsible? return null if not.
-		if (!DomHelpers.elementMatches(el, IfmapStrings.IP_ADDRESS_EL_NAME))
+		if (!DomHelpers.elementMatches(el, IfmapStrings.IP_ADDRESS_EL_NAME)) {
 			return null;
+		}
 
 		value = el.getAttribute(IfmapStrings.IP_ADDRESS_ATTR_VALUE);
 
-		if (el.getAttributeNode(IfmapStrings.IP_ADDRESS_ATTR_TYPE) != null)
-				type = el.getAttribute(IfmapStrings.IP_ADDRESS_ATTR_TYPE);
+		if (el.getAttributeNode(IfmapStrings.IP_ADDRESS_ATTR_TYPE) != null) {
+			type = el.getAttribute(IfmapStrings.IP_ADDRESS_ATTR_TYPE);
+		}
 
-		if (value == null || value.length() == 0)
-			throw new UnmarshalException("No or empty " +
-					IfmapStrings.IP_ADDRESS_ATTR_VALUE + " for " +
-					IfmapStrings.IP_ADDRESS_EL_NAME + " found");
+		if (value == null || value.length() == 0) {
+			throw new UnmarshalException("No or empty " + IfmapStrings.IP_ADDRESS_ATTR_VALUE + " for "
+					+ IfmapStrings.IP_ADDRESS_EL_NAME + " found");
+		}
 
 		if (type != null) {	// if null then it's IPv4 anyway
 			try {
 				typeEnum = IpAddressType.valueOf(type);
 			} catch (IllegalArgumentException e) {
-				throw new UnmarshalException("Invalid type for " +
-						IfmapStrings.IP_ADDRESS_EL_NAME + " found:" +
-						type);
+				throw new UnmarshalException("Invalid type for " + IfmapStrings.IP_ADDRESS_EL_NAME + " found:" + type);
 			}
 		}
 
@@ -906,17 +932,20 @@ class MacAddressHandler implements IdentifierHandler<MacAddress> {
 	public Element toElement(Identifier i, Document doc)
 			throws MarshalException {
 		Helpers.checkIdentifierType(i, this);
-		MacAddress mac = (MacAddress)i;
+		MacAddress mac = (MacAddress) i;
 		String value = mac.getValue();
 
-		if (value == null)
+		if (value == null) {
 			throw new MarshalException("MacAddress with null value not allowed");
+		}
 
-		if(value.length() == 0)
+		if (value.length() == 0) {
 			throw new MarshalException("MacAddress with empty value not allowed");
+		}
 
-		if(!java.util.regex.Pattern.matches("^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$", value))
+		if (!java.util.regex.Pattern.matches("^([0-9a-f]{2}[:]){5}([0-9a-f]{2})$", value)) {
 			throw new MarshalException("MacAddress not valid");
+		}
 
 		Element ret = DomHelpers.createNonNsElement(doc,
 				IfmapStrings.MAC_ADDRESS_EL_NAME);
@@ -933,14 +962,15 @@ class MacAddressHandler implements IdentifierHandler<MacAddress> {
 		String value = null;
 
 		// Are we responsible? return null if not.
-		if (!DomHelpers.elementMatches(el, IfmapStrings.MAC_ADDRESS_EL_NAME))
+		if (!DomHelpers.elementMatches(el, IfmapStrings.MAC_ADDRESS_EL_NAME)) {
 			return null;
+		}
 
 		value = el.getAttribute(IfmapStrings.MAC_ADDRESS_ATTR_VALUE);
 
-		if (value == null || value.length() == 0)
-			throw new UnmarshalException("No or empty value for " +
-					IfmapStrings.MAC_ADDRESS_EL_NAME + " found");
+		if (value == null || value.length() == 0) {
+			throw new UnmarshalException("No or empty value for " + IfmapStrings.MAC_ADDRESS_EL_NAME + " found");
+		}
 
 
 		return Identifiers.createMac(value, Helpers.getAdministrativeDomain(el));

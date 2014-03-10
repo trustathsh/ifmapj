@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,9 +45,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import de.hshannover.f4.trust.ifmapj.identifier.AccessRequest;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-
 /**
  * Trivial tests for {@link AccessRequest} class.
  *
@@ -55,8 +52,8 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
  *
  */
 public class AccessRequestTest {
-	public String ad = "de.fhhannover.inform.trust";
-	public String name = "publisherid:number";
+	public String mAd = "de.fhhannover.inform.trust";
+	public String mName = "publisherid:number";
 
 	@Test
 	public void testAccessRequest() {
@@ -64,9 +61,9 @@ public class AccessRequestTest {
 		assertNotNull(ar);
 		assertNull(ar.getAdministrativeDomain());
 		assertNull(ar.getName());
-		ar = Identifiers.createAr(name, ad);
-		assertEquals(ad, ar.getAdministrativeDomain());
-		assertEquals(name, ar.getName());
+		ar = Identifiers.createAr(mName, mAd);
+		assertEquals(mAd, ar.getAdministrativeDomain());
+		assertEquals(mName, ar.getName());
 	}
 
 	@Test
@@ -80,8 +77,7 @@ public class AccessRequestTest {
 
 		ar = Identifiers.createArRandom("abc");
 		assertTrue(ar.getAdministrativeDomain().equals("abc"));
-		assertTrue(ar.getName().matches("[a-f0-9]{32}") ||
-				ar.getName().matches("[A-Za-z0-9+/=]{24}"));
+		assertTrue(ar.getName().matches("[a-f0-9]{32}") || ar.getName().matches("[A-Za-z0-9+/=]{24}"));
 
 		ar = Identifiers.createAr("abc", "abc");
 		assertEquals("ar{abc, abc}", ar.toString());
@@ -89,15 +85,15 @@ public class AccessRequestTest {
 
 	@Test
 	public void testAccessRequestWithGeneratedName() {
-		AccessRequest ar = Identifiers.createArRandomUUID();
+		AccessRequest ar = Identifiers.createArRandomUuid();
 		assertNotNull(ar);
-		String regex_uuid = ("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
-		assertTrue(ar.getName().matches(regex_uuid));
+		String regexUuid = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+		assertTrue(ar.getName().matches(regexUuid));
 	}
 
 	@Test
 	public void testAccessRequestWithPublisherId() {
-		AccessRequest ar = Identifiers.createArPubPrefixed("uid", "publisherid", ad);
+		AccessRequest ar = Identifiers.createArPubPrefixed("uid", "publisherid", mAd);
 		assertNotNull(ar);
 		assertEquals(ar.getName(), "publisherid:uid");
 

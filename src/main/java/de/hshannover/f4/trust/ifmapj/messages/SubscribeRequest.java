@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,15 +55,14 @@ public interface SubscribeRequest extends Request {
 
 	/**
 	 * @param se the element to add to the list
-	 * @throws NullPointerException if the element is null
 	 */
-	public void addSubscribeElement(SubscribeElement se);
+	void addSubscribeElement(SubscribeElement se);
 
 	/**
 	 * <b>Note:</b> The returned collection is unmodifiable.
 	 *
 	 * @return the list of elements in the request
 	 */
-	public List<SubscribeElement> getSubscribeElements();
+	List<SubscribeElement> getSubscribeElements();
 
 }

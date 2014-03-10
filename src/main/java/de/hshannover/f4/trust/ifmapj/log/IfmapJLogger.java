@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,34 +51,34 @@ public interface IfmapJLogger {
 	 *
 	 * @param msg the message
 	 */
-	public void trace(String msg);
+	void trace(String msg);
 
 	/**
 	 * Print debug level message.
 	 *
 	 * @param msg the message
 	 */
-	public void debug(String msg);
+	void debug(String msg);
 
 	/**
 	 * Print info level message.
 	 *
 	 * @param msg the message
 	 */
-	public void info(String msg);
+	void info(String msg);
 
 	/**
 	 * Print warn level message.
 	 *
 	 * @param msg the message
 	 */
-	public void warn(String msg);
+	void warn(String msg);
 
 	/**
 	 * Print error level message.
 	 *
 	 * @param msg the message
 	 */
-	public void error(String msg);
+	void error(String msg);
 
 }

@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,32 +60,32 @@ import util.DateHelpers;
 public class DateHelpersTest {
 
 	 	@Test
-	public void testGetTimeFromIso8601String() throws DatatypeConfigurationException{
+	public void testGetTimeFromIso8601String() throws DatatypeConfigurationException {
 		Calendar actual = DateHelpers.getTimeFromIso8601String("2010-03-23T14:23:29Z");
 		Calendar expected = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
-		expected.setTimeInMillis(1269354209000l);
+		expected.setTimeInMillis(1269354209000L);
 		assertEquals(expected, actual);
 	}
 
 	@Test
-	public void testGetCurrentUtcTimeAsIso8601(){
-		SimpleDateFormat XmlDateUtc =
+	public void testGetCurrentUtcTimeAsIso8601() {
+		SimpleDateFormat xmlDateUtc =
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		XmlDateUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
-		String expectedStr = XmlDateUtc.format(
+		xmlDateUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+		String expectedStr = xmlDateUtc.format(
 			Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime());
 		String actualStr = DateHelpers.getUtcTimeAsIso8601();
 		assertEquals(expectedStr, actualStr);
 	}
 
 	@Test
-	public void testGetUtcTimeAsIso8601(){
-		SimpleDateFormat XmlDateUtc =
+	public void testGetUtcTimeAsIso8601() {
+		SimpleDateFormat xmlDateUtc =
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-		XmlDateUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+		xmlDateUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Calendar desiredDate = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
 		desiredDate.set(2010, 10, 17, 22, 45, 32);
-		String expectedStr = XmlDateUtc.format(desiredDate.getTime());
+		String expectedStr = xmlDateUtc.format(desiredDate.getTime());
 		String actualStr = DateHelpers.getUtcTimeAsIso8601(desiredDate);
 		assertEquals(expectedStr, actualStr);
 	}

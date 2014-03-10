@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,21 +46,26 @@ import java.security.SecureRandom;
  *
  * @author jk
  */
-public class StringHelpers {
+public final class StringHelpers {
+
+	private StringHelpers() { }
 
 	public static int getStringCharCount(String string, char pattern) {
 		int count = 0;
-		for(int i = 0; i < string.length(); i++)
-			if(string.charAt(i) == pattern)
+		for (int i = 0; i < string.length(); i++) {
+			if (string.charAt(i) == pattern) {
 				count++;
+			}
+		}
 		return count;
 	}
 
 	public static String fromByte(byte[] value) {
 		StringBuilder b = new StringBuilder();
-		for (int i = 0; i < value.length; i++)
+		for (int i = 0; i < value.length; i++) {
 			b.append(String.format("%02x%s", value[i],
-					(i < value.length - 1) ? ":" : ""));
+					i < value.length - 1 ? ":" : ""));
+		}
 		return b.toString();
 	}
 
@@ -68,7 +73,7 @@ public class StringHelpers {
 		byte[] aesKey = new byte[length];
 		new SecureRandom().nextBytes(aesKey);
 		try {
-			return MD5Provider.getMD5(new String(aesKey));
+			return MD5Provider.getMd5(new String(aesKey));
 		} catch (NoSuchAlgorithmException e) {
 			return Base64.encodeToString(aesKey, true);
 		}

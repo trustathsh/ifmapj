@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ import de.hshannover.f4.trust.ifmapj.messages.SearchResult.Type;
  * @since 0.1.4
  * @author aw
  */
-public class Requests {
+public final class Requests {
 
 	private static Map<Class<? extends Request>, RequestHandler<? extends Request>>
 			sRequestHandlers;
@@ -100,31 +100,38 @@ public class Requests {
 	 * @param rh
 	 */
 	public static void registerRequestHandler(RequestHandler<? extends Request> rh) {
-		if (rh == null)
+		if (rh == null) {
 			throw new NullPointerException("rh is null");
+		}
 
-		if (rh.handles() == null)
+		if (rh.handles() == null) {
 			throw new NullPointerException("rh.handles() returns null");
+		}
 
-		if (sRequestHandlers == null)
+		if (sRequestHandlers == null) {
 			initializeDefaultHandlers();
+		}
 
-		if (sRequestHandlers.containsKey(rh.handles()))
+		if (sRequestHandlers.containsKey(rh.handles())) {
 			throw new RuntimeException("RequestHandler already registered for "
 					+ rh.handles());
+		}
 
 		sRequestHandlers.put(rh.handles(), rh);
 	}
 
 	public static RequestHandler<? extends Request> getHandlerFor(Request req) {
 
-		if (sRequestHandlers == null)
+		if (sRequestHandlers == null) {
 			initializeDefaultHandlers();
+		}
 
 		for (Entry<Class<? extends Request>,
-				RequestHandler<? extends Request>> entry : sRequestHandlers.entrySet())
-			if (entry.getKey().isInstance(req))
+				RequestHandler<? extends Request>> entry : sRequestHandlers.entrySet()) {
+			if (entry.getKey().isInstance(req)) {
 				return entry.getValue();
+			}
+		}
 
 		return null;
 	}
@@ -135,9 +142,11 @@ public class Requests {
 	 * @deprecated
 	 * Don't use. Will be gone soon.
 	 */
+	@Deprecated
 	public static RequestFactory getRequestFactory() {
-		if (sRequestFactoryInstance == null)
+		if (sRequestFactoryInstance == null) {
 			sRequestFactoryInstance = new RequestFactoryImpl();
+		}
 
 		return sRequestFactoryInstance;
 	}
@@ -159,8 +168,9 @@ public class Requests {
 	 * @return the new {@link PublishRequest}
 	 */
 	public static PublishRequest createPublishReq(PublishElement el) {
-		if (el == null)
+		if (el == null) {
 			throw new NullPointerException("el is not allowed to be null");
+		}
 
 		PublishRequest ret = createPublishReq();
 		ret.addPublishElement(el);
@@ -177,12 +187,14 @@ public class Requests {
 	 * @return the new {@link PublishRequest}
 	 */
 	public static PublishRequest createPublishReq(List<PublishElement> list) {
-		if (list == null)
+		if (list == null) {
 			throw new NullPointerException("list is not allowed to be null");
+		}
 
 		PublishRequest ret = createPublishReq();
-		for (PublishElement el : list)
+		for (PublishElement el : list) {
 			ret.addPublishElement(el);
+		}
 
 		return ret;
 	}
@@ -226,8 +238,9 @@ public class Requests {
 	 * @return the new {@link SubscribeRequest}
 	 */
 	public static SubscribeRequest createSubscribeReq(SubscribeElement el) {
-		if (el == null)
+		if (el == null) {
 			throw new NullPointerException("el is not allowed to be null");
+		}
 
 		SubscribeRequest ret = createSubscribeReq();
 		ret.addSubscribeElement(el);
@@ -244,12 +257,14 @@ public class Requests {
 	 * @return the new {@link SubscribeRequest}
 	 */
 	public static SubscribeRequest createSubscribeReq(List<SubscribeElement> list) {
-		if (list == null)
+		if (list == null) {
 			throw new NullPointerException("list is not allowed to be null");
+		}
 
 		SubscribeRequest ret = createSubscribeReq();
-		for (SubscribeElement el : list)
+		for (SubscribeElement el : list) {
 			ret.addSubscribeElement(el);
+		}
 
 		return ret;
 	}
@@ -271,7 +286,6 @@ public class Requests {
 	 * @param matchLinks the match-links filter (null means match-all, an empty
 	 * 		  {@link String} means match-nothing)
 	 * @param maxDepth max-depth of the search (default is left out)
-	 * @param terminalIdentifiers comma separated list of terminal identifier
 	 * 		  types (for example 'identity,device')
 	 * @param maxSize max-size of search result (default is left out)
 	 * @param resultFilter the result-filter filter (null means match-all, an
@@ -360,8 +374,9 @@ public class Requests {
 	 */
 	public static PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
 			Document md, MetadataLifetime lifetime) {
-		if (md == null)
+		if (md == null) {
 			throw new NullPointerException("md not allowed to be null");
+		}
 
 		List<Document> list = new ArrayList<Document>(1);
 		list.add(md);
@@ -426,8 +441,9 @@ public class Requests {
 	 */
 	public static PublishUpdate createPublishUpdate(Identifier i1, Identifier i2,
 			Collection<Document> mdlist, MetadataLifetime lifetime) {
-		if (mdlist == null)
+		if (mdlist == null) {
 			throw new NullPointerException("mdlist not allowed to be null");
+		}
 		PublishUpdate pu = createPublishUpdate();
 		fillMetadataHolder(pu, i1, i2, mdlist);
 		pu.setLifeTime(lifetime);
@@ -480,8 +496,9 @@ public class Requests {
 	public static PublishNotify createPublishNotify(Identifier i1, Identifier i2,
 			Document md) {
 
-		if (md == null)
+		if (md == null) {
 			throw new NullPointerException("md is null");
+		}
 
 		List<Document> mdlist = new ArrayList<Document>(1);
 		mdlist.add(md);
@@ -503,8 +520,9 @@ public class Requests {
 	public static PublishNotify createPublishNotify(Identifier i1, Identifier i2,
 			Collection<Document> mdlist) {
 
-		if (mdlist == null)
+		if (mdlist == null) {
 			throw new NullPointerException("mdlist is null");
+		}
 
 		PublishNotify pn = createPublishNotify();
 		fillMetadataHolder(pn, i1, i2, mdlist);
@@ -516,9 +534,11 @@ public class Requests {
 
 		fillIdentifierHolder(holder, i1, i2);
 
-		if (mdlist != null)
-			for (Document md : mdlist)
+		if (mdlist != null) {
+			for (Document md : mdlist) {
 				holder.addMetadata(md);
+			}
+		}
 	}
 
 	private static void fillIdentifierHolder(IdentifierHolder holder, Identifier i1,
@@ -544,7 +564,7 @@ public class Requests {
 	 * @return the new {@link PublishDelete} instance
 	 */
 	public static PublishDelete createPublishDelete(Identifier i1) {
-		return createPublishDelete(i1, (String)null);
+		return createPublishDelete(i1, (String) null);
 	}
 
 	/**
@@ -608,7 +628,6 @@ public class Requests {
 	 * @param matchLinks the match-links filter (null means match-all, an empty
 	 * 		  {@link String} means match-nothing)
 	 * @param maxDepth max-depth of the search (default is left out)
-	 * @param terminalIdentifiers comma separated list of terminal identifier
 	 * 		  types (for example 'identity,device')
 	 * @param maxSize max-size of search result (default is left out)
 	 * @param resultFilter the result-filter filter (null means match-all, an
@@ -652,12 +671,12 @@ public class Requests {
 	 * This class provides helpers for custom request implementations. It's not
 	 * a fixed API!
 	 */
-	public static class Helpers {
+	public static final class Helpers {
 
 		private Helpers() { }
 
 
-		public static final String baseNsUri() {
+		public static String baseNsUri() {
 			return IfmapStrings.BASE_NS_URI;
 		}
 
@@ -671,30 +690,36 @@ public class Requests {
 			Integer maxSize = searchInfo.getMaxSize();
 			String terminalIdentifiers = searchInfo.getTerminalIdentifierTypes();
 
-			if (id == null)
+			if (id == null) {
 				throw new MarshalException("No start identifier");
+			}
 
 			addIdentifier(id, doc, to);
 
-			if (matchLinks != null)
+			if (matchLinks != null) {
 				DomHelpers.addAttribute(to, IfmapStrings.SEARCH_MATCH_LINKS_FILTER_ATTR,
 						matchLinks);
+			}
 
-			if (resultFilter != null)
+			if (resultFilter != null) {
 				DomHelpers.addAttribute(to, IfmapStrings.SEARCH_RESULT_FILTER_ATTR,
 						resultFilter);
+			}
 
-			if (terminalIdentifiers != null)
+			if (terminalIdentifiers != null) {
 				DomHelpers.addAttribute(to, IfmapStrings.SEARCH_TERM_IDENT_TYPE,
 						terminalIdentifiers);
+			}
 
-			if (maxDepth != null)
+			if (maxDepth != null) {
 				DomHelpers.addAttribute(to, IfmapStrings.SEARCH_MAX_DEPTH_ATTR,
 						maxDepth.toString());
+			}
 
-			if (maxSize != null)
+			if (maxSize != null) {
 				DomHelpers.addAttribute(to, IfmapStrings.SEARCH_MAX_SIZE_ATTR,
 						maxSize.toString());
+			}
 
 			DomHelpers.addXmlNamespaceDeclarations(searchInfo, to);
 		}
@@ -705,14 +730,17 @@ public class Requests {
 			Identifier i1 = ih.getIdentifier1();
 			Identifier i2 = ih.getIdentifier2();
 
-			if (i1 == null && i2 == null)
+			if (i1 == null && i2 == null) {
 				throw new MarshalException("IdentifierHolder with no Identifiers");
+			}
 
-			if (i1 != null)
+			if (i1 != null) {
 				addIdentifier(i1, doc, to);
+			}
 
-			if (i2 != null)
+			if (i2 != null) {
 				addIdentifier(i2, doc, to);
+			}
 		}
 
 		public static void addIdentifier(Identifier i, Document doc, Element to)
@@ -723,8 +751,9 @@ public class Requests {
 		public static void addSessionId(Element el, Request r)
 				throws MarshalException {
 
-			if (r.getSessionId() == null || r.getSessionId().length() == 0)
+			if (r.getSessionId() == null || r.getSessionId().length() == 0) {
 				throw new MarshalException("sessionId is null");
+			}
 
 			DomHelpers.addAttribute(el, IfmapStrings.SESSION_ID_ATTR, r.getSessionId());
 		}
@@ -736,21 +765,22 @@ public class Requests {
 
 			List<Element> elementChildren = DomHelpers.getChildElements(sres);
 
-			if (elementChildren.size() == 0)
+			if (elementChildren.size() == 0) {
 				throw new UnmarshalException("searchResult with no resultItems");
+			}
 
 			for (Element child : elementChildren) {
-				if (!DomHelpers.elementMatches(child, IfmapStrings.RESULT_ITEM_EL_NAME))
-					throw new UnmarshalException("Found non " +
-							IfmapStrings.RESULT_ITEM_EL_NAME + " element in " +
-							"SearchResult: " + child.getLocalName());
+				if (!DomHelpers.elementMatches(child, IfmapStrings.RESULT_ITEM_EL_NAME)) {
+					throw new UnmarshalException("Found non " + IfmapStrings.RESULT_ITEM_EL_NAME + " element in "
+							+ "SearchResult: " + child.getLocalName());
+				}
 
 				ritems.add(parseResultItem(child));
 			}
 
 			/* check if a name is set */
 			name = sres.getAttribute(IfmapStrings.SEARCH_RES_NAME_ATTR);
-			name = (name != null && name.length() > 0) ? name : null;
+			name = name != null && name.length() > 0 ? name : null;
 
 			return new SearchResultImpl(ritems, name, type);
 		}
@@ -763,24 +793,24 @@ public class Requests {
 
 			List<Element> elementChildren = DomHelpers.getChildElements(el);
 
-			if (elementChildren.size() == 0)
+			if (elementChildren.size() == 0) {
 				throw new UnmarshalException("No elements in resultItem found");
+			}
 
-			if (elementChildren.size() > 3)
-				throw new UnmarshalException("Too many elements in resultItem " +
-						"element (" + elementChildren.size() + ")");
+			if (elementChildren.size() > 3) {
+				throw new UnmarshalException("Too many elements in resultItem "
+						+ "element (" + elementChildren.size() + ")");
+			}
 
 			for (Element child : elementChildren) {
 				Identifier tmp = Identifiers.tryFromElement(child);
 
 				// If there was no identifier maybe there is some metadata
-				if (tmp == null &&
-						DomHelpers.elementMatches(child,
-								IfmapStrings.SEARCH_METADATA_EL_NAME)) {
+				if (tmp == null && DomHelpers.elementMatches(child, IfmapStrings.SEARCH_METADATA_EL_NAME)) {
 
-					if (mdlist != null)
-						throw new UnmarshalException("Multiple metadata elements " +
-						" in resultItem found");
+					if (mdlist != null) {
+						throw new UnmarshalException("Multiple metadata elements " + " in resultItem found");
+					}
 
 					mdlist = parseMetadataList(child);
 				} else if (tmp == null) {
@@ -797,12 +827,14 @@ public class Requests {
 				}
 			}
 
-			if (ident1 == null && ident2 == null)
+			if (ident1 == null && ident2 == null) {
 				throw new UnmarshalException("No identifier found in searchResult");
+			}
 
 			/* in case there was no metadata element, create one */
-			if (mdlist == null)
+			if (mdlist == null) {
 				mdlist = new LinkedList<Document>();
+			}
 
 			return new ResultItemImpl(ident1, ident2, mdlist);
 		}
@@ -813,37 +845,38 @@ public class Requests {
 			List<Document> ret = new ArrayList<Document>();
 			List<Element> elementChildren = DomHelpers.getChildElements(el);
 
-			for (Element child : elementChildren)
+			for (Element child : elementChildren) {
 				ret.add(DomHelpers.deepCopy(child));
+			}
 
 			return ret;
 		}
 
 		public static IfmapErrorResult parseErrorResult(Element el)
 				throws UnmarshalException {
-			String errCodeStr, errStr;
+			String errCodeStr;
+			String errStr;
 			Element errStrElem = null;
 			IfmapErrorCode errCode = null;
 			String name = null;
 
-			errCodeStr = el.getAttribute( IfmapStrings.ERROR_RES_ATTR_ERRCODE);
+			errCodeStr = el.getAttribute(IfmapStrings.ERROR_RES_ATTR_ERRCODE);
 
 			errStrElem = DomHelpers.findElementInChildren(el,
 					IfmapStrings.ERROR_RES_ERRSTR_EL_NAME, IfmapStrings.NO_URI);
 
-			errStr = (errStrElem == null) ?
-					"IfmapJ: errorString not set" : errStrElem.getTextContent();
+			errStr = errStrElem == null ? "IfmapJ: errorString not set" : errStrElem.getTextContent();
 
 			try {
 				errCode = IfmapErrorCode.valueOf(errCodeStr);
 			} catch (IllegalArgumentException e) {
-				throw new UnmarshalException("Invalid errorCode received: " +
-						errCodeStr);
+				throw new UnmarshalException("Invalid errorCode received: " + errCodeStr);
 			}
 
 			// There might be a name if this errorResult is located in a pollResult
-			if (el.getAttributeNode(IfmapStrings.ERROR_RES_ATTR_NAME) != null)
+			if (el.getAttributeNode(IfmapStrings.ERROR_RES_ATTR_NAME) != null) {
 				name = el.getAttribute(IfmapStrings.ERROR_RES_ATTR_NAME);
+			}
 
 			return new IfmapErrorResult(errCode, errStr, name);
 		}
@@ -852,9 +885,9 @@ public class Requests {
 				throws UnmarshalException, IfmapErrorResult {
 			Element content = Helpers.getResponseContentErrorCheck(el);
 
-			if (!DomHelpers.elementMatches(content, expected))
-				throw new UnmarshalException("Wrong Result. Expected " + expected +
-						" got " + content.getLocalName());
+			if (!DomHelpers.elementMatches(content, expected)) {
+				throw new UnmarshalException("Wrong Result. Expected " + expected + " got " + content.getLocalName());
+			}
 		}
 
 		public static Element getResponseContentErrorCheck(Element response)
@@ -868,29 +901,33 @@ public class Requests {
 				throws UnmarshalException, IfmapErrorResult {
 			List<Element> children = DomHelpers.getChildElements(response);
 
-			if (children.size() == 0)
+			if (children.size() == 0) {
 				throw new UnmarshalException("No element in response element found");
+			}
 
-			if (children.size() > 1)
+			if (children.size() > 1) {
 				throw new UnmarshalException("Too many elements in response element "
 						+ " found (" + children.size() + ")");
+			}
 
 			return children.get(0);
 		}
 
 		public static void checkForError(Element el)
 				throws UnmarshalException, IfmapErrorResult {
-			if (DomHelpers.elementMatches(el, IfmapStrings.ERROR_RES_EL_NAME))
+			if (DomHelpers.elementMatches(el, IfmapStrings.ERROR_RES_EL_NAME)) {
 				throw parseErrorResult(el);
+			}
 		}
 
 		public static void checkRequestType(Request req, RequestHandler<? extends Request> rh)
 				throws MarshalException {
 
 			Class<? extends Request> clazz = rh.handles();
-			if (!clazz.isInstance(req))
+			if (!clazz.isInstance(req)) {
 				throw new MarshalException("Handler for requests of type "
 						+ rh.handles() + " got request of type " + req.getClass());
+			}
 		}
 	}
 
@@ -906,16 +943,17 @@ class NewSessionRequestHandler implements RequestHandler<NewSessionRequest> {
 
 		Helpers.checkRequestType(req, this);
 
-		NewSessionRequest nsr = (NewSessionRequest)req;
+		NewSessionRequest nsr = (NewSessionRequest) req;
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.NEW_SESSION_REQ_EL_NAME));
 
-		if (nsr.getMaxPollResultSize() != null)
+		if (nsr.getMaxPollResultSize() != null) {
 			DomHelpers.addAttribute(ret,
 					IfmapStrings.NEW_SESSION_REQ_ATTR_MPRS,
 					nsr.getMaxPollResultSize().toString());
+		}
 
 		return ret;
 	}
@@ -925,30 +963,32 @@ class NewSessionRequestHandler implements RequestHandler<NewSessionRequest> {
 
 		Element content = Helpers.getResponseContentErrorCheck(res);
 
-		String sId, pId, mprsStr;
+		String sId;
+		String pId;
+		String mprsStr;
 		Integer mprs = null;
 
-		if (!DomHelpers.elementMatches(content, IfmapStrings.NEW_SESSION_RES_EL_NAME))
+		if (!DomHelpers.elementMatches(content, IfmapStrings.NEW_SESSION_RES_EL_NAME)) {
 			throw new UnmarshalException("No newSession element found");
+		}
 
-		sId = content.getAttribute( IfmapStrings.NEW_SESSION_RES_ATTR_SID);
+		sId = content.getAttribute(IfmapStrings.NEW_SESSION_RES_ATTR_SID);
 		pId = content.getAttribute(IfmapStrings.NEW_SESSION_RES_ATTR_PID);
 		mprsStr = content.getAttribute(IfmapStrings.NEW_SESSION_RES_ATTR_MPRS);
 
-		if (sId == null || sId.length() == 0)
-			throw new UnmarshalException("No " +
-					IfmapStrings.NEW_SESSION_RES_ATTR_SID + " found");
+		if (sId == null || sId.length() == 0) {
+			throw new UnmarshalException("No " + IfmapStrings.NEW_SESSION_RES_ATTR_SID + " found");
+		}
 
-		if (pId == null || pId.length() == 0)
-			throw new UnmarshalException("No " +
-					IfmapStrings.NEW_SESSION_RES_ATTR_PID + " found");
+		if (pId == null || pId.length() == 0) {
+			throw new UnmarshalException("No " + IfmapStrings.NEW_SESSION_RES_ATTR_PID + " found");
+		}
 
 		if (mprsStr != null && mprsStr.length() > 0) {
 			try {
 				mprs = Integer.parseInt(mprsStr);
 			} catch (NumberFormatException e) {
-				throw new UnmarshalException("Failed to parse " +
-						"max-poll-result-size. Was: " + mprsStr);
+				throw new UnmarshalException("Failed to parse " + "max-poll-result-size. Was: " + mprsStr);
 			}
 		}
 
@@ -970,7 +1010,7 @@ class EndSessionRequestHandler implements RequestHandler<EndSessionRequest> {
 		Helpers.checkRequestType(req, this);
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.END_SESSION_REQ_EL_NAME));
 
 		Helpers.addSessionId(ret, req);
@@ -997,15 +1037,16 @@ class PurgePublisherRequestHandler implements RequestHandler<PurgePublisherReque
 
 		Helpers.checkRequestType(req, this);
 
-		PurgePublisherRequest ppr = (PurgePublisherRequest)req;
+		PurgePublisherRequest ppr = (PurgePublisherRequest) req;
 		String pId = ppr.getPublisherId();
 
-		if (pId == null || pId.length() == 0)
-			throw new MarshalException("No ifmap-publisher-id for " +
-					IfmapStrings.PURGE_PUBLISHER_REQ_EL_NAME + " set");
+		if (pId == null || pId.length() == 0) {
+			throw new MarshalException("No ifmap-publisher-id for "
+					+ IfmapStrings.PURGE_PUBLISHER_REQ_EL_NAME + " set");
+		}
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.PURGE_PUBLISHER_REQ_EL_NAME));
 
 		DomHelpers.addAttribute(ret, IfmapStrings.PUBLISHER_ID_ATTR,
@@ -1036,7 +1077,7 @@ class RenewSessionRequestHandler implements RequestHandler<RenewSessionRequest> 
 		Helpers.checkRequestType(req, this);
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.RENEW_SESSION_REQ_EL_NAME));
 
 		Helpers.addSessionId(ret, req);
@@ -1064,7 +1105,7 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 		Helpers.checkRequestType(req, this);
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.POLL_REQ_EL_NAME));
 
 		Helpers.addSessionId(ret, req);
@@ -1090,8 +1131,9 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 		if (DomHelpers.elementMatches(content, IfmapStrings.POLL_RES_EL_NAME)) {
 			List<Element> elementChildren = DomHelpers.getChildElements(content);
 
-			if (elementChildren.size() == 0)
+			if (elementChildren.size() == 0) {
 				throw new UnmarshalException("No result elements in pollResult");
+			}
 
 			for (Element child : elementChildren) {
 				curName = null;
@@ -1107,9 +1149,9 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 					errorResults.add(err);
 				}
 
-				if (curName == null)
-					throw new UnmarshalException("No name set for result " +
-							"in pollResult");
+				if (curName == null) {
+					throw new UnmarshalException("No name set for result in pollResult");
+				}
 
 			}
 		} else if (DomHelpers.elementMatches(content, IfmapStrings.END_SESSION_RES_EL_NAME)) {
@@ -1118,8 +1160,7 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 			Helpers.checkForError(content);
 			// if we get here, we didn't find a pollResult, no endSessionResult
 			// and no errorResult so something is weird ;)
-			throw new UnmarshalException("Bad poll response: " +
-					content.getLocalName());
+			throw new UnmarshalException("Bad poll response: " + content.getLocalName());
 		}
 
 		return new PollResultImpl(sResults, errorResults);
@@ -1138,8 +1179,8 @@ class PollRequestHandler implements RequestHandler<PollRequest> {
 		} else if (DomHelpers.elementMatches(child, IfmapStrings.ERROR_RES_EL_NAME)) {
 			return null;
 		} else {
-			throw new UnmarshalException("Unknown element in " +
-					IfmapStrings.POLL_RES_EL_NAME + ": " + child.getLocalName());
+			throw new UnmarshalException("Unknown element in "
+					+ IfmapStrings.POLL_RES_EL_NAME + ": " + child.getLocalName());
 		}
 	}
 
@@ -1156,10 +1197,10 @@ class PublishRequestHandler implements RequestHandler<PublishRequest> {
 
 		Helpers.checkRequestType(req, this);
 
-		PublishRequest pr = (PublishRequest)req;
+		PublishRequest pr = (PublishRequest) req;
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.PUBLISH_REQ_EL_NAME));
 
 		addPublishElements(pr, doc, ret);
@@ -1172,34 +1213,37 @@ class PublishRequestHandler implements RequestHandler<PublishRequest> {
 	private void addPublishElements(PublishRequest pr, Document doc, Element to)
 			throws MarshalException {
 
-		if (pr.getPublishElements().size() == 0)
+		if (pr.getPublishElements().size() == 0) {
 			throw new MarshalException("No publish elements");
+		}
 
 		for (PublishElement pubEl : pr.getPublishElements()) {
 			Element el;
 
 			if (pubEl instanceof PublishUpdate) {
-				PublishUpdate pu = (PublishUpdate)pubEl;
+				PublishUpdate pu = (PublishUpdate) pubEl;
 				MetadataLifetime lifetime = MetadataLifetime.session;
 				el = DomHelpers.createNonNsElement(doc,
 						IfmapStrings.PUBLISH_UPDATE_EL_NAME);
 
-				if (pu.getLifeTime() != null)
+				if (pu.getLifeTime() != null) {
 					lifetime = pu.getLifeTime();
+				}
 
 				DomHelpers.addAttribute(el,
 						IfmapStrings.PUBLISH_UPDATE_ATTR_LIFETIME,
 						lifetime.toString());
 
 			} else if (pubEl instanceof PublishDelete) {
-				PublishDelete pd = (PublishDelete)pubEl;
+				PublishDelete pd = (PublishDelete) pubEl;
 				el = DomHelpers.createNonNsElement(doc,
 						IfmapStrings.PUBLISH_DELETE_EL_NAME);
 
-				if (pd.getFilter() != null)
+				if (pd.getFilter() != null) {
 					DomHelpers.addAttribute(el,
 							IfmapStrings.PUBLISH_DELETE_ATTR_FILTER,
 							pd.getFilter());
+				}
 
 				DomHelpers.addXmlNamespaceDeclarations(pd, el);
 
@@ -1210,13 +1254,15 @@ class PublishRequestHandler implements RequestHandler<PublishRequest> {
 				throw new MarshalException("Unknown PublishElement Implementation");
 			}
 
-			if (pubEl instanceof IdentifierHolder)
-				Helpers.addIdentifiers((IdentifierHolder)pubEl, doc, el);
-			else
+			if (pubEl instanceof IdentifierHolder) {
+				Helpers.addIdentifiers((IdentifierHolder) pubEl, doc, el);
+			} else {
 				throw new MarshalException("No IdentifierHoldingRequest?");
+			}
 
-			if (pubEl instanceof MetadataHolder)
-				addMetadataList((MetadataHolder)pubEl, doc, el);
+			if (pubEl instanceof MetadataHolder) {
+				addMetadataList((MetadataHolder) pubEl, doc, el);
+			}
 
 			to.appendChild(el);
 		}
@@ -1225,8 +1271,9 @@ class PublishRequestHandler implements RequestHandler<PublishRequest> {
 	private void addMetadataList(MetadataHolder mh, Document doc,
 			Element to) throws MarshalException {
 
-		if (mh.getMetadata().size() == 0)
+		if (mh.getMetadata().size() == 0) {
 			throw new MarshalException("No metadata to add");
+		}
 
 		Element mlist = DomHelpers.createNonNsElement(doc,
 				IfmapStrings.PUBLISH_METADATA_EL_NAME);
@@ -1237,16 +1284,19 @@ class PublishRequestHandler implements RequestHandler<PublishRequest> {
 		// the mlist Element.
 		for (Document md : mh.getMetadata()) {
 			Node node = md.getFirstChild();
-			Element toClone, clone;
+			Element toClone;
+			Element clone;
 
-			if (node == null)
+			if (node == null) {
 				throw new MarshalException("Metadata has no root Element?");
+			}
 
-			if (!(node instanceof Element))
+			if (!(node instanceof Element)) {
 				throw new MarshalException("Metadata root element not Element?");
+			}
 
-			toClone = (Element)node;
-			clone = (Element)toClone.cloneNode(true);
+			toClone = (Element) node;
+			clone = (Element) toClone.cloneNode(true);
 			doc.adoptNode(clone);
 			mlist.appendChild(clone);
 		}
@@ -1272,10 +1322,10 @@ class SubscribeRequestHandler implements RequestHandler<SubscribeRequest> {
 
 		Helpers.checkRequestType(req, this);
 
-		SubscribeRequest sr = (SubscribeRequest)req;
+		SubscribeRequest sr = (SubscribeRequest) req;
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.SUBSCRIBE_REQ_EL_NAME));
 
 		addSubscribeElements(sr, doc, ret);
@@ -1288,17 +1338,20 @@ class SubscribeRequestHandler implements RequestHandler<SubscribeRequest> {
 	private void addSubscribeElements(SubscribeRequest sr, Document doc,
 			Element to) throws MarshalException {
 
-		if (sr.getSubscribeElements().size() == 0)
+		if (sr.getSubscribeElements().size() == 0) {
 			throw new MarshalException("No subscribe elements");
+		}
 
 		for (SubscribeElement subEl : sr.getSubscribeElements()) {
 			Element el;
 
-			if (subEl.getName() == null)
+			if (subEl.getName() == null) {
 				throw new MarshalException("subscription name null");
+			}
 
-			if (subEl.getName().length() == 0)
+			if (subEl.getName().length() == 0) {
 				throw new MarshalException("subscription name empty");
+			}
 
 			if (subEl instanceof SubscribeUpdate) {
 				el = DomHelpers.createNonNsElement(doc,
@@ -1313,8 +1366,9 @@ class SubscribeRequestHandler implements RequestHandler<SubscribeRequest> {
 			DomHelpers.addAttribute(el,
 					IfmapStrings.SUBSCRIBE_SUB_NAME_ATTR, subEl.getName());
 
-			if (subEl instanceof SearchHolder)
-				Helpers.addSearchInfo((SearchHolder)subEl, doc, el);
+			if (subEl instanceof SearchHolder) {
+				Helpers.addSearchInfo((SearchHolder) subEl, doc, el);
+			}
 
 			to.appendChild(el);
 		}
@@ -1340,10 +1394,10 @@ class SearchRequestHandler implements RequestHandler<SearchRequest> {
 
 		Helpers.checkRequestType(req, this);
 
-		SearchRequest sr = (SearchRequest)req;
+		SearchRequest sr = (SearchRequest) req;
 
 		Element ret = doc.createElementNS(Helpers.baseNsUri(),
-				DomHelpers.makeRequestFQName(
+				DomHelpers.makeRequestFqName(
 						IfmapStrings.SEARCH_REQ_EL_NAME));
 
 		Helpers.addSessionId(ret, req);
@@ -1357,9 +1411,9 @@ class SearchRequestHandler implements RequestHandler<SearchRequest> {
 	public Result fromElement(Element resp) throws UnmarshalException, IfmapErrorResult {
 		Element content = Helpers.getResponseContentErrorCheck(resp);
 		SearchResult ret = Helpers.parseSearchResult(content, Type.searchResult);
-		if (ret.getName() != null)
-			throw new UnmarshalException("Found name attribute in searchResult" +
-					" after normal search");
+		if (ret.getName() != null) {
+			throw new UnmarshalException("Found name attribute in searchResult after normal search");
+		}
 
 		return ret;
 	}

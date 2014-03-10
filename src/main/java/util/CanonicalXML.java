@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,13 @@
  */
 package util;
 
-import org.xml.sax.*;
+import org.xml.sax.Attributes;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.SAXNotRecognizedException;
+import org.xml.sax.SAXNotSupportedException;
+import org.xml.sax.SAXParseException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.ext.LexicalHandler;
 import org.xml.sax.helpers.AttributesImpl;
 import org.xml.sax.helpers.DefaultHandler;
@@ -48,6 +54,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
 import javax.xml.transform.sax.SAXSource;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -73,16 +80,16 @@ import java.net.URISyntaxException;
  */
 public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 
-	private StringWriter out;
-	private StringBuffer buf = new StringBuffer();
-	private boolean strip = false;
-	private boolean isWhite = true;
-	private AttributesImpl namespaces = new AttributesImpl();
+	private StringWriter mOut;
+	private StringBuffer mBuf = new StringBuffer();
+	private boolean mStrip = false;
+	private boolean mIsWhite = true;
+	private AttributesImpl mNamespaces = new AttributesImpl();
 
-	public String toCanonicalXML(XMLReader parser, InputSource inputSource, boolean stripSpace) {
+	public String toCanonicalXml(XMLReader parser, InputSource inputSource, boolean stripSpace) {
 
-		strip = stripSpace;
-		out = new StringWriter();
+		mStrip = stripSpace;
+		mOut = new StringWriter();
 
 		parser.setContentHandler(this);
 		try {
@@ -93,7 +100,7 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 		parser.setErrorHandler(this);
 		try {
 			parser.parse(inputSource);
-			return out.toString();
+			return mOut.toString();
 		} catch (SAXParseException e) {
 			System.err.println("XML parsing error on line " + e.getLineNumber() + " while creating Canonical XML");
 			System.err.println(e.getMessage());
@@ -101,7 +108,7 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 			System.err.println("Parser: " + parser.getClass());
 			try {
 				System.err.println("Supports XML 1.1: " + parser.getFeature("http://xml.org/sax/features/xml-1.1"));
-			} catch (Exception e2) {}
+			} catch (Exception e2) { }
 		} catch (SAXException e) {
 			System.err.println("XML parsing error while creating Canonical XML");
 			System.err.println(e.getMessage());
@@ -122,13 +129,13 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 	 * @throws Exception
 	 */
 
-	public String toCanonicalXML2(XMLReader parser, InputSource inputSource, boolean stripSpace) throws Exception {
-		strip = stripSpace;
-		out = new StringWriter();
+	public String toCanonicalXml2(XMLReader parser, InputSource inputSource, boolean stripSpace) throws Exception {
+		mStrip = stripSpace;
+		mOut = new StringWriter();
 		parser.setContentHandler(this);
 		parser.setErrorHandler(this);
 		parser.parse(inputSource);
-		return out.toString();
+		return mOut.toString();
 	}
 
 	/**
@@ -137,16 +144,17 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 	 * we seem to be able to get XML 1.1 to work this way.
 	 */
 
-	public String toCanonicalXML3(TransformerFactory factory, XMLReader resultParser, String inxml, boolean stripSpace) throws Exception {
-		strip = stripSpace;
-		out = new StringWriter();
+	public String toCanonicalXml3(TransformerFactory factory, XMLReader resultParser, String inxml, boolean stripSpace)
+			throws Exception {
+		mStrip = stripSpace;
+		mOut = new StringWriter();
 		Transformer t = factory.newTransformer();
 		SAXSource ss = new SAXSource(resultParser, new InputSource(new StringReader(inxml)));
 		ss.setSystemId("http://localhost/string-input");
 		t.setOutputProperty(OutputKeys.METHOD, "xml");
 		t.setOutputProperty(OutputKeys.INDENT, "no");
 		t.transform(ss, new SAXResult(this));
-		return out.toString();
+		return mOut.toString();
 	}
 
 	/**
@@ -162,8 +170,9 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 	 *								  wrapping another exception.
 	 * @see org.xml.sax.ContentHandler#startPrefixMapping
 	 */
+	@Override
 	public void startPrefixMapping(String prefix, String uri) throws SAXException {
-		namespaces.addAttribute("", prefix, (prefix.equals("") ? "xmlns": "xmlns:" + prefix), "CDATA", uri);
+		mNamespaces.addAttribute("", prefix, prefix.equals("") ? "xmlns" : "xmlns:" + prefix, "CDATA", uri);
 		if (!"".equals(uri)) {
 			try {
 				URI u = new URI(uri);
@@ -199,16 +208,17 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 	 *								  wrapping another exception.
 	 * @see org.xml.sax.ContentHandler#startElement
 	 */
+	@Override
 	public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {
 		flushChars();
 		write("<");
 		write(qName);
 		// output the namespaces
-		outputAttributes(namespaces);
+		outputAttributes(mNamespaces);
 		// output the attributes
 		outputAttributes(atts);
 		write(">");
-		namespaces.clear();
+		mNamespaces.clear();
 	}
 
 	private void outputAttributes(Attributes atts) {
@@ -247,10 +257,12 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 		}
 	}
 
+	@Override
 	public void ignorableWhitespace(char[] cbuf, int start, int len) {
 		characters(cbuf, start, len);
 	}
 
+	@Override
 	public void characters(char[] cbuf, int start, int len) {
 		while (len-- > 0) {
 			appendChar(cbuf[start++]);
@@ -258,53 +270,53 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 	}
 
 	private void appendChar(char c) {
-		if (strip && isWhite) {
+		if (mStrip && mIsWhite) {
 			if (!Character.isWhitespace(c)) {
-				isWhite = false;
+				mIsWhite = false;
 			}
 		}
 
 		switch (c) {
 			case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 11: case 12:
 			case 14: case 15:
-				buf.append(charRef(c));
+				mBuf.append(charRef(c));
 				break;
 			case '&':
-				buf.append("&amp;");
+				mBuf.append("&amp;");
 				break;
 			case '<':
-				buf.append("&lt;");
+				mBuf.append("&lt;");
 				break;
 			case '>':
-				buf.append("&gt;");
+				mBuf.append("&gt;");
 				break;
 			case '"':
-				buf.append("&quot;");
+				mBuf.append("&quot;");
 				break;
 			case '\t':
-				buf.append("&#9;");
+				mBuf.append("&#9;");
 				break;
 			case '\n':
-				buf.append("&#10;");
+				mBuf.append("&#10;");
 				break;
 			case '\r':
-				buf.append("&#13;");
+				mBuf.append("&#13;");
 				break;
 			case 128: case 129: case 130: case 131: case 132: case 133: case 134: case 135:
 			case 136: case 137: case 138: case 139: case 140: case 141: case 142: case 143:
 			case 144: case 145: case 146: case 147: case 148: case 149: case 150: case 151:
 			case 152: case 153: case 154: case 155: case 156: case 157: case 158: case 159:
 			case 160:
-				buf.append(charRef(c));
+				mBuf.append(charRef(c));
 				break;
 			default:
-				buf.append(c);
+				mBuf.append(c);
 				break;
 		}
 	}
 
 	private String charRef(char c) {
-		return "&#" + (int)c + ";";
+		return "&#" + (int) c + ";";
 	}
 
 	/**
@@ -327,6 +339,7 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 	 *								  wrapping another exception.
 	 * @see org.xml.sax.ContentHandler#endElement
 	 */
+	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
 		flushChars();
 		write("</");
@@ -334,6 +347,7 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 		write(">");
 	}
 
+	@Override
 	public void processingInstruction(String target, String data) throws SAXException {
 		flushChars();
 		write("<?");
@@ -345,43 +359,52 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 
 
 
+	@Override
 	public void startDocument() {
 	}
 
+	@Override
 	public void endDocument() throws SAXException {
 		try {
 			flushChars();
-			out.close();
+			mOut.close();
 		} catch (IOException e) {
 			throw new SAXException(e);
 		}
 	}
 
+	@Override
 	public void startDTD(String name, String publicId, String systemId) throws SAXException {
 		//
 	}
 
+	@Override
 	public void endDTD() throws SAXException {
 		//
 	}
 
+	@Override
 	public void startEntity(String name) throws SAXException {
 		//
 	}
 
+	@Override
 	public void endEntity(String name) throws SAXException {
 		//
 	}
 
+	@Override
 	public void startCDATA() throws SAXException {
 		//
 	}
 
+	@Override
 	public void endCDATA() throws SAXException {
 		//
 	}
 
-	public void comment(char ch[], int start, int length) throws SAXException {
+	@Override
+	public void comment(char []ch, int start, int length) throws SAXException {
 		flushChars();
 		write("<!--");
 		write(new String(ch, start, length));
@@ -389,11 +412,11 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 	}
 
 	private void flushChars() {
-		if (buf.length() > 0 && !(strip && isWhite)) {
-			write(buf.toString());
+		if (mBuf.length() > 0 && !(mStrip && mIsWhite)) {
+			write(mBuf.toString());
 		}
-		buf.setLength(0);
-		isWhite = true;
+		mBuf.setLength(0);
+		mIsWhite = true;
 	}
 
 	private void write(String s) {
@@ -401,33 +424,34 @@ public class CanonicalXML extends DefaultHandler implements LexicalHandler {
 		for (int i = 0; i < len; i++) {
 			char c = s.charAt(i);
 			if (c < 0x80) {
-				out.write(c);
+				mOut.write(c);
 			} else {
 				switch (c & 0xF800) {
 					case 0:
-						out.write((((c >> 6) & 0x1F) | 0xC0));
-						out.write(((c & 0x3F) | 0x80));
+						mOut.write(c >> 6 & 0x1F | 0xC0);
+						mOut.write(c & 0x3F | 0x80);
 						break;
 					case 0xD800:
 						char c2;
 						if (i + 1 < len
 								&& (c & 0xFC00) == 0xD800
-								&& ((c2 = s.charAt(i + 1)) & 0xFC00) == 0xDC00) {
+								&& ((s.charAt(i + 1)) & 0xFC00) == 0xDC00) {
+							c2 = s.charAt(i + 1);
 							++i;
-							int n = ((c & 0x3FF) << 10) | (c2 & 0x3FF);
+							int n = (c & 0x3FF) << 10 | c2 & 0x3FF;
 							n += 0x10000;
-							out.write((((n >> 18) & 0x7) | 0xF0));
-							out.write((((n >> 12) & 0x3F) | 0x80));
-							out.write((((n >> 6) & 0x3F) | 0x80));
-							out.write(((n & 0x3F) | 0x80));
+							mOut.write(n >> 18 & 0x7 | 0xF0);
+							mOut.write(n >> 12 & 0x3F | 0x80);
+							mOut.write(n >> 6 & 0x3F | 0x80);
+							mOut.write(n & 0x3F | 0x80);
 							break;
 						}
 						/* this is an error situation really */
 						/* fall through */
 					default:
-						out.write((((c >> 12) & 0xF) | 0xE0));
-						out.write((((c >> 6) & 0x3F) | 0x80));
-						out.write(((c & 0x3F) | 0x80));
+						mOut.write(c >> 12 & 0xF | 0xE0);
+						mOut.write(c >> 6 & 0x3F | 0x80);
+						mOut.write(c & 0x3F | 0x80);
 						break;
 				}
 			}

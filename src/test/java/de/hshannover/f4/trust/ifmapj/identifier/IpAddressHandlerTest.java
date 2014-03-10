@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,10 +51,6 @@ import org.w3c.dom.Element;
 
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-import de.hshannover.f4.trust.ifmapj.identifier.IpAddress;
-import de.hshannover.f4.trust.ifmapj.identifier.IpAddressHandler;
-import de.hshannover.f4.trust.ifmapj.identifier.IpAddressType;
 import util.DomHelpers;
 
 public class IpAddressHandlerTest {
@@ -62,7 +58,7 @@ public class IpAddressHandlerTest {
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static IpAddressHandler sIpAddressHandler = new IpAddressHandler();
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWithNullValue() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp4(null);
@@ -70,7 +66,7 @@ public class IpAddressHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWithEmptyValue() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp4("");
@@ -79,7 +75,7 @@ public class IpAddressHandlerTest {
 	}
 
 	@Test
-	public void testToElementNullTypeIPv4() throws MarshalException {
+	public void testToElementNullTypeIpv4() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 
 		IpAddress ip = Identifiers.createIp(null, "192.168.0.1", "");
@@ -132,7 +128,7 @@ public class IpAddressHandlerTest {
 
 
 	@Test
-	public void testToElementWithValueIPv46() throws MarshalException {
+	public void testToElementWithValueIpv46() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp(IpAddressType.IPv4, "192.168.0.1", null);
 
@@ -175,7 +171,7 @@ public class IpAddressHandlerTest {
 	}
 
 	@Test
-	public void testToElementWithValueAndAdIPv46() throws MarshalException {
+	public void testToElementWithValueAndAdIpv46() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp(IpAddressType.IPv4, "192.168.0.1",
 				"mydomain");
@@ -222,7 +218,7 @@ public class IpAddressHandlerTest {
 	}
 
 	@Test
-	public void testFromElementWithValueIPv46() throws UnmarshalException {
+	public void testFromElementWithValueIpv46() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "ip-address");
 
@@ -256,9 +252,9 @@ public class IpAddressHandlerTest {
 		assertNull(ip.getAdministrativeDomain());
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	@Ignore // We don't have checks for this
-	public void testToElementWithInvalidValueIPv4() throws MarshalException {
+	public void testToElementWithInvalidValueIpv4() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp4("333.168.0.1", "");
 		assertNotNull(ip);
@@ -268,9 +264,9 @@ public class IpAddressHandlerTest {
 		assertNotNull(res);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	@Ignore // We don't have checks for this
-	public void testToElementWithInvalidValueIPv6() throws MarshalException {
+	public void testToElementWithInvalidValueIpv6() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp6("XX80::0202:B3YY:ZZ1E:8329", "");
 		assertNotNull(ip);
@@ -282,7 +278,7 @@ public class IpAddressHandlerTest {
 
 	@Test
 	@Ignore // We don't do canocalization in (in favor of clients)
-	public void testToElementWithCanonicalizationIPv4() throws MarshalException {
+	public void testToElementWithCanonicalizationIpv4() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp4("192.168.000.001", "");
 		assertNotNull(ip);
@@ -309,7 +305,7 @@ public class IpAddressHandlerTest {
 
 	@Test
 	@Ignore // We don't do canocilaziation (in favor of clients)
-	public void testToElementWithCanonicalizationIPv6() throws MarshalException {
+	public void testToElementWithCanonicalizationIpv6() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		IpAddress ip = Identifiers.createIp6("FE80::0202:B3FF:FE1E:8329");
 		assertNotNull(ip);
@@ -334,7 +330,7 @@ public class IpAddressHandlerTest {
 		assertEquals(2, res.getAttributes().getLength());
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWithBadType() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "ip-address");
@@ -345,7 +341,7 @@ public class IpAddressHandlerTest {
 	}
 
 	@Test
-	public void testFromElementWithValueAndAdIPv46() throws UnmarshalException {
+	public void testFromElementWithValueAndAdIpv46() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "ip-address");
 
@@ -379,7 +375,7 @@ public class IpAddressHandlerTest {
 		assertEquals("mydomain", ip.getAdministrativeDomain());
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNullValue() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "ip-address");
@@ -387,7 +383,7 @@ public class IpAddressHandlerTest {
 		assertNull(ip);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementEmptyValue() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlIp = doc.createElementNS(null, "ip-address");
@@ -405,7 +401,7 @@ public class IpAddressHandlerTest {
 		assertNull(ip);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWrongIdentifierType() throws UnmarshalException, MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sIpAddressHandler.toElement(Identifiers.createDev("DEV100"), doc);

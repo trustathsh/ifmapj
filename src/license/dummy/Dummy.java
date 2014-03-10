@@ -36,29 +36,3 @@
  * limitations under the License.
  * #L%
  */
-package de.hshannover.f4.trust.ifmapj.metadata;
-
-/**
- * Possible values for the type element within an event.
- *
- * @author ib
- *
- */
-public enum EventType {
-	p2p { @Override
-	public String toString() { return "p2p"; } },
-	cve { @Override
-	public String toString() { return "cve"; } },
-	botnetInfection { @Override
-	public String toString() { return "botnet infection"; } },
-	wormInfection { @Override
-	public String toString() { return "worm infection"; } },
-	excessiveFlows { @Override
-	public String toString() { return "excessive flows"; } },
-	behavioralChange { @Override
-	public String toString() { return "behavioral change"; } },
-	policyViolation { @Override
-	public String toString() { return "policy violation"; } },
-	other { @Override
-	public String toString() { return "other"; } }
-}

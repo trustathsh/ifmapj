@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,14 +88,14 @@ public class Identity extends IdentifierWithAd {
 		if (mType.equals(IdentityType.dnsName)
 				|| mType.equals(IdentityType.telUri)) {
 			mName = name.toLowerCase();
-		} else if(mType.equals(IdentityType.emailAddress) &&
-				StringHelpers.getStringCharCount(name, '@') == 1) {
+		} else if (mType.equals(IdentityType.emailAddress) && StringHelpers.getStringCharCount(name, '@') == 1) {
 			String[] parts = name.split("@");
 			mName = parts[0] + "@" + parts[1].toLowerCase();
 		} else if (mType.equals(IdentityType.hipHit)) {
 			mName = name.toLowerCase();
-		} else
+		} else {
 			mName = name;
+		}
 }
 
 	public IdentityType getType() {
@@ -133,7 +133,6 @@ public class Identity extends IdentifierWithAd {
 
 	/**
 	* Compare identifier
-	* @param i Second identifier
 	* @return boolean true if both identifiers are equal
 	* @since 0.1.5
 	*/
@@ -141,40 +140,44 @@ public class Identity extends IdentifierWithAd {
 	public boolean equals(Object o) {
 
 		// check for NULL value or instance of another class
-		if (o == null || !(o instanceof Identity))
+		if (o == null || !(o instanceof Identity)) {
 			return false;
+		}
 
 		// cast to identity object
 		Identity i = (Identity) o;
 
 		// check if it is the same object
-		if(this == i)
+		if (this == i) {
 			return true;
+		}
 
 		// compare type and other type definition
-		if (!mType.equals(i.getType()))
+		if (!mType.equals(i.getType())) {
 			return false;
+		}
 
 		// check administrative domain in super-class
-		if (!super.equals(i))
+		if (!super.equals(i)) {
 			return false;
+		}
 
 		if (mType == IdentityType.other
-				&& !mOtherTypeDefinition.equals(i.getOtherTypeDefinition()))
+				&& !mOtherTypeDefinition.equals(i.getOtherTypeDefinition())) {
 			return false;
+		}
 
 		// compare name according to its type
 		if (mType == IdentityType.other
 				&& mOtherTypeDefinition.equals(IfmapStrings.OTHER_TYPE_EXTENDED_IDENTIFIER)
-				&& !extendedIdentifierEquals(mName, i.getName()))
+				&& !extendedIdentifierEquals(mName, i.getName())) {
 			return false;
-
-		else if (mType == IdentityType.distinguishedName
-				&& !distinguishedNameEquals(mName, i.getName()))
+		} else if (mType == IdentityType.distinguishedName
+				&& !distinguishedNameEquals(mName, i.getName())) {
 			return false;
-
-		else if (!mName.equals(i.getName()))
+		} else if (!mName.equals(i.getName())) {
 			return false;
+		}
 
 		// return true if all checks passed
 		return true;

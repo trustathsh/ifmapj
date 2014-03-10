@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param dhcpServer the dhcp-server value or null
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createIpMac(String startTime, String endTime, String dhcpServer);
+	Document createIpMac(String startTime, String endTime, String dhcpServer);
 
 	/**
 	 * Create a {@link Document} representing ip-mac metadata.
@@ -80,7 +80,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createIpMac();
+	Document createIpMac();
 
 
 	/**
@@ -94,7 +94,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createArMac();
+	Document createArMac();
 
 	/**
 	 * Create a {@link Document} representing access-request-device metadata.
@@ -107,7 +107,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createArDev();
+	Document createArDev();
 
 	/**
 	 * Create a {@link Document} representing access-request-ip metadata.
@@ -120,7 +120,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createArIp();
+	Document createArIp();
 
 	/**
 	 * Create a {@link Document} representing authenticated-as metadata.
@@ -133,7 +133,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createAuthAs();
+	Document createAuthAs();
 
 	/**
 	 * Create a {@link Document} representing authenticated-by metadata.
@@ -147,7 +147,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createAuthBy();
+	Document createAuthBy();
 
 
 	/**
@@ -161,7 +161,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createDevIp();
+	Document createDevIp();
 
 	/**
 	 * Create a {@link Document} representing discovered-by metadata.
@@ -175,7 +175,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return  a {@link Document} that represents the metadata
 	 */
-	public Document createDiscoveredBy();
+	Document createDiscoveredBy();
 
 
 	/**
@@ -192,7 +192,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param administrativeDomain the administrative-domain or null
 	 * @return  a {@link Document} that represents the metadata
 	 */
-	public Document createRole(String name, String administrativeDomain);
+	Document createRole(String name, String administrativeDomain);
 
 	/**
 	 * Create a {@link Document} representing role metadata.
@@ -207,7 +207,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param name
 	 * @return  a {@link Document} that represents the metadata
 	 */
-	public Document createRole(String name);
+	Document createRole(String name);
 
 
 	/**
@@ -223,7 +223,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param name the name of the attribute
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createDevAttr(String name);
+	Document createDevAttr(String name);
 
 	/**
 	 * Create a {@link Document} representing capability metadata.
@@ -238,7 +238,7 @@ public interface StandardIfmapMetadataFactory {
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createCapability(String name, String administrativeDomain);
+	Document createCapability(String name, String administrativeDomain);
 
 	/**
 	 * Create a {@link Document} representing capability metadata.
@@ -251,7 +251,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param name the name of the capability
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createCapability(String name);
+	Document createCapability(String name);
 
 	/**
 	 * Create a {@link Document} representing device-characteristic metadata.
@@ -275,7 +275,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param discoveryMethod (mandatory) the element that discovered the characteristic
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createDevChar(String manufacturer,
+	Document createDevChar(String manufacturer,
 			String model, String os, String osVersion, String deviceType,
 			String discoveredTime, String discovererId, String discoveryMethod);
 
@@ -298,7 +298,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param enforcementReason the reason of the enforcement
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createEnforcementReport(EnforcementAction enforcementAction,
+	Document createEnforcementReport(EnforcementAction enforcementAction,
 			String otherTypeDefinition, String enforcementReason);
 
 	/**
@@ -324,7 +324,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param vulnerabilityUri must not be null if event is of type {@link EventType#cve}
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createEvent(String name, String discoveredTime, String discovererId,
+	Document createEvent(String name, String discoveredTime, String discovererId,
 			Integer magnitude, Integer confidence, Significance significance,
 			EventType type, String otherTypeDefinition, String information,
 			String vulnerabilityUri);
@@ -342,7 +342,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param cardinality ifmap cardinality
 	 * @return
 	 */
-	public Document create(String elementName, String qualifiedName, String uri,
+	Document create(String elementName, String qualifiedName, String uri,
 			Cardinality cardinality);
 
 	/**
@@ -360,7 +360,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param attrValue attribute value
 	 * @return
 	 */
-	public Document create(String elementName, String qualifiedName, String uri,
+	Document create(String elementName, String qualifiedName, String uri,
 			Cardinality cardinality, String attrName, String attrValue);
 
 	/**
@@ -377,7 +377,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param attributes hashmap with attributes
 	 * @return
 	 */
-	public Document create(String elementName, String qualifiedName, String uri,
+	Document create(String elementName, String qualifiedName, String uri,
 			Cardinality cardinality, HashMap<String, String> attributes);
 
 	/**
@@ -400,7 +400,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param administrativeDomain the administrative domain (may be null)
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createLayer2Information(Integer vlan, String vlanName,
+	Document createLayer2Information(Integer vlan, String vlanName,
 			Integer port, String administrativeDomain);
 
 	/**
@@ -418,7 +418,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param discovererId the entity that discovered the location information
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createLocation(List<LocationInformation> locationInformation,
+	Document createLocation(List<LocationInformation> locationInformation,
 			String discoveredTime, String discovererId);
 
 	/**
@@ -434,7 +434,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param qualifier indicate what type of investigation should be done
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createRequestForInvestigation(String qualifier);
+	Document createRequestForInvestigation(String qualifier);
 
 	/**
 	 * Create a {@link Document} representing wlan-information metadata.
@@ -451,7 +451,7 @@ public interface StandardIfmapMetadataFactory {
 	 * @param ssidManagementSecurity the management security
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createWlanInformation(String ssid,
+	Document createWlanInformation(String ssid,
 			List<WlanSecurityType> ssidUnicastSecurity,
 			WlanSecurityType ssidGroupSecurity,
 			List<WlanSecurityType> ssidManagementSecurity);
@@ -478,7 +478,7 @@ public interface StandardIfmapMetadataFactory {
 	 * 		  the unexpected behavior
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createUnexpectedBehavior(String discoveredTime, String discovererId,
+	Document createUnexpectedBehavior(String discoveredTime, String discovererId,
 			Integer magnitude, Integer confidence, Significance significance,
 			String type);
 
@@ -494,6 +494,6 @@ public interface StandardIfmapMetadataFactory {
 	 * @param time the clients ISO-8601 UTC timestamp
 	 * @return a {@link Document} that represents the metadata
 	 */
-	public Document createClientTime(String time);
+	Document createClientTime(String time);
 
 }

@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,10 +44,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-import de.hshannover.f4.trust.ifmapj.identifier.IpAddress;
-import de.hshannover.f4.trust.ifmapj.identifier.IpAddressType;
-
 /**
  * Trivial tests for {@link IpAddress} class.
  *
@@ -56,8 +52,8 @@ import de.hshannover.f4.trust.ifmapj.identifier.IpAddressType;
  */
 public class IpAddressTest {
 
-	public String ad = "de.fhhannover.inform.trust";
-	public String value = "127.0.0.1";
+	public String mAd = "de.fhhannover.inform.trust";
+	public String mValue = "127.0.0.1";
 
 	@Test
 	public void testIpAddress() {
@@ -69,10 +65,10 @@ public class IpAddressTest {
 		assertNotNull(ip.getType());
 		assertEquals(IpAddressType.IPv4, ip.getType());
 
-		ip = Identifiers.createIp(IpAddressType.IPv6, value, ad);
+		ip = Identifiers.createIp(IpAddressType.IPv6, mValue, mAd);
 
-		assertEquals(ad, ip.getAdministrativeDomain());
-		assertEquals(value, ip.getValue());
+		assertEquals(mAd, ip.getAdministrativeDomain());
+		assertEquals(mValue, ip.getValue());
 		assertEquals(IpAddressType.IPv6, ip.getType());
 	}
 

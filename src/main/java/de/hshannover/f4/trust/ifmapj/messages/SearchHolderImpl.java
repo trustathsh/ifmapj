@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,7 +130,8 @@ class SearchHolderImpl implements SearchHolder {
 	 * We simply delegate those calls, so we can reuse some code...
 	 *
 	 * (non-Javadoc)
-	 * @see de.fhhannover.inform.trust.ifmapj.request.NamespaceDeclarationHolder#addNamespaceDeclaration(java.lang.String, java.lang.String)
+	 * @see de.fhhannover.inform.trust.ifmapj.request.NamespaceDeclarationHolder#addNamespaceDeclaration
+	 * 		(java.lang.String, java.lang.String)
 	 */
 	@Override
 	public void addNamespaceDeclaration(String prefix, String uri) {

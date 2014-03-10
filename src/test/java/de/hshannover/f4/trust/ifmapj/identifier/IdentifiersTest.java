@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,11 +49,6 @@ import org.w3c.dom.Element;
 import util.DomHelpers;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.identifier.AccessRequestHandler;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
-import de.hshannover.f4.trust.ifmapj.identifier.IdentifierHandler;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-import de.hshannover.f4.trust.ifmapj.identifier.IdentityType;
 
 /**
  * Test functionality provided by the {@link Identifiers} class.
@@ -73,27 +68,27 @@ public class IdentifiersTest {
 		assertNotNull(Identifiers.getHandlerFor(Identifiers.createIp4("192.168.0.1")));
 		assertNotNull(Identifiers.getHandlerFor(Identifiers.createMac("aa:bb:cc:dd:ee:ff")));
 		assertNotNull(Identifiers.getHandlerFor(Identifiers.createExtendedIdentity(
-				"<ns:network administrative-domain=\"\" type=\"IPv4\" " +
-				"address=\"192.168.0.0\" netmask=\"255.255.255.0\" " +
-				"xmlns:ns=\"http://trust.inform.fh-hannover.de/NETWORK-IDENTITY\" />")));
+				"<ns:network administrative-domain=\"\" type=\"IPv4\" "
+				+ "address=\"192.168.0.0\" netmask=\"255.255.255.0\" "
+				+ "xmlns:ns=\"http://trust.inform.fh-hannover.de/NETWORK-IDENTITY\" />")));
 	}
 
 	@Test
 	public void testQueryUnknownHandler() {
-		assertNull(Identifiers.getHandlerFor(new Identifier() { /* anonymous */}));
+		assertNull(Identifiers.getHandlerFor(new Identifier() { /* anonymous */ }));
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void testRegisterNullHandler() {
 		Identifiers.registerIdentifierHandler(null);
 	}
 
-	@Test(expected=RuntimeException.class)
+	@Test(expected = RuntimeException.class)
 	public void testRegisterDefaultHandlerTwice() {
 		Identifiers.registerIdentifierHandler(new AccessRequestHandler());
 	}
 
-	@Test(expected=RuntimeException.class)
+	@Test(expected = RuntimeException.class)
 	public void testRegisterCustomHandlerTwice() {
 
 		class CustomIdent implements Identifier { };
@@ -154,7 +149,7 @@ public class IdentifiersTest {
 	}
 
 
-	@Test(expected=NullPointerException.class)
+	@Test(expected = NullPointerException.class)
 	public void testRegisterHandlesNullHandler() {
 
 		class CustomIdent implements Identifier {
@@ -246,8 +241,9 @@ public class IdentifiersTest {
 			@Override
 			public CustomIdent fromElement(Element el)
 					throws UnmarshalException {
-				if (el.getLocalName().equals("customident"))
+				if (el.getLocalName().equals("customident")) {
 					return new CustomIdent();
+				}
 
 				return null;
 			}
@@ -278,7 +274,7 @@ public class IdentifiersTest {
 		assertNull(i);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementThrows() throws UnmarshalException {
 
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
@@ -300,7 +296,7 @@ public class IdentifiersTest {
 		assertNull(el);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementThrows() throws MarshalException {
 
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();

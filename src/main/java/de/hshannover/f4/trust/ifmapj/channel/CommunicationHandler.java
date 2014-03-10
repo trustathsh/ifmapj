@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,6 @@
  */
 package de.hshannover.f4.trust.ifmapj.channel;
 
-import java.io.IOException;
 import java.io.InputStream;
 
 import de.hshannover.f4.trust.ifmapj.exception.CommunicationException;
@@ -53,23 +52,23 @@ public interface CommunicationHandler {
 	 * @throws IOException
 	 * @throws ProtocolException
 	 */
-	public InputStream doRequest(InputStream is) throws CommunicationException;
+	InputStream doRequest(InputStream is) throws CommunicationException;
 
 	/**
 	 * Set to true if gzip should be used for the communication.
 	 *
 	 * @param gzip
 	 */
-	public void setGzip(boolean gzip);
+	void setGzip(boolean gzip);
 
 	/**
 	 * @return whether requests are gzipped.
 	 */
-	public boolean usesGzip();
+	boolean usesGzip();
 
 	/**
 	 * Closes the underlying TCP connection.
 	 * @throws CommunicationException
 	 */
-	public void closeTcpConnection() throws CommunicationException;
+	void closeTcpConnection() throws CommunicationException;
 }

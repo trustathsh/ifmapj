@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,75 +53,75 @@ import util.Base64;
  */
 public class Base64Test {
 
-	String plain1 = "password1";			// ''
-	String plain12 = "password12";			// '=='
-	String plain123 = "password123";		// '='
+	String mPlain1 = "password1";			// ''
+	String mPlain12 = "password12";			// '=='
+	String mPlain123 = "password123";		// '='
 
-	String base1 = "cGFzc3dvcmQx";		// ''
-	String base12 = "cGFzc3dvcmQxMg==";	// '=='
-	String base123 = "cGFzc3dvcmQxMjM=";	// '='
+	String mBase1 = "cGFzc3dvcmQx";		// ''
+	String mBase12 = "cGFzc3dvcmQxMg==";	// '=='
+	String mBase123 = "cGFzc3dvcmQxMjM=";	// '='
 
-	String empty = "";
+	String mEmpty = "";
 
 	@Test
-	public void testEncodeToString(){
-		assertEquals(base1, Base64.encodeToString(plain1.getBytes(), true));
-		assertEquals(base12, Base64.encodeToString(plain12.getBytes(), true));
-		assertEquals(base123, Base64.encodeToString(plain123.getBytes(), true));
-		assertEquals(empty, Base64.encodeToString(null, true));
+	public void testEncodeToString() {
+		assertEquals(mBase1, Base64.encodeToString(mPlain1.getBytes(), true));
+		assertEquals(mBase12, Base64.encodeToString(mPlain12.getBytes(), true));
+		assertEquals(mBase123, Base64.encodeToString(mPlain123.getBytes(), true));
+		assertEquals(mEmpty, Base64.encodeToString(null, true));
 	}
 
 	@Test
-	public void testEncodeToByte(){
-		assertArrayEquals(base1.getBytes(), Base64.encodeToByte(plain1.getBytes(), true));
-		assertArrayEquals(base12.getBytes(), Base64.encodeToByte(plain12.getBytes(), true));
-		assertArrayEquals(base123.getBytes(), Base64.encodeToByte(plain123.getBytes(), true));
-		assertArrayEquals(empty.getBytes(), Base64.encodeToByte(null, true));
+	public void testEncodeToByte() {
+		assertArrayEquals(mBase1.getBytes(), Base64.encodeToByte(mPlain1.getBytes(), true));
+		assertArrayEquals(mBase12.getBytes(), Base64.encodeToByte(mPlain12.getBytes(), true));
+		assertArrayEquals(mBase123.getBytes(), Base64.encodeToByte(mPlain123.getBytes(), true));
+		assertArrayEquals(mEmpty.getBytes(), Base64.encodeToByte(null, true));
 	}
 
 	@Test
-	public void testEncodeToChar(){
-		assertEquals(base1, new String(Base64.encodeToChar(plain1.getBytes(), true)));
-		assertEquals(base12, new String(Base64.encodeToChar(plain12.getBytes(), true)));
-		assertEquals(base123, new String(Base64.encodeToChar(plain123.getBytes(), true)));
-		assertEquals(empty, new String(Base64.encodeToChar(empty.getBytes(), true)));
+	public void testEncodeToChar() {
+		assertEquals(mBase1, new String(Base64.encodeToChar(mPlain1.getBytes(), true)));
+		assertEquals(mBase12, new String(Base64.encodeToChar(mPlain12.getBytes(), true)));
+		assertEquals(mBase123, new String(Base64.encodeToChar(mPlain123.getBytes(), true)));
+		assertEquals(mEmpty, new String(Base64.encodeToChar(mEmpty.getBytes(), true)));
 	}
 
 	@Test
-	public void testDecode(){
+	public void testDecode() {
 		// byte[]
-		assertArrayEquals(plain1.getBytes(), Base64.decode(base1.getBytes()));
-		assertArrayEquals(plain12.getBytes(), Base64.decode(base12.getBytes()));
-		assertArrayEquals(plain123.getBytes(), Base64.decode(base123.getBytes()));
-		assertArrayEquals(empty.getBytes(), Base64.decode(empty.getBytes()));
+		assertArrayEquals(mPlain1.getBytes(), Base64.decode(mBase1.getBytes()));
+		assertArrayEquals(mPlain12.getBytes(), Base64.decode(mBase12.getBytes()));
+		assertArrayEquals(mPlain123.getBytes(), Base64.decode(mBase123.getBytes()));
+		assertArrayEquals(mEmpty.getBytes(), Base64.decode(mEmpty.getBytes()));
 		// char[]
-		assertArrayEquals(plain1.getBytes(), Base64.decode(base1.toCharArray()));
-		assertArrayEquals(plain12.getBytes(), Base64.decode(base12.toCharArray()));
-		assertArrayEquals(plain123.getBytes(), Base64.decode(base123.toCharArray()));
-		assertArrayEquals(empty.getBytes(), Base64.decode(empty.toCharArray()));
+		assertArrayEquals(mPlain1.getBytes(), Base64.decode(mBase1.toCharArray()));
+		assertArrayEquals(mPlain12.getBytes(), Base64.decode(mBase12.toCharArray()));
+		assertArrayEquals(mPlain123.getBytes(), Base64.decode(mBase123.toCharArray()));
+		assertArrayEquals(mEmpty.getBytes(), Base64.decode(mEmpty.toCharArray()));
 		// String
-		assertArrayEquals(plain1.getBytes(), Base64.decode(base1));
-		assertArrayEquals(plain12.getBytes(), Base64.decode(base12));
-		assertArrayEquals(plain123.getBytes(), Base64.decode(base123));
-		assertArrayEquals(empty.getBytes(), Base64.decode(empty));
+		assertArrayEquals(mPlain1.getBytes(), Base64.decode(mBase1));
+		assertArrayEquals(mPlain12.getBytes(), Base64.decode(mBase12));
+		assertArrayEquals(mPlain123.getBytes(), Base64.decode(mBase123));
+		assertArrayEquals(mEmpty.getBytes(), Base64.decode(mEmpty));
 	}
 
 	@Test
-	public void testDecodeFast(){
+	public void testDecodeFast() {
 		// byte[]
-		assertArrayEquals(plain1.getBytes(), Base64.decodeFast(base1.getBytes()));
-		assertArrayEquals(plain12.getBytes(), Base64.decodeFast(base12.getBytes()));
-		assertArrayEquals(plain123.getBytes(), Base64.decodeFast(base123.getBytes()));
-		assertArrayEquals(empty.getBytes(), Base64.decodeFast(empty.getBytes()));
+		assertArrayEquals(mPlain1.getBytes(), Base64.decodeFast(mBase1.getBytes()));
+		assertArrayEquals(mPlain12.getBytes(), Base64.decodeFast(mBase12.getBytes()));
+		assertArrayEquals(mPlain123.getBytes(), Base64.decodeFast(mBase123.getBytes()));
+		assertArrayEquals(mEmpty.getBytes(), Base64.decodeFast(mEmpty.getBytes()));
 		// char[]
-		assertArrayEquals(plain1.getBytes(), Base64.decodeFast(base1.toCharArray()));
-		assertArrayEquals(plain12.getBytes(), Base64.decodeFast(base12.toCharArray()));
-		assertArrayEquals(plain123.getBytes(), Base64.decodeFast(base123.toCharArray()));
-		assertArrayEquals(empty.getBytes(), Base64.decodeFast(empty.toCharArray()));
+		assertArrayEquals(mPlain1.getBytes(), Base64.decodeFast(mBase1.toCharArray()));
+		assertArrayEquals(mPlain12.getBytes(), Base64.decodeFast(mBase12.toCharArray()));
+		assertArrayEquals(mPlain123.getBytes(), Base64.decodeFast(mBase123.toCharArray()));
+		assertArrayEquals(mEmpty.getBytes(), Base64.decodeFast(mEmpty.toCharArray()));
 		// String
-		assertArrayEquals(plain1.getBytes(), Base64.decodeFast(base1));
-		assertArrayEquals(plain12.getBytes(), Base64.decodeFast(base12));
-		assertArrayEquals(plain123.getBytes(), Base64.decodeFast(base123));
-		assertArrayEquals(empty.getBytes(), Base64.decodeFast(empty));
+		assertArrayEquals(mPlain1.getBytes(), Base64.decodeFast(mBase1));
+		assertArrayEquals(mPlain12.getBytes(), Base64.decodeFast(mBase12));
+		assertArrayEquals(mPlain123.getBytes(), Base64.decodeFast(mBase123));
+		assertArrayEquals(mEmpty.getBytes(), Base64.decodeFast(mEmpty));
 	}
 }

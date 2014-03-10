@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,19 +49,6 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 import de.hshannover.f4.trust.ifmapj.identifier.IpAddress;
 import de.hshannover.f4.trust.ifmapj.identifier.IpAddressType;
 import de.hshannover.f4.trust.ifmapj.identifier.MacAddress;
-import de.hshannover.f4.trust.ifmapj.messages.PublishDelete;
-import de.hshannover.f4.trust.ifmapj.messages.PublishDeleteImpl;
-import de.hshannover.f4.trust.ifmapj.messages.PublishElement;
-import de.hshannover.f4.trust.ifmapj.messages.PublishNotify;
-import de.hshannover.f4.trust.ifmapj.messages.PublishNotifyImpl;
-import de.hshannover.f4.trust.ifmapj.messages.PublishUpdate;
-import de.hshannover.f4.trust.ifmapj.messages.PublishUpdateImpl;
-import de.hshannover.f4.trust.ifmapj.messages.SearchHolder;
-import de.hshannover.f4.trust.ifmapj.messages.SearchHolderImpl;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeDelete;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeDeleteImpl;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeElement;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeUpdateImpl;
 
 @Ignore
 class TestHelpers {
@@ -91,9 +78,11 @@ class TestHelpers {
 	}
 
 	private static void addElements(Element ret, Element[] elements) {
-		for (Element el : elements)
-			if (el != null)
+		for (Element el : elements) {
+			if (el != null) {
 				ret.appendChild(el);
+			}
+		}
 
 	}
 
@@ -116,14 +105,17 @@ class TestHelpers {
 	static Element ipElement(Document doc, String value, String type, String ad) {
 		Element ret = doc.createElementNS(null, "ip-address");
 
-		if (value != null)
+		if (value != null) {
 			ret.setAttribute("value", value);
+		}
 
-		if (type != null)
+		if (type != null) {
 			ret.setAttribute("type", type);
+		}
 
-		if (ad != null)
+		if (ad != null) {
 			addAd(ret, ad);
+		}
 
 		return ret;
 	}
@@ -131,11 +123,13 @@ class TestHelpers {
 	static Element macElement(Document doc, String value, String ad) {
 		Element ret = doc.createElementNS(null, "mac-address");
 
-		if (value != null)
+		if (value != null) {
 			ret.setAttribute("value", value);
+		}
 
-		if (ad != null)
+		if (ad != null) {
 			addAd(ret, ad);
+		}
 
 		return ret;
 
@@ -162,8 +156,9 @@ class TestHelpers {
 
 	static Element makeErrorResult(Document doc, String errCode, String errStr) {
 		Element err = makeResult("errorResult", doc);
-		if (errCode != null)
+		if (errCode != null) {
 			err.setAttribute("errorCode", errCode);
+		}
 
 		if (errStr != null) {
 			Element errStrEl = doc.createElementNS(null, "errorString");
@@ -179,8 +174,9 @@ class TestHelpers {
 
 		Element err = makeErrorResult(doc, errCode, errStr);
 
-		if (name != null)
+		if (name != null) {
 			err.setAttribute("name", name);
+		}
 
 		to.appendChild(err);
 
@@ -224,8 +220,9 @@ class TestHelpers {
 		ret.setIdentifier1(i1);
 		ret.setIdentifier2(i2);
 
-		for (Document d : md)
+		for (Document d : md) {
 			ret.addMetadata(d);
+		}
 
 		return ret;
 	}
@@ -236,16 +233,18 @@ class TestHelpers {
 		ret.setIdentifier1(i1);
 		ret.setIdentifier2(i2);
 
-		for (Document d : md)
+		for (Document d : md) {
 			ret.addMetadata(d);
+		}
 
 		return ret;
 	}
 
 	public static SubscribeElement subscribeDelete(String name) {
 		SubscribeDelete ret = new SubscribeDeleteImpl();
-		if (name != null)
+		if (name != null) {
 			ret.setName(name);
+		}
 		return ret;
 	}
 
@@ -255,8 +254,9 @@ class TestHelpers {
 				TestHelpers.ip("192.168.0.1", IpAddressType.IPv4, null));
 		SubscribeUpdateImpl sui = new SubscribeUpdateImpl(sh);
 
-		if (name != null)
+		if (name != null) {
 			sui.setName(name);
+		}
 
 		return sui;
 	}

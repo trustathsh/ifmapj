@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,7 +53,6 @@ import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 
-import de.hshannover.f4.trust.ifmapj.channel.SSRC;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
 
 /**
@@ -77,9 +76,10 @@ public abstract class IfmapJHelper {
 		String file = System.getProperty("javax.net.ssl.keyStore");
 		String pass = System.getProperty("javax.net.ssl.keyStorePassword");
 
-		if (file == null || pass == null)
-			throw new InitializationException("javax.net.ssl.keyStore / " +
-					"javax.net.ssl.keyStorePassword not set");
+		if (file == null || pass == null) {
+			throw new InitializationException("javax.net.ssl.keyStore / "
+					+ "javax.net.ssl.keyStorePassword not set");
+		}
 
 		return getKeyManagers(file, pass);
 	}
@@ -107,8 +107,9 @@ public abstract class IfmapJHelper {
 	 */
 	public static KeyManager[] getKeyManagers(InputStream keyStoreIs, String pass)
 	throws InitializationException {
-		if (keyStoreIs == null || pass == null)
+		if (keyStoreIs == null || pass == null) {
 			throw new NullPointerException("parameters null?");
+		}
 
 		try {
 			String defaultAlgo = KeyManagerFactory.getDefaultAlgorithm();
@@ -132,9 +133,10 @@ public abstract class IfmapJHelper {
 		String file = System.getProperty("javax.net.ssl.trustStore");
 		String pass = System.getProperty("javax.net.ssl.trustStorePassword");
 
-		if (file == null || pass == null)
-			throw new InitializationException("javax.net.ssl.trustStore / " +
-					"javax.net.ssl.trustStorePassword not set");
+		if (file == null || pass == null) {
+			throw new InitializationException("javax.net.ssl.trustStore / "
+					+ "javax.net.ssl.trustStorePassword not set");
+		}
 
 		return getTrustManagers(file, pass);
 	}
@@ -162,8 +164,9 @@ public abstract class IfmapJHelper {
 	 */
 	public static TrustManager[] getTrustManagers(InputStream trustStoreIs, String pass)
 			throws InitializationException {
-		if (trustStoreIs == null || pass == null)
+		if (trustStoreIs == null || pass == null) {
 			throw new NullPointerException("parameters null?");
+		}
 
 		try {
 			String defaultAlgo = TrustManagerFactory.getDefaultAlgorithm();
@@ -203,8 +206,9 @@ public abstract class IfmapJHelper {
 	 * @throws InitializationException
 	 */
 	private static InputStream getFileAsInputStream(String file) throws InitializationException {
-		if (file == null)
+		if (file == null) {
 			throw new NullPointerException("file is null");
+		}
 		try {
 			return new FileInputStream(new File(file));
 		} catch (FileNotFoundException e) {

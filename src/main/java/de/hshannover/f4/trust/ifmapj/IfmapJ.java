@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,17 +38,13 @@
  */
 package de.hshannover.f4.trust.ifmapj;
 
-import java.io.IOException;
-
 import javax.net.ssl.KeyManager;
-import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
 import de.hshannover.f4.trust.ifmapj.channel.SSRC;
 import de.hshannover.f4.trust.ifmapj.channel.SsrcImpl;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
 import de.hshannover.f4.trust.ifmapj.identifier.Device;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
 import de.hshannover.f4.trust.ifmapj.identifier.IdentifierFactory;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 import de.hshannover.f4.trust.ifmapj.messages.RequestFactory;
@@ -65,7 +61,9 @@ import de.hshannover.f4.trust.ifmapj21.ClockSkewDetector;
  *
  */
 @SuppressWarnings("deprecation")
-public class IfmapJ {
+public final class IfmapJ {
+
+	private IfmapJ() { }
 
 	/**
 	 * Create a new {@link SSRC} object to operate on the given url
@@ -78,7 +76,7 @@ public class IfmapJ {
 	 * @return a new {@link SSRC} that uses basic authentication
 	 * @throws IOException
 	 */
-	public static SSRC createSSRC(String url, String user, String pass, TrustManager[] tms)
+	public static SSRC createSsrc(String url, String user, String pass, TrustManager[] tms)
 			throws InitializationException {
 		return new SsrcImpl(url, user, pass, tms);
 	}
@@ -98,7 +96,7 @@ public class IfmapJ {
 	 * @return a new {@link SSRC} that uses certificate-based authentication
 	 * @throws IOException
 	 */
-	public static SSRC createSSRC(String url, KeyManager[] kms, TrustManager[] tms)
+	public static SSRC createSsrc(String url, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException {
 		return new SsrcImpl(url, kms, tms);
 	}
@@ -111,6 +109,7 @@ public class IfmapJ {
 	 * @deprecated
 	 * Use {@link Requests} directly.
 	 */
+	@Deprecated
 	public static RequestFactory createRequestFactory() {
 		return Requests.getRequestFactory();
 	}
@@ -123,6 +122,7 @@ public class IfmapJ {
 	 * @deprecated
 	 * Use {@link Identifiers} directly.
 	 */
+	@Deprecated
 	public static IdentifierFactory createIdentifierFactory() {
 		return Identifiers.getIdentifierFactory();
 	}

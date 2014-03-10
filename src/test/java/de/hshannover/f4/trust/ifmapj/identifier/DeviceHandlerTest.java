@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,16 +52,13 @@ import org.w3c.dom.Node;
 import util.DomHelpers;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.identifier.Device;
-import de.hshannover.f4.trust.ifmapj.identifier.DeviceHandler;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 
 public class DeviceHandlerTest {
 
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static DeviceHandler sDevHandler = new DeviceHandler();
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWithNullName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Device dev = Identifiers.createDev(null);
@@ -70,7 +67,7 @@ public class DeviceHandlerTest {
 		assertNotNull(res);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWithEmptyName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Device dev = Identifiers.createDev("");
@@ -91,7 +88,7 @@ public class DeviceHandlerTest {
 		assertNull(res.getPrefix());
 		assertNull(res.getNamespaceURI());
 		assertEquals(1, res.getChildNodes().getLength());
-		xmlName = (Element)res.getFirstChild();
+		xmlName = (Element) res.getFirstChild();
 		assertNotNull(xmlName);
 		assertEquals("name", xmlName.getLocalName());
 		assertEquals("DEV100", xmlName.getTextContent());
@@ -119,7 +116,7 @@ public class DeviceHandlerTest {
 		assertEquals("DEV100", dev.getName());
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWithNoName() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlDev = doc.createElementNS(null, "device");
@@ -127,7 +124,7 @@ public class DeviceHandlerTest {
 		assertNull(dev);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWithEmptyName() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlDev = doc.createElementNS(null, "device");
@@ -138,7 +135,7 @@ public class DeviceHandlerTest {
 		assertNull(dev);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWithBadElement() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlDev = doc.createElementNS(null, "device");
@@ -156,7 +153,7 @@ public class DeviceHandlerTest {
 		assertNull(dev);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWrongIdentifierType() throws UnmarshalException, MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sDevHandler.toElement(Identifiers.createAr("ABC"), doc);

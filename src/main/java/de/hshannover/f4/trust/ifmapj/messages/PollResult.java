@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,7 +65,8 @@ public interface PollResult extends Result {
 	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
-	public Collection<SearchResult> getSearchResults();
+	@Deprecated
+	Collection<SearchResult> getSearchResults();
 
 	/**
 	 * Get all {@link SearchResult} objects for new metadata that has been
@@ -77,7 +78,8 @@ public interface PollResult extends Result {
 	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
-	public Collection<SearchResult> getUpdateResults();
+	@Deprecated
+	Collection<SearchResult> getUpdateResults();
 
 	/**
 	 * Get all {@link SearchResult} objects for metadata that has been
@@ -89,7 +91,8 @@ public interface PollResult extends Result {
 	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
-	public Collection<SearchResult> getDeleteResults();
+	@Deprecated
+	Collection<SearchResult> getDeleteResults();
 
 	/**
 	 * Get all {@link SearchResult} objects for metadata that has been
@@ -102,7 +105,8 @@ public interface PollResult extends Result {
 	 * No ordering enforced. Replace with {@link #getResults()} and
 	 * {@link SearchResult#getType()}.
 	 */
-	public Collection<SearchResult> getNotifyResults();
+	@Deprecated
+	Collection<SearchResult> getNotifyResults();
 
 	/**
 	 * Get all {@link IfmapErrorResult} objects that indicate errors that
@@ -110,11 +114,11 @@ public interface PollResult extends Result {
 	 *
 	 * @return an unmodifiable collection of {@link IfmapErrorResult} objects
 	 */
-	public Collection<IfmapErrorResult> getErrorResults();
+	Collection<IfmapErrorResult> getErrorResults();
 
 	/**
 	 * @return an unmodifieable list of {@link SearchResult} instances,
 	 * ordered the way they were received from the MAPS.
 	 */
-	public List<SearchResult> getResults();
+	List<SearchResult> getResults();
 }

@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,23 +45,27 @@ import java.security.NoSuchAlgorithmException;
  *
  * @author jk
  */
-public class MD5Provider {
+public final class MD5Provider {
 
 	private static MessageDigest mdInstance;
 
+	private MD5Provider() { }
+
 	private static MessageDigest getInstance() throws NoSuchAlgorithmException {
-		if (mdInstance == null)
+		if (mdInstance == null) {
 			mdInstance = MessageDigest.getInstance("MD5");
+		}
 		return mdInstance;
 	}
 
-	public static String getMD5(String str) throws NoSuchAlgorithmException {
+	public static String getMd5(String str) throws NoSuchAlgorithmException {
 		getInstance();
 		StringBuilder sb = new StringBuilder();
 		byte[] array = mdInstance.digest(str.getBytes());
-		for (int i = 0; i < array.length; ++i)
-			sb.append(Integer.toHexString((array[i] & 0xFF)
-					| 0x100).substring(1,3));
+		for (int i = 0; i < array.length; ++i) {
+			sb.append(Integer.toHexString(array[i] & 0xFF
+					| 0x100).substring(1, 3));
+		}
 		return sb.toString();
 	}
 }

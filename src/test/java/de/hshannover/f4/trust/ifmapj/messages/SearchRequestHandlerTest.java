@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,16 +57,6 @@ import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
 import de.hshannover.f4.trust.ifmapj.identifier.IpAddressType;
-import de.hshannover.f4.trust.ifmapj.messages.PublishRequestImpl;
-import de.hshannover.f4.trust.ifmapj.messages.Request;
-import de.hshannover.f4.trust.ifmapj.messages.RequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.Result;
-import de.hshannover.f4.trust.ifmapj.messages.ResultItem;
-import de.hshannover.f4.trust.ifmapj.messages.SearchHolder;
-import de.hshannover.f4.trust.ifmapj.messages.SearchHolderImpl;
-import de.hshannover.f4.trust.ifmapj.messages.SearchRequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.SearchRequestImpl;
-import de.hshannover.f4.trust.ifmapj.messages.SearchResult;
 
 public class SearchRequestHandlerTest {
 
@@ -107,7 +97,7 @@ public class SearchRequestHandlerTest {
 		assertEquals("1234", ret.getAttribute("session-id"));
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementNullSessionId() throws MarshalException {
 		Request req = makeSimpleRequest();
 		Document doc = sDocBuilder.newDocument();
@@ -115,7 +105,7 @@ public class SearchRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementEmptySessionId() throws MarshalException {
 		Request req = makeSimpleRequest();
 		req.setSessionId("");
@@ -124,7 +114,7 @@ public class SearchRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWrongType() throws MarshalException {
 		Request req = new PublishRequestImpl();
 		req.setSessionId("1234");
@@ -149,7 +139,7 @@ public class SearchRequestHandlerTest {
 		assertNull(sr.getResultItems().iterator().next().getIdentifier2());
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementEmptySearchResult() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -158,7 +148,7 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=IfmapErrorResult.class)
+	@Test(expected = IfmapErrorResult.class)
 	public void testFromElementWithErrorResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -169,7 +159,7 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNoResultUnderResponse() throws IfmapErrorResult,
 			UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
@@ -178,7 +168,7 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWrongResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -191,7 +181,7 @@ public class SearchRequestHandlerTest {
 
 
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNonResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -202,7 +192,7 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementEmptyResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -213,14 +203,15 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementOverFullResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
 		Element ri = TestHelpers.resultItem(doc);
 
-		for (int i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++) {
 			ri.appendChild(TestHelpers.macElement(doc, "aa:bb:cc:dd:ee:ff", null));
+		}
 
 		Element sres = TestHelpers.searchResult(doc, ri);
 		response.appendChild(sres);
@@ -238,7 +229,7 @@ public class SearchRequestHandlerTest {
 
 		for (int i = 0; i < 4; i++) {
 			Element ri = TestHelpers.resultItem(doc, TestHelpers.macElement(
-					doc,"aa:bb:cc:dd:ee:ff", null));
+					doc, "aa:bb:cc:dd:ee:ff", null));
 			sres.appendChild(ri);
 		}
 
@@ -248,7 +239,7 @@ public class SearchRequestHandlerTest {
 	}
 
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNoIdentifierInResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -262,7 +253,7 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementTwoMetadataElementsInResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -279,7 +270,7 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementUnknownElementInResultItem() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);
@@ -296,7 +287,7 @@ public class SearchRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementSearchResultWithName() throws UnmarshalException, IfmapErrorResult {
 		Document doc = sDocBuilder.newDocument();
 		Element response = TestHelpers.makeResponse(doc);

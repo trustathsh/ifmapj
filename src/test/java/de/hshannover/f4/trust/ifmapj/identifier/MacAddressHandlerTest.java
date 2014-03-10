@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,9 +50,6 @@ import org.w3c.dom.Element;
 
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-import de.hshannover.f4.trust.ifmapj.identifier.MacAddress;
-import de.hshannover.f4.trust.ifmapj.identifier.MacAddressHandler;
 import util.DomHelpers;
 
 public class MacAddressHandlerTest {
@@ -60,7 +57,7 @@ public class MacAddressHandlerTest {
 	private static DocumentBuilder sDocBuilder = DomHelpers.newDocumentBuilder();
 	private static MacAddressHandler sMacAddressHandler = new MacAddressHandler();
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWithNullName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		MacAddress mac = Identifiers.createMac(null);
@@ -69,7 +66,7 @@ public class MacAddressHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWithNoName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		MacAddress mac = Identifiers.createMac("");
@@ -105,9 +102,9 @@ public class MacAddressHandlerTest {
 	public void testToElementFromByteWithEmptyAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		byte[] b = new byte[6];
-		b[0] = (byte)0xaa;	b[1] = (byte)0xbb;
-		b[2] = (byte)0xcc;	b[3] = (byte)0xdd;
-		b[4] = (byte)0xee;	b[5] = (byte)0xff;
+		b[0] = (byte) 0xaa;	b[1] = (byte) 0xbb;
+		b[2] = (byte) 0xcc;	b[3] = (byte) 0xdd;
+		b[4] = (byte) 0xee;	b[5] = (byte) 0xff;
 		MacAddress mac = Identifiers.createMacFromByte(b, "");
 
 		Element res = sMacAddressHandler.toElement(mac, doc);
@@ -147,9 +144,9 @@ public class MacAddressHandlerTest {
 	public void testToElementFromByteWithName() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		byte[] b = new byte[6];
-		b[0] = (byte)0xaa;	b[1] = (byte)0xbb;
-		b[2] = (byte)0xcc;	b[3] = (byte)0xdd;
-		b[4] = (byte)0xee;	b[5] = (byte)0xff;
+		b[0] = (byte) 0xaa;	b[1] = (byte) 0xbb;
+		b[2] = (byte) 0xcc;	b[3] = (byte) 0xdd;
+		b[4] = (byte) 0xee;	b[5] = (byte) 0xff;
 		MacAddress mac = Identifiers.createMacFromByte(b, null);
 
 		Element res = sMacAddressHandler.toElement(mac, doc);
@@ -170,9 +167,9 @@ public class MacAddressHandlerTest {
 	public void testToElementFromByteWithNameAndAd() throws MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		byte[] b = new byte[6];
-		b[0] = (byte)0xaa;	b[1] = (byte)0xbb;
-		b[2] = (byte)0xcc;	b[3] = (byte)0xdd;
-		b[4] = (byte)0xee;	b[5] = (byte)0xff;
+		b[0] = (byte) 0xaa;	b[1] = (byte) 0xbb;
+		b[2] = (byte) 0xcc;	b[3] = (byte) 0xdd;
+		b[4] = (byte) 0xee;	b[5] = (byte) 0xff;
 		MacAddress mac = Identifiers.createMacFromByte(b, "mydomain");
 
 		Element res = sMacAddressHandler.toElement(mac, doc);
@@ -216,7 +213,7 @@ public class MacAddressHandlerTest {
 		assertEquals("mydomain", mac.getAdministrativeDomain());
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWithNullName() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlMac = doc.createElementNS(null, "mac-address");
@@ -224,7 +221,7 @@ public class MacAddressHandlerTest {
 		assertNull(mac);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWithEmptyName() throws UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element xmlMac = doc.createElementNS(null, "mac-address");
@@ -242,7 +239,7 @@ public class MacAddressHandlerTest {
 		assertNull(mac);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWrongIdentifierType() throws UnmarshalException, MarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element ret = sMacAddressHandler.toElement(Identifiers.createDev("DEV100"), doc);

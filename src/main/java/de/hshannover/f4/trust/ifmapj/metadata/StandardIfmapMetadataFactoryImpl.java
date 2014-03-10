@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,8 +70,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 		try {
 			mDocumentBuilder = dbf.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
-			IfmapJLog.error("Could not get DocumentBuilder instance [" +
-					e.getMessage() + "]");
+			IfmapJLog.error("Could not get DocumentBuilder instance [" + e.getMessage() + "]");
 			throw new RuntimeException(e);
 		}
 	}
@@ -82,7 +81,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 		Document doc = createStdSingleElementDocument("ip-mac",
 				Cardinality.multiValue);
 
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
 		appendTextElementIfNotNull(doc, root, "start-time", startTime);
 		appendTextElementIfNotNull(doc, root, "end-time", endTime);
@@ -142,7 +141,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	public Document createRole(String name, String administrativeDomain) {
 		Document doc = createStdSingleElementDocument("role",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 		appendTextElementIfNotNull(doc, root, "administrative-domain",
 				administrativeDomain);
 		createAndAppendTextElementCheckNull(doc, root, "name", name);
@@ -158,7 +157,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	public Document createDevAttr(String name) {
 		Document doc = createStdSingleElementDocument("device-attribute",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 		createAndAppendTextElementCheckNull(doc, root, "name", name);
 		return doc;
 	}
@@ -167,7 +166,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	public Document createCapability(String name, String administrativeDomain) {
 		Document doc = createStdSingleElementDocument("capability",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
 		createAndAppendTextElementCheckNull(doc, root, "name", name);
 		appendTextElementIfNotNull(doc, root, "administrative-domain",
@@ -187,7 +186,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			String discovererId, String discoveryMethod) {
 		Document doc = createStdSingleElementDocument("device-characteristic",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
 		appendTextElementIfNotNull(doc, root, "manufacturer", manufacturer);
 		appendTextElementIfNotNull(doc, root, "model", model);
@@ -208,7 +207,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			String enforcementReason) {
 		Document doc = createStdSingleElementDocument("enforcement-report",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
 		createAndAppendTextElementCheckNull(doc, root, "enforcement-action", enforcementAction);
 
@@ -227,7 +226,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			String vulnerabilityUri) {
 		Document doc = createStdSingleElementDocument("event",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
 
 		createAndAppendTextElementCheckNull(doc, root, "name", name);
@@ -267,10 +266,11 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	public Document create(String elementName, String qualifiedName, String uri,
 			Cardinality cardinality, HashMap<String, String> attributes) {
 		Document doc = mDocumentBuilder.newDocument();
-		Element e = doc.createElementNS(uri, qualifiedName+":"+elementName);
+		Element e = doc.createElementNS(uri, qualifiedName + ":" + elementName);
 		e.setAttributeNS(null, "ifmap-cardinality", cardinality.toString());
-		for (Map.Entry<String, String> attr : attributes.entrySet())
-		e.setAttributeNS(null, attr.getKey(), attr.getValue());
+		for (Map.Entry<String, String> attr : attributes.entrySet()) {
+			e.setAttributeNS(null, attr.getKey(), attr.getValue());
+		}
 		doc.appendChild(e);
 		doc.createAttributeNS(uri, qualifiedName);
 		return doc;
@@ -281,7 +281,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			Integer port, String administrativeDomain) {
 		Document doc = createStdSingleElementDocument("layer2-information",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
 		/* non of them is mandatory */
 		appendTextElementIfNotNull(doc, root, "vlan", vlanNum);
@@ -298,14 +298,16 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			String discoveredTime, String discovererId) {
 		Document doc = createStdSingleElementDocument("location",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
-		if (locationInformation == null || locationInformation.size() == 0)
+		if (locationInformation == null || locationInformation.size() == 0) {
 			throw new NullPointerException("location-information needs to be set for location");
+		}
 
-		for (LocationInformation tmpLoc : locationInformation)
+		for (LocationInformation tmpLoc : locationInformation) {
 			appendElementWithAttributes(doc, root, "location-information",
 					"type", tmpLoc.mType, "value", tmpLoc.mValue);
+		}
 
 		createAndAppendTextElementCheckNull(doc, root, "discovered-time", discoveredTime);
 		createAndAppendTextElementCheckNull(doc, root, "discoverer-id", discovererId);
@@ -318,10 +320,11 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	public Document createRequestForInvestigation(String qualifier) {
 		Document doc = createStdSingleElementDocument("request-for-investigation",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
-		if (qualifier != null)
+		if (qualifier != null) {
 			root.setAttributeNS(null, "qualifier", qualifier);
+		}
 
 		return doc;
 	}
@@ -333,21 +336,24 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			List<WlanSecurityType> ssidManagementSecurity) {
 		Document doc = createStdSingleElementDocument("wlan-information",
 				Cardinality.singleValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 		Element ssidUniSecEl = null;
 		Element ssidMgmtSecEl = null;
 
-		if (ssidUnicastSecurity == null || ssidUnicastSecurity.size() == 0)
+		if (ssidUnicastSecurity == null || ssidUnicastSecurity.size() == 0) {
 			throw new NullPointerException("ssid-unicast-security to be set"
 					+ " for wlan-information");
+		}
 
-		if (ssidGroupSecurity == null)
+		if (ssidGroupSecurity == null) {
 			throw new NullPointerException("ssid-group-security to be set for"
 					+ " wlan-information");
+		}
 
-		if (ssidManagementSecurity == null || ssidManagementSecurity.size() == 0)
+		if (ssidManagementSecurity == null || ssidManagementSecurity.size() == 0) {
 			throw new NullPointerException("ssid-management-security to be set"
 					+ " for wlan-information");
+		}
 
 		appendTextElementIfNotNull(doc, root, "ssid", ssid);
 
@@ -355,25 +361,28 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			ssidUniSecEl = createAndAppendTextElementCheckNull(doc, root,
 					"ssid-unicast-security", wlanSec.mWlanSecurityType.toString());
 
-			if (wlanSec.mOtherTypeDefinition != null)
+			if (wlanSec.mOtherTypeDefinition != null) {
 				ssidUniSecEl.setAttributeNS(null, "other-type-definition",
 						wlanSec.mOtherTypeDefinition);
+			}
 		}
 
 		Element grpSecEl = createAndAppendTextElementCheckNull(doc, root,
 				"ssid-group-security", ssidGroupSecurity.mWlanSecurityType.toString());
 
-		if (ssidGroupSecurity.mOtherTypeDefinition != null)
+		if (ssidGroupSecurity.mOtherTypeDefinition != null) {
 			grpSecEl.setAttributeNS(null, "other-type-definition",
 					ssidGroupSecurity.mOtherTypeDefinition);
+		}
 
 		for (WlanSecurityType wlanSec : ssidManagementSecurity) {
 			ssidMgmtSecEl = createAndAppendTextElementCheckNull(doc, root,
 					"ssid-management-security", wlanSec.mWlanSecurityType.toString());
 
-			if (wlanSec.mOtherTypeDefinition != null)
+			if (wlanSec.mOtherTypeDefinition != null) {
 				ssidMgmtSecEl.setAttributeNS(null, "other-type-definition",
 						wlanSec.mOtherTypeDefinition);
+			}
 		}
 
 		return doc;
@@ -385,7 +394,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 			String type) {
 		Document doc = createStdSingleElementDocument("unexpected-behavior",
 				Cardinality.multiValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 
 		createAndAppendTextElementCheckNull(doc, root, "discovered-time", discoveredTime);
 		createAndAppendTextElementCheckNull(doc, root, "discoverer-id", discovererId);
@@ -404,7 +413,7 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 		// Generate XML within OPERATIONAL-METADATA namespace (ifmap 2.1)
 		Document doc = createOpSingleElementDocument("client-time",
 				Cardinality.singleValue);
-		Element root = (Element)doc.getFirstChild();
+		Element root = (Element) doc.getFirstChild();
 		root.setAttribute("current-timestamp", time);
 		return doc;
 	}
@@ -446,8 +455,9 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	private void appendTextElementIfNotNull(Document doc, Element parent,
 			String elName, Object value) {
 
-			if (value == null)
+			if (value == null) {
 				return;
+			}
 
 			createAndAppendTextElementCheckNull(doc, parent, elName, value);
 	}
@@ -462,28 +472,30 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	 * @param elName the name of the new element.
 	 * @param value the value of the {@link Text} node appended to the new element,
 	 *	using toString() on the object.
-	 * @throws NullPointerException if value is null, or any other parameter
 	 *	 is null
 	 * @return the new {@link Element}
 	 */
 	private Element createAndAppendTextElementCheckNull(Document doc, Element parent,
 			String elName, Object value) {
 
-		if (doc == null || parent == null || elName == null)
-				throw new NullPointerException("bad parameters given");
+		if (doc == null || parent == null || elName == null) {
+			throw new NullPointerException("bad parameters given");
+		}
 
-		if (value == null)
+		if (value == null) {
 			throw new NullPointerException("null is not allowed for " + elName
 					+ " in " + doc.getFirstChild().getLocalName());
+		}
 
 		String valueStr = value.toString();
-		if (valueStr == null)
+		if (valueStr == null) {
 			throw new NullPointerException("null-string not allowed for " + elName
 					+ " in " + doc.getFirstChild().getLocalName());
+		}
 
 		Element child = createAndAppendElement(doc, parent, elName);
-		Text txtCElement = doc.createTextNode(valueStr);
-		child.appendChild(txtCElement);
+		Text txtcElement = doc.createTextNode(valueStr);
+		child.appendChild(txtcElement);
 		return child;
 	}
 
@@ -518,13 +530,15 @@ public class StandardIfmapMetadataFactoryImpl implements StandardIfmapMetadataFa
 	private Element appendElementWithAttributes(Document doc, Element parent,
 			String elName, String... attrList) {
 
-		if ((attrList.length % 2) != 0)
+		if (attrList.length % 2 != 0) {
 			throw new RuntimeException("Bad attrList length");
+		}
 
 		Element el = createAndAppendElement(doc, parent, elName);
 
-		for (int i = 0; i < attrList.length; i += 2)
+		for (int i = 0; i < attrList.length; i += 2) {
 			el.setAttributeNS(null, attrList[i], attrList[i + 1]);
+		}
 
 		return el;
 	}

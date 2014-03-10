@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,14 +57,13 @@ public interface PublishRequest extends Request {
 	 * Add a new {@link PublishElement} to the request
 	 *
 	 * @param pe the element to add to the list
-	 * @throws NullPointerException if the given element is null
 	 */
-	public void addPublishElement(PublishElement pe);
+	void addPublishElement(PublishElement pe);
 
 	/**
 	 * Get all {@link PublishElement} instances of this request
 	 *
 	 * @return the list of elements in the request. <b>Note:</b> The returned collection is unmodifiable.
 	 */
-	public List<PublishElement> getPublishElements();
+	List<PublishElement> getPublishElements();
 }

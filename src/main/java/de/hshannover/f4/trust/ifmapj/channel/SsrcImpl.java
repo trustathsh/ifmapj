@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -130,8 +130,9 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 
 		Result res = genericRequest(nsreq);
 
-		if (!(res instanceof NewSessionResult))
+		if (!(res instanceof NewSessionResult)) {
 			throw new RuntimeException("wrong result-type");
+		}
 
 		NewSessionResult nsres = (NewSessionResult) res;
 
@@ -144,9 +145,9 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 
 		if (maxPollResSize != null) {
 			mMaxPollResultSize = nsres.getMaxPollResultSize();
-			if (mMaxPollResultSize == null)
-				throw new CommunicationException("no max-poll-result-size " +
-						"in newSession result");
+			if (mMaxPollResultSize == null) {
+				throw new CommunicationException("no max-poll-result-size in newSession result");
+			}
 		}
 	}
 
@@ -182,44 +183,50 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 
 	@Override
 	public void publish(PublishRequest pr) throws IfmapErrorResult, IfmapException {
-		if (pr == null)
+		if (pr == null) {
 			throw new NullPointerException();
+		}
 
 		genericRequestWithSessionId(pr);
 	}
 
 	@Override
 	public void subscribe(SubscribeRequest sr) throws IfmapErrorResult, IfmapException {
-		if (sr == null)
+		if (sr == null) {
 			throw new NullPointerException();
+		}
 
 		genericRequestWithSessionId(sr);
 	}
 
 	@Override
 	public SearchResult search(SearchRequest sr) throws IfmapErrorResult, IfmapException {
-		if (sr == null)
+		if (sr == null) {
 			throw new NullPointerException();
+		}
 
 		Result res = genericRequestWithSessionId(sr);
 
-		if (!(res instanceof SearchResult))
-				throw new RuntimeException("search returns no SearchResult?");
+		if (!(res instanceof SearchResult)) {
+			throw new RuntimeException("search returns no SearchResult?");
+		}
 
-		return (SearchResult)res;
+		return (SearchResult) res;
 	}
 
 	@Override
 	public ARC getArc() throws InitializationException {
 		ARC ret;
 
-		if (isBasicAuth())
+		if (isBasicAuth()) {
 			ret = new ArcImpl(this, getUrl(), getUser(), getPassword(), mTrustManagers);
-		else
+		} else {
 			ret = new ArcImpl(this, getUrl(), mKeyManagers, mTrustManagers);
+		}
 
-		if (usesGzip())
+		if (usesGzip()) {
 			ret.setGzip(true);
+		}
 
 		return ret;
 	}

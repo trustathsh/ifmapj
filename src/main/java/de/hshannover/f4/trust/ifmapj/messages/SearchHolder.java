@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,31 +59,30 @@ public interface SearchHolder extends NamespaceDeclarationHolder {
 	/**
 	 * @return the identifier where the search is to be started.
 	 */
-	public Identifier getStartIdentifier();
+	Identifier getStartIdentifier();
 
 	/**
 	 * @param startIdentifier
-	 * @throws NullPointerException if the given identifier is null.
 	 */
-	public void setStartIdentifier(Identifier startIdentifier);
+	void setStartIdentifier(Identifier startIdentifier);
 
-	public String getMatchLinksFilter();
+	String getMatchLinksFilter();
 
-	public void setMatchLinksFilter(String matchLinksFilter);
+	void setMatchLinksFilter(String matchLinksFilter);
 
-	public Integer getMaxDepth();
+	Integer getMaxDepth();
 
-	public void setMaxDepth(Integer maxDepth);
+	void setMaxDepth(Integer maxDepth);
 
-	public String getTerminalIdentifierTypes();
+	String getTerminalIdentifierTypes();
 
-	public void setTerminalIdentifierTypes(String terminalIdentifierTypes);
+	void setTerminalIdentifierTypes(String terminalIdentifierTypes);
 
-	public Integer getMaxSize();
+	Integer getMaxSize();
 
-	public void setMaxSize(Integer maxSize);
+	void setMaxSize(Integer maxSize);
 
-	public String getResultFilter();
+	String getResultFilter();
 
-	public void setResultFilter(String resultFilter);
+	void setResultFilter(String resultFilter);
 }

@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -74,8 +74,8 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 	private byte[] mBuffer;
 
 	private class StatusLine {
-		public int statusCode;
-		public String reason;
+		public int mStatusCode;
+		public String mReason;
 	}
 
 	JavaCommunicationHandler(String url, String user, String pass,
@@ -98,31 +98,35 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 		checkStatusLine(statusLine);
 		receiveHeaders();
 
-		if (responseIsChunked())
+		if (responseIsChunked()) {
 			retLength = readChunkedBody();
-		else if (responseContainsContentLength())
+		} else if (responseContainsContentLength()) {
 			retLength = readContinuousBody();
-		else
+		} else {
 			throw new CommunicationException("Could not determine length of body");
+		}
 
 		return new ByteArrayInputStream(mBuffer, 0, retLength);
 	}
 
 	private int readChunkedBody() throws CommunicationException, IOException {
-		String chunkLengthLine = null, tmpLine = null;
+		String chunkLengthLine = null;
+		String tmpLine = null;
 		int curOffset = 0;
 		int curChunkLength = -1;
 
 		while ((chunkLengthLine = mDataInputStream.readLine()) != null) {
 
-			if (chunkLengthLine.length() == 0)
+			if (chunkLengthLine.length() == 0) {
 				throw new CommunicationException("Unexpected empty chunk length");
+			}
 
 			curChunkLength = parseChunkLength(chunkLengthLine);
 
 			// Was the last chunk reached?
-			if (curChunkLength == 0)
+			if (curChunkLength == 0) {
 				break;
+			}
 
 			reallocateBuffer(mBuffer.length + 2 * curChunkLength);
 
@@ -132,26 +136,29 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 			// Read the CR LF sequence at the end of the chunk body
 			tmpLine = mDataInputStream.readLine();
 
-			if (tmpLine == null || tmpLine.length() > 0)
-				throw new CommunicationException("Unexpected chunk ending: " +
-						tmpLine);
+			if (tmpLine == null || tmpLine.length() > 0) {
+				throw new CommunicationException("Unexpected chunk ending: " + tmpLine);
+			}
 
 		}
 
 		// After the last chunk, there might be some trailers, we ignore them
 		// for now, but we need to read them anyway.
-		while ((tmpLine = mDataInputStream.readLine()) != null)
-			if (tmpLine.length() == 0)
+		while ((tmpLine = mDataInputStream.readLine()) != null) {
+			if (tmpLine.length() == 0) {
 				break;
+			}
+		}
 
 		return curOffset;
 	}
 
 
 	private int parseChunkLength(String chunkLengthLine) throws CommunicationException {
-		String lengthStrElements[] = chunkLengthLine.split(" ");
-		if (lengthStrElements.length < 1)
+		String []lengthStrElements = chunkLengthLine.split(" ");
+		if (lengthStrElements.length < 1) {
 			throw new CommunicationException("No chunk length included: " + chunkLengthLine);
+		}
 
 		try {
 			return Integer.parseInt(lengthStrElements[0], 16);
@@ -168,14 +175,15 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 		String teHeader = findHeaderValue("Transfer-Encoding");
 		// FIXME: We only look out for chunked, but
 		// there could be something else as well
-		return (teHeader != null && teHeader.contains("chunked"));
+		return teHeader != null && teHeader.contains("chunked");
 	}
 
 	@Override
 	protected void prepareCommunication() throws IOException {
 
-		if (mOutputStream != null && mInputStream != null)
+		if (mOutputStream != null && mInputStream != null) {
 			return;
+		}
 
 		mOutputStream = getSocket().getOutputStream();
 		mInputStream = getSocket().getInputStream();
@@ -202,7 +210,7 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 	@Override
 	protected boolean replyIsGzipped() throws IOException {
 		String encodingHdr = findHeaderValue("Content-Encoding");
-		return (encodingHdr != null && encodingHdr.contains("gzip"));
+		return encodingHdr != null && encodingHdr.contains("gzip");
 	}
 
 	private void sendHttpBody(InputStream is) throws IOException {
@@ -225,21 +233,30 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 		mDataOutputStream.write((line + "\r\n").getBytes());
 	}
 
+	@Override
 	protected void closeTcpConnectionImpl() throws IOException {
 		IOException tmp = null;
 
 		try {
-			if (mInputStream != null) mInputStream.close();
+			if (mInputStream != null) {
+				mInputStream.close();
+			}
 		} catch (IOException e) {
-			if (tmp == null) tmp = e;
+			if (tmp == null) {
+				tmp = e;
+			}
 		} finally {
 			mInputStream = null;
 		}
 
 		try {
-			if (mOutputStream != null) mOutputStream.close();
+			if (mOutputStream != null) {
+				mOutputStream.close();
+			}
 		} catch (IOException e) {
-			if (tmp != null) tmp = e;
+			if (tmp != null) {
+				tmp = e;
+			}
 		} finally {
 			mOutputStream = null;
 		}
@@ -247,16 +264,18 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 		mDataOutputStream = null;
 		mDataInputStream = null;
 
-		if (tmp != null)
+		if (tmp != null) {
 			throw tmp;
+		}
 	}
 
 	private int getContentLength() throws CommunicationException {
 
 		String lengthHdr = findHeaderValue("Content-Length");
 
-		if (lengthHdr == null)
+		if (lengthHdr == null) {
 			throw new CommunicationException("No Content-Length header found");
+		}
 
 		return parseContentLengthHeader(lengthHdr);
 	}
@@ -271,9 +290,11 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 	}
 
 	private String findHeaderValue(String hdrField) {
-		for (String hdr : mReceivedHeaders.keySet())
-			if (hdr.equalsIgnoreCase(hdrField))
+		for (String hdr : mReceivedHeaders.keySet()) {
+			if (hdr.equalsIgnoreCase(hdrField)) {
 				return mReceivedHeaders.get(hdr);
+			}
+		}
 
 		return null;
 	}
@@ -285,10 +306,12 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 
 		mReceivedHeaders.clear();
 
-		while ((line = mDataInputStream.readLine()) != null && line.length() > 0) {
-			String fields[] = line.split(":", 2);
-			if (fields.length < 2)
+		while ((mDataInputStream.readLine()) != null && line.length() > 0) {
+			line = mDataInputStream.readLine();
+			String[] fields = line.split(":", 2);
+			if (fields.length < 2) {
 				throw new CommunicationException("Invalid Header Received: "  + line);
+			}
 
 			// trim a bit
 			fields[0] = fields[0].replaceAll("^\\s+", "");
@@ -299,32 +322,37 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 			mReceivedHeaders.put(fields[0], fields[1]);
 		}
 
-		if (line == null)
+		if (line == null) {
 			throw new CommunicationException("Unexpected EOF reached");
+		}
 	}
 
 	private StatusLine readStatusLine() throws CommunicationException, IOException {
 		StatusLine ret = new StatusLine();
 		String line = mDataInputStream.readLine();
-		if (line == null)
+		if (line == null) {
 			throw new CommunicationException("No status line received");
+		}
 
-		String fields[] = line.split(" ", 3);
-		if (fields.length < 2)
+		String[] fields = line.split(" ", 3);
+		if (fields.length < 2) {
 			throw new CommunicationException("Bad status line received");
+		}
 		String proto = fields[0];
 
-		if (!proto.equals("HTTP/1.1"))
+		if (!proto.equals("HTTP/1.1")) {
 			throw new  CommunicationException("Communication not HTTP/1.1");
+		}
 
 		try {
-			ret.statusCode = Integer.parseInt(fields[1]);
+			ret.mStatusCode = Integer.parseInt(fields[1]);
 		} catch (NumberFormatException e) {
 			throw new CommunicationException("Bad status code received");
 		}
 
-		if (fields.length == 3)
-			ret.reason = fields[2];
+		if (fields.length == 3) {
+			ret.mReason = fields[2];
+		}
 
 		return ret;
 	}
@@ -337,13 +365,13 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 	}
 
 	private void checkStatusLine(StatusLine status) throws CommunicationException {
-		if (status.statusCode != 200) {
+		if (status.mStatusCode != 200) {
 			IfmapJLog.warn("HTTP Status Code: "
-					+ status.statusCode + " "
-					+ status.reason);
+					+ status.mStatusCode + " "
+					+ status.mReason);
 			throw new CommunicationException("HTTP Status Code: "
-					+ status.statusCode + " "
-					+ status.reason);
+					+ status.mStatusCode + " "
+					+ status.mReason);
 		}
 	}
 
@@ -370,8 +398,9 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 
 		while (read < length) {
 			ret = is.read(mBuffer, read + off, length - read);
-			if (ret == -1)
+			if (ret == -1) {
 				throw new IOException("Stream exception");
+			}
 			read += ret;
 		}
 	}
@@ -391,13 +420,14 @@ class JavaCommunicationHandler extends AbstractCommunicationHandler {
 	}
 
 	private void allocateBuffer(int newLength, boolean copy) {
-		byte tmp[];
+		byte[] tmp;
 		if (newLength > mBuffer.length) {
 			tmp = mBuffer;
 			mBuffer = new byte[newLength];
 
-			if (copy)
+			if (copy) {
 				System.arraycopy(tmp, 0, mBuffer, 0, tmp.length);
+			}
 		}
 	}
 }

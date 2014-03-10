@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,10 +37,6 @@
  * #L%
  */
 package de.hshannover.f4.trust.ifmapj.exception;
-
-import de.hshannover.f4.trust.ifmapj.channel.ARC;
-import de.hshannover.f4.trust.ifmapj.channel.SSRC;
-import de.hshannover.f4.trust.ifmapj.messages.PollResult;
 
 /**
  * Exception to be thrown if a MAPS replied with an ErrorResult to any of the
@@ -77,7 +73,6 @@ public class IfmapErrorResult extends Exception {
 	 *
 	 * @param errCode
 	 * @param errStr
-	 * @throws NullPointerException if errStr is null
 	 */
 	public IfmapErrorResult(IfmapErrorCode errCode, String errStr) {
 		this(errCode, errStr, null);
@@ -85,8 +80,9 @@ public class IfmapErrorResult extends Exception {
 
 	public IfmapErrorResult(IfmapErrorCode errCode, String errStr, String name) {
 
-		if (errStr == null)
+		if (errStr == null) {
 			throw new NullPointerException("errStr is not allowed to be null");
+		}
 
 		mErrorCode = errCode;
 		mErrorString = errStr;
@@ -105,9 +101,10 @@ public class IfmapErrorResult extends Exception {
 		return mName;
 	}
 
+	@Override
 	public String toString() {
 		return String.format("error{%s, %s%s}",
 				getErrorCode(), getErrorString(),
-				(mName != null) ? ", name=" + mName : "");
+				mName != null ? ", name=" + mName : "");
 	}
 }

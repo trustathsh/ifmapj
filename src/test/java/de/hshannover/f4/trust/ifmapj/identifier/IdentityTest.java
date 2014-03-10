@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,10 +44,6 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-import de.hshannover.f4.trust.ifmapj.identifier.Identity;
-import de.hshannover.f4.trust.ifmapj.identifier.IdentityType;
-
 /**
  * Trivial tests for {@link Identity} class.
  *
@@ -55,9 +51,9 @@ import de.hshannover.f4.trust.ifmapj.identifier.IdentityType;
  *
  */
 public class IdentityTest {
-	public String ad = "de.fhhannover.inform.trust";
-	public String name = "publisherid:number";
-	public String otd = "vendorid:definition";
+	public String mAd = "de.fhhannover.inform.trust";
+	public String mName = "publisherid:number";
+	public String mOtd = "vendorid:definition";
 
 	@Test
 	public void testIdentity() {
@@ -69,11 +65,11 @@ public class IdentityTest {
 		assertNull(id.getOtherTypeDefinition());
 		assertNull(id.getType());
 
-		id = Identifiers.createIdentity(IdentityType.userName, name, ad, otd);
+		id = Identifiers.createIdentity(IdentityType.userName, mName, mAd, mOtd);
 
-		assertEquals(ad, id.getAdministrativeDomain());
-		assertEquals(name, id.getName());
-		assertEquals(otd, id.getOtherTypeDefinition());
+		assertEquals(mAd, id.getAdministrativeDomain());
+		assertEquals(mName, id.getName());
+		assertEquals(mOtd, id.getOtherTypeDefinition());
 		assertEquals(IdentityType.userName, id.getType());
 	}
 

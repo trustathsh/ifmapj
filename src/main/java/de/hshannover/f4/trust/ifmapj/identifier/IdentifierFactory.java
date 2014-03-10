@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,7 @@ import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
  * @deprecated
  * {@link Identifiers} class should be used to construct standard identifiers.
  */
+@Deprecated
 public interface IdentifierFactory {
 
 	/**
@@ -59,7 +60,7 @@ public interface IdentifierFactory {
 	 * transformAndAddIdentifier
 	 * @return the new {@link AccessRequest} instance
 	 */
-	public AccessRequest createAr();
+	AccessRequest createAr();
 
 
 	/**
@@ -70,7 +71,7 @@ public interface IdentifierFactory {
 	 * @param name the name of the access-request
 	 * @return the new {@link AccessRequest} instance
 	 */
-	public AccessRequest createAr(String name);
+	AccessRequest createAr(String name);
 
 
 	/**
@@ -81,7 +82,7 @@ public interface IdentifierFactory {
 	 * @param admDom the administrative-domain of the access-request
 	 * @return the new {@link AccessRequest} instance
 	 */
-	public AccessRequest createAr(String name, String admDom);
+	AccessRequest createAr(String name, String admDom);
 
 
 	/**
@@ -90,7 +91,7 @@ public interface IdentifierFactory {
 	 *
 	 * @return the new {@link Device} instance
 	 */
-	public Device createDev();
+	Device createDev();
 
 
 	/**
@@ -99,7 +100,7 @@ public interface IdentifierFactory {
 	 * @param name the name of the device identifier
 	 * @return the new {@link Device} instance
 	 */
-	public Device createDev(String name);
+	Device createDev(String name);
 
 
 	/**
@@ -109,7 +110,7 @@ public interface IdentifierFactory {
 	 *
 	 * @return the new {@link Identity} instance
 	 */
-	public Identity createIdentity();
+	Identity createIdentity();
 
 
 	/**
@@ -119,7 +120,7 @@ public interface IdentifierFactory {
 	 * @param name the name of the identity identifier
 	 * @return the new {@link Identity} instance
 	 */
-	public Identity createIdentity(IdentityType type, String name);
+	Identity createIdentity(IdentityType type, String name);
 
 
 	/**
@@ -130,7 +131,7 @@ public interface IdentifierFactory {
 	 * @param admDom the administrative-domain of the identity identifier
 	 * @return the new {@link Identity} instance
 	 */
-	public Identity createIdentity(IdentityType type, String name, String admDom);
+	Identity createIdentity(IdentityType type, String name, String admDom);
 
 
 	/**
@@ -144,7 +145,7 @@ public interface IdentifierFactory {
 	 * @param otherTypeDef vendor specific {@link String}
 	 * @return the new {@link Identity} instance
 	 */
-	public Identity createIdentity(IdentityType type, String name, String admDom,
+	Identity createIdentity(IdentityType type, String name, String admDom,
 			String otherTypeDef);
 
 	/**
@@ -157,7 +158,7 @@ public interface IdentifierFactory {
 	 * @param otherTypeDef vendor specific {@link String}
 	 * @return the new {@link Identity} instance
 	 */
-	public Identity createIdentity(String name, String admDom, String otherTypeDef);
+	Identity createIdentity(String name, String admDom, String otherTypeDef);
 
 	/**
 	 * Create an extended identity identifier.
@@ -166,7 +167,7 @@ public interface IdentifierFactory {
 	 * @return the new {@link Identity} instance
 	 * @throws MarshalException if the document can't be handled
 	 */
-	public Identity createIdentity(Document extendedIdentifier) throws MarshalException;
+	Identity createIdentity(Document extendedIdentifier) throws MarshalException;
 
 	/**
 	 * Create an ip-address identifier for IPv4. You MUST set its value with
@@ -174,7 +175,7 @@ public interface IdentifierFactory {
 	 *
 	 * @return the new ip-address identifier
 	 */
-	public IpAddress createIp4();
+	IpAddress createIp4();
 
 
 	/**
@@ -183,7 +184,7 @@ public interface IdentifierFactory {
 	 * @param value a {@link String} that represents a valid IPv4 address
 	 * @return the new ip-address identifier
 	 */
-	public IpAddress createIp4(String value);
+	IpAddress createIp4(String value);
 
 	/**
 	 * Create an ip-address identifier for IPv4 with the given value and the
@@ -193,7 +194,7 @@ public interface IdentifierFactory {
 	 * @param admDom the administrative-domain
 	 * @return the new ip-address identifier
 	 */
-	public IpAddress createIp4(String value, String admDom);
+	IpAddress createIp4(String value, String admDom);
 
 	/**
 	 * Create an ip-address identifier for IPv6. You MUST set its value with
@@ -201,7 +202,7 @@ public interface IdentifierFactory {
 	 *
 	 * @return the new ip-address identifier
 	 */
-	public IpAddress createIp6();
+	IpAddress createIp6();
 
 
 	/**
@@ -210,7 +211,7 @@ public interface IdentifierFactory {
 	 * @param value a {@link String} that represents a valid IPv6 address
 	 * @return the new ip-address identifier
 	 */
-	public IpAddress createIp6(String value);
+	IpAddress createIp6(String value);
 
 	/**
 	 * Create an ip-address identifier for IPv6 with the given parameters.
@@ -219,7 +220,7 @@ public interface IdentifierFactory {
 	 * @param admDom the administrative-domain
 	 * @return the new ip-address identifier
 	 */
-	public IpAddress createIp6(String value, String admDom);
+	IpAddress createIp6(String value, String admDom);
 
 
 	/**
@@ -230,7 +231,7 @@ public interface IdentifierFactory {
 	 * @param admDom the administrative-domain
 	 * @return the new ip-address identifier
 	 */
-	public IpAddress createIp(IpAddressType type, String value, String admDom);
+	IpAddress createIp(IpAddressType type, String value, String admDom);
 
 
 	/**
@@ -239,7 +240,7 @@ public interface IdentifierFactory {
 	 *
 	 * @return the new mac-address identifier
 	 */
-	public MacAddress createMac();
+	MacAddress createMac();
 
 
 	/**
@@ -248,7 +249,7 @@ public interface IdentifierFactory {
 	 * @param value a {@link String} that represents a valid MAC address (lower case)
 	 * @return the new mac-address identifier
 	 */
-	public MacAddress createMac(String value);
+	MacAddress createMac(String value);
 
 
 	/**
@@ -258,5 +259,5 @@ public interface IdentifierFactory {
 	 * @param admDom the administrative-domain
 	 * @return the new mac-address identifier
 	 */
-	public MacAddress createMac(String value, String admDom);
+	MacAddress createMac(String value, String admDom);
 }

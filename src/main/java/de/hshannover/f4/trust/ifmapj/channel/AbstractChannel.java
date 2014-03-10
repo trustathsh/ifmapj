@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,24 +123,27 @@ abstract class AbstractChannel implements IfmapChannel {
 	 * @param url
 	 * @param user
 	 * @param pass
-	 * @param ks the keystore managers to be used
-	 * @param ts the truststore managers to be used
+	 * @param kms the keystore managers to be used
+	 * @param tms the truststore managers to be used
 	 * @throws InitializationException
 	 */
 	private AbstractChannel(String url, String user, String pass, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException  {
 
-		if (url == null)
+		if (url == null) {
 			throw new InitializationException("URL not allowed to be null");
+		}
 
 		// check only trustmanager
-		if (tms == null)
-			throw new InitializationException("keystore and truststore need " +
-					"to be set");
+		if (tms == null) {
+			throw new InitializationException("keystore and truststore need "
+					+ "to be set");
+		}
 
 		// If basic authentication  is used, make sure user and pass are set
-		if ((user != null && pass == null) || (user == null && pass != null))
+		if (user != null && pass == null || user == null && pass != null) {
 			throw new InitializationException("One basic auth parameter is null");
+		}
 
 
 		mUrlStr = url;
@@ -182,20 +185,24 @@ abstract class AbstractChannel implements IfmapChannel {
 
 	@Override
 	public final Result genericRequestWithSessionId(Request req) throws IfmapErrorResult, IfmapException {
-		if (getSessionId() == null)
+		if (getSessionId() == null) {
 			throw new IfmapException("no session-id", "session-id not set for channel");
+		}
 		req.setSessionId(getSessionId());
 		return genericRequest(req);
 	}
 
 	@Override
 	public final Result genericRequest(Request req) throws IfmapErrorResult, IfmapException {
-		Document docReq, docRes;
-		Element elBody, content;
+		Document docReq;
+		Document docRes;
+		Element elBody;
+		Element content;
 		RequestHandler<? extends Request> reqhandler = Requests.getHandlerFor(req);
 
-		if (reqhandler == null)
+		if (reqhandler == null) {
 			throw new MarshalException("No handler for " + req.getClass());
+		}
 
 
 		docReq = mDocumentBuilder.newDocument();
@@ -227,30 +234,35 @@ abstract class AbstractChannel implements IfmapChannel {
 		try {
 			return mDocumentBuilder.parse(is);
 		} catch (Exception e) { // catchall, not nice but we don't do anything special
-			IfmapJLog.error("Parsing Exception occurred [" + e.getMessage() +"]");
+			IfmapJLog.error("Parsing Exception occurred [" + e.getMessage() + "]");
 			throw new UnmarshalException(e.getMessage());
 		}
 	}
 
 	private Element findResponseElement(Document doc) throws UnmarshalException {
-		Element env, body, response;
+		Element env;
+		Element body;
+		Element response;
 		env = DomHelpers.findElementInChildren(doc, IfmapStrings.SOAP_ENV_EL_NAME,
 				IfmapStrings.SOAP_ENV_NS_URI);
 
-		if (env == null)
+		if (env == null) {
 			throw new UnmarshalException("Could not find SOAP Envelope");
+		}
 
 		body = DomHelpers.findElementInChildren(env, IfmapStrings.SOAP_BODY_EL_NAME,
 				IfmapStrings.SOAP_ENV_NS_URI);
 
-		if (body == null)
+		if (body == null) {
 			throw new UnmarshalException("Could not find SOAP Body");
+		}
 
 		response = DomHelpers.findElementInChildren(body,
 				IfmapStrings.RESPONSE_EL_NAME, IfmapStrings.BASE_NS_URI);
 
-		if (response == null)
+		if (response == null) {
 			throw new UnmarshalException("Could not find IF-MAP response element");
+		}
 
 		return response;
 	}
@@ -311,15 +323,16 @@ abstract class AbstractChannel implements IfmapChannel {
 		// of the other sides certificate
 		if (verify != null &&  verify.equals("false")) {
 			tms = getTrustAllKeystore();
-		} else if (verify == null || (verify != null && verify.equals("true"))) {
+		} else if (verify == null || verify != null && verify.equals("true")) {
 			// use the given tms
 		} else {
-			throw new InitializationException("Bad value for " +
-					VERIFY_PEER_CERT_PROPERTY +  " property. Expected: true|false");
+			throw new InitializationException("Bad value for "
+					+ VERIFY_PEER_CERT_PROPERTY +  " property. Expected: true|false");
 		}
 
-		if (!isBasicAuth() && kms == null)
+		if (!isBasicAuth() && kms == null) {
 			throw new InitializationException("certificate-based auth needs a KeyManager");
+		}
 
 
 		try {
@@ -335,7 +348,7 @@ abstract class AbstractChannel implements IfmapChannel {
 	}
 
 	private TrustManager[] getTrustAllKeystore() {
-		return new TrustManager[] { new TrustAllManager() };
+		return new TrustManager[] {new TrustAllManager() };
 	}
 
 	private HostnameVerifier initHostnameVerifier() {
@@ -397,8 +410,8 @@ abstract class AbstractChannel implements IfmapChannel {
 			InetAddress[] hostIps;
 			InetAddress[] certIps;
 			String name = null;
-			String certCN = null;
-			Certificate certs[];
+			String certCn = null;
+			Certificate[] certs;
 			int idx;
 
 			try {
@@ -407,42 +420,50 @@ abstract class AbstractChannel implements IfmapChannel {
 				return false;
 			}
 
-			if (certs.length == 0)
+			if (certs.length == 0) {
 				return false;
+			}
 
-			if (!(certs[0] instanceof X509Certificate))
+			if (!(certs[0] instanceof X509Certificate)) {
 				return false;
+			}
 
-			cert0 = (X509Certificate)certs[0];
+			cert0 = (X509Certificate) certs[0];
 			principal = cert0.getSubjectX500Principal();
 
-			if (principal == null)
+			if (principal == null) {
 				return false;
+			}
 
 			name = principal.getName();
 
 			// assuming it always does
-			if (!name.startsWith("CN="))
+			if (!name.startsWith("CN=")) {
 				return false;
+			}
 
 			idx = name.indexOf(',');
 
-			if (idx < 0 || idx < 3)
+			if (idx < 0 || idx < 3) {
 				return false;
+			}
 
-			certCN = name.substring(3, idx);
+			certCn = name.substring(3, idx);
 
 			try {
 				hostIps = InetAddress.getAllByName(hostname);
-				certIps = InetAddress.getAllByName(certCN);
+				certIps = InetAddress.getAllByName(certCn);
 			} catch (UnknownHostException e) {
 				return false;
 			}
 
-			for (InetAddress hostIp : hostIps)
-				for (InetAddress certIp : certIps)
-					if (hostIp.equals(certIp))
-							return true;
+			for (InetAddress hostIp : hostIps) {
+				for (InetAddress certIp : certIps) {
+					if (hostIp.equals(certIp)) {
+						return true;
+					}
+				}
+			}
 
 			return false;
 		}

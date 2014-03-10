@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,9 +45,6 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import de.hshannover.f4.trust.ifmapj.identifier.Device;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
-
 /**
  * Trivial tests for {@link Device} class.
  *
@@ -55,32 +52,31 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
  *
  */
 public class DeviceTest {
-	public String name = "publisherid:number";
+	public String mName = "publisherid:number";
 
 	@Test
 	public void testDevice() {
 		Device dev = Identifiers.createDev(null);
 		assertNotNull(dev);
 		assertNull(dev.getName());
-		dev = Identifiers.createDev(name);
-		assertEquals(name, dev.getName());
+		dev = Identifiers.createDev(mName);
+		assertEquals(mName, dev.getName());
 	}
 
 	@Test
 	public void testDeviceToString() {
 		Device dev = Identifiers.createDevRandom();
-		assertTrue(dev.getName().matches("[a-f0-9]{32}") ||
-				dev.getName().matches("[A-Za-z0-9+/=]{24}"));
+		assertTrue(dev.getName().matches("[a-f0-9]{32}") ||	dev.getName().matches("[A-Za-z0-9+/=]{24}"));
 		dev = Identifiers.createDev("abc");
 		assertEquals("dev{abc}", dev.toString());
 	}
 
 	@Test
-	public void testDeviceWithRandomUUID() {
-		Device dev = Identifiers.createDevRandomUUID();
+	public void testDeviceWithRandomUuid() {
+		Device dev = Identifiers.createDevRandomUuid();
 		assertNotNull(dev);
-		String regex_uuid = ("[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}");
-		assertTrue(dev.getName().matches(regex_uuid));
+		String regexUuid = "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}";
+		assertTrue(dev.getName().matches(regexUuid));
 	}
 
 	@Test

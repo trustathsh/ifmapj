@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,13 +52,6 @@ import util.DomHelpers;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.messages.Request;
-import de.hshannover.f4.trust.ifmapj.messages.RequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.Result;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeRequest;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeRequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeRequestImpl;
-import de.hshannover.f4.trust.ifmapj.messages.SubscribeUpdate;
 
 /**
  * We rely on the {@link SearchRequestHandlerTest} in order to make sure the
@@ -104,7 +97,7 @@ public class SubscribeRequestHandlerTest {
 		assertEquals(1, ret.getChildNodes().getLength());
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementNullSessionId() throws MarshalException {
 		Request req = makeSimpleRequest();
 		Document doc = sDocBuilder.newDocument();
@@ -112,7 +105,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementEmptySessionId() throws MarshalException {
 		Request req = makeSimpleRequest();
 		req.setSessionId("");
@@ -121,7 +114,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWrongType() throws MarshalException {
 		Request req = new SubscribeRequestImpl();
 		req.setSessionId("1234");
@@ -130,7 +123,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementNoSubscribeElements() throws MarshalException {
 		Request req = makeRequest();
 		req.setSessionId("1234");
@@ -139,7 +132,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementEmptyNameUpdate() throws MarshalException {
 		SubscribeRequest req = makeRequest();
 		req.addSubscribeElement(TestHelpers.subscribeUpdate(""));
@@ -149,7 +142,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementNullNameUpdate() throws MarshalException {
 		SubscribeRequest req = makeRequest();
 		req.addSubscribeElement(TestHelpers.subscribeUpdate(null));
@@ -159,7 +152,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementEmptyNameDelete() throws MarshalException {
 		SubscribeRequest req = makeRequest();
 		req.setSessionId("1234");
@@ -169,7 +162,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementNullNameDelete() throws MarshalException {
 		SubscribeRequest req = makeRequest();
 		req.setSessionId("1234");
@@ -189,7 +182,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(res);	// This handler returns null on success
 	}
 
-	@Test(expected=IfmapErrorResult.class)
+	@Test(expected = IfmapErrorResult.class)
 	public void testFromElementWithErrorResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -200,7 +193,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNoResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -208,7 +201,7 @@ public class SubscribeRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWrongResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");

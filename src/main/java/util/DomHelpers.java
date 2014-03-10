@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -82,62 +82,65 @@ import de.hshannover.f4.trust.ifmapj.messages.NamespaceDeclarationHolder;
  * @author aw
  * @author jk
  */
-public class DomHelpers {
+public final class DomHelpers {
 
-	private static final DocumentBuilderFactory sDocumentBuilderFactory;
-	private static final DocumentBuilder sDocumentBuilder;
-	private static final TransformerFactory sTransformerFactory;
+	private static final DocumentBuilderFactory DOCUMENT_BUILDER_FACTORY;
+	private static final DocumentBuilder DOCUMENT_BUILDER;
+	private static final TransformerFactory TRANSFORMER_FACTORY;
 
 	static {
-		sTransformerFactory = TransformerFactory.newInstance();
-		sDocumentBuilderFactory = DocumentBuilderFactory.newInstance();
-		sDocumentBuilderFactory.setNamespaceAware(true);
-		sDocumentBuilder = newDocumentBuilder();
+		TRANSFORMER_FACTORY = TransformerFactory.newInstance();
+		DOCUMENT_BUILDER_FACTORY = DocumentBuilderFactory.newInstance();
+		DOCUMENT_BUILDER_FACTORY.setNamespaceAware(true);
+		DOCUMENT_BUILDER = newDocumentBuilder();
 	}
 
-	public static final DocumentBuilder newDocumentBuilder() {
+	private DomHelpers() { }
+
+	public static DocumentBuilder newDocumentBuilder() {
 		try {
-			return sDocumentBuilderFactory.newDocumentBuilder();
+			return DOCUMENT_BUILDER_FACTORY.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			IfmapJLog.error(e.getMessage());
 			throw new RuntimeException(e.getMessage());
 		}
 	}
 
-	public static final Element createNonNsElement(Document doc, String name) {
+	public static Element createNonNsElement(Document doc, String name) {
 		return doc.createElementNS(null, name);
 	}
 
-	public static final void addAttribute(Element el, String name, String val) {
+	public static void addAttribute(Element el, String name, String val) {
 		el.setAttributeNS(null, name, val);
 	}
 
-	public static final void addXmlNamespaceDeclarations(NamespaceDeclarationHolder nsh,
+	public static void addXmlNamespaceDeclarations(NamespaceDeclarationHolder nsh,
 			Element to) {
 
 		for (Pair<String, String> nsDecl : nsh.getNamespaceDeclarations()) {
 			String name = "xmlns";
 			String value;
-			if (nsDecl.first.length() > 0)
-				name += ":" + nsDecl.first;
-			value = nsDecl.second;
+			if (nsDecl.mFirst.length() > 0) {
+				name += ":" + nsDecl.mFirst;
+			}
+			value = nsDecl.mSecond;
 			to.setAttributeNS("http://www.w3.org/2000/xmlns/", name, value);
 		}
 	}
 
-	public static final String makeRequestFQName(String name) {
+	public static String makeRequestFqName(String name) {
 		return IfmapStrings.BASE_PREFIX + ":" + name;
 	}
 
-	public static final boolean elementMatches(Element el, String elname) {
+	public static boolean elementMatches(Element el, String elname) {
 		return elementMatches(el, elname, IfmapStrings.NO_URI);
 	}
 
-	public static final boolean elementMatches(Element e, String name, String uri) {
+	public static boolean elementMatches(Element e, String name, String uri) {
 		// i'm sorry
-		return (name.equals(e.getLocalName())
-				&& ((uri == null && e.getNamespaceURI() == null)
-				|| (uri != null && uri.equals(e.getNamespaceURI()))));
+		return name.equals(e.getLocalName())
+				&& (uri == null && e.getNamespaceURI() == null
+				|| uri != null && uri.equals(e.getNamespaceURI()));
 	}
 
 	/**
@@ -146,21 +149,22 @@ public class DomHelpers {
 	 * @param e
 	 * @return
 	 */
-	public static final List<Element> getChildElements(Element e) {
+	public static List<Element> getChildElements(Element e) {
 
 		List<Element> ret = new ArrayList<Element>();
 		NodeList children = e.getChildNodes();
 
 		for (int i = 0; i < children.getLength(); i++) {
 			Node child = children.item(i);
-			if (child.getNodeType()  == Node.ELEMENT_NODE)
-				ret.add((Element)child);
+			if (child.getNodeType()  == Node.ELEMENT_NODE) {
+				ret.add((Element) child);
+			}
 		}
 
 		return ret;
 	}
 
-	public static final Element findElementInChildren(Node node, String name,
+	public static Element findElementInChildren(Node node, String name,
 			String uri) {
 		NodeList children = node.getChildNodes();
 		Element ret = null;
@@ -168,11 +172,12 @@ public class DomHelpers {
 			Node n = children.item(i);
 
 			// our interest is in element nodes only
-			if (!(n.getNodeType() == Node.ELEMENT_NODE))
+			if (!(n.getNodeType() == Node.ELEMENT_NODE)) {
 				continue;
+			}
 
-			if (elementMatches((Element)n, name, uri)) {
-				ret = (Element)n;
+			if (elementMatches((Element) n, name, uri)) {
+				ret = (Element) n;
 				break;
 			}
 		}
@@ -186,8 +191,8 @@ public class DomHelpers {
 	 * @param child the {@link Element} instnace to be deep-copied
 	 * @return a new {@link Document} instance with a deep-copied child appended
 	 */
-	public static final Document deepCopy(Element child) {
-		Document mdDoc = sDocumentBuilder.newDocument();
+	public static Document deepCopy(Element child) {
+		Document mdDoc = DOCUMENT_BUILDER.newDocument();
 		Element el = (Element) mdDoc.importNode(child, true);
 		mdDoc.appendChild(el);
 		return mdDoc;
@@ -201,12 +206,12 @@ public class DomHelpers {
 	 * @return
 	 * @throws MarshalException
 	 */
-	public static final InputStream toInputStream(Document doc) throws MarshalException {
+	public static InputStream toInputStream(Document doc) throws MarshalException {
 
 		Transformer trans;
 
 		try {
-			trans = sTransformerFactory.newTransformer();
+			trans = TRANSFORMER_FACTORY.newTransformer();
 		} catch (TransformerConfigurationException e) {
 			IfmapJLog.error("Oh oh.... [" + e.getMessage() + "]");
 			throw new MarshalException(e.getMessage());
@@ -247,13 +252,13 @@ public class DomHelpers {
 	 * @return namespace ns0 stripped and encoded XML string
 	 * @throws MarshalException
 	 */
-	public static final String prepareExtendedIdentifier(Document doc) throws MarshalException {
+	public static String prepareExtendedIdentifier(Document doc) throws MarshalException {
 
 		Transformer tf = null;
 		String res = null;
 
 		try {
-			tf = sTransformerFactory.newTransformer();
+			tf = TRANSFORMER_FACTORY.newTransformer();
 		} catch (TransformerConfigurationException e) {
 			IfmapJLog.error("Oh oh.... [" + e.getMessage() + "]");
 			throw new MarshalException(e.getMessage());
@@ -289,7 +294,7 @@ public class DomHelpers {
 		}
 
 		try {
-			res = cxml.toCanonicalXML2(reader, inputSource, true);
+			res = cxml.toCanonicalXml2(reader, inputSource, true);
 		} catch (Exception e) {
 			// hmm... toCanonicalXML throws Exception...
 			IfmapJLog.error("Oh oh.... [" + e.getMessage() + "]");
@@ -303,11 +308,12 @@ public class DomHelpers {
 
 		String ret = input;
 
-		String unwanted[] =  { "&",     "<",    ">",   "\"",    "'" };
-		String replaceBy[] = { "&amp;", "&lt;", "&gt;", "&quot;", "&apos;" };
+		String []unwanted =  {"&",     "<",    ">",   "\"",    "'"};
+		String []replaceBy = {"&amp;", "&lt;", "&gt;", "&quot;", "&apos;"};
 
-		for (int i = 0; i < unwanted.length; i++)
+		for (int i = 0; i < unwanted.length; i++) {
 			ret = ret.replace(unwanted[i], replaceBy[i]);
+		}
 
 		return ret;
 	}
@@ -328,17 +334,19 @@ public class DomHelpers {
 
 		n = doc.getFirstChild();
 
-		if (n.getNodeType() != Node.ELEMENT_NODE)
+		if (n.getNodeType() != Node.ELEMENT_NODE) {
 			throw new RuntimeException("No element");
+		}
 
-		el = (Element)n;
+		el = (Element) n;
 
 		prefix = el.getPrefix();
 
-		if (prefix != null && prefix.length() > 0)
+		if (prefix != null && prefix.length() > 0) {
 			el.setPrefix(null);
-		else
+		} else {
 			prefix = "";
+		}
 
 		dropNamespaceDecls(el);
 
@@ -350,13 +358,15 @@ public class DomHelpers {
 		List<Attr> toDrop = new ArrayList<Attr>();
 
 		for (int i = 0; i < nnm.getLength(); i++) {
-			Attr attr = (Attr)nnm.item(i);
-			if (attr.getName().startsWith("xmlns:"))
+			Attr attr = (Attr) nnm.item(i);
+			if (attr.getName().startsWith("xmlns:")) {
 				toDrop.add(attr);
+			}
 		}
 
-		for (Attr attr : toDrop)
+		for (Attr attr : toDrop) {
 			nnm.removeNamedItemNS(attr.getNamespaceURI(), attr.getLocalName());
+		}
 	}
 
 	/**
@@ -376,27 +386,26 @@ public class DomHelpers {
 		for (int i = 0; i < nl.getLength(); i++) {
 			Node n = nl.item(i);
 
-			if (n.getNodeType() != Node.ELEMENT_NODE)
+			if (n.getNodeType() != Node.ELEMENT_NODE) {
 				continue;
+			}
 
 			localPrefix = n.getPrefix();
 
 			if (localPrefix != null && localPrefix.length() > 0) {
 
 				if (!localPrefix.equals(prefix)) {
-					IfmapJLog.warn("Extended Identifier: " +
-								"Multiple namespaces in extended identifer used." +
-								"IfmapJ thinks this is not a wise idea. Sorry!");
-					throw new MarshalException("Extended Identifier: " +
-								"Multiple namespaces in extended identifer used." +
-								"IfmapJ thinks this is not a wise idea. Sorry!");
+					IfmapJLog.warn("Extended Identifier: Multiple namespaces in extended identifer used."
+							+ "IfmapJ thinks this is not a wise idea. Sorry!");
+					throw new MarshalException("Extended Identifier: Multiple namespaces in extended identifer used."
+							+ "IfmapJ thinks this is not a wise idea. Sorry!");
 				}
 
 				n.setPrefix(null);
 			}
 
-			removePrefixFromChildren((Element)n, prefix);
-			dropNamespaceDecls((Element)n);
+			removePrefixFromChildren((Element) n, prefix);
+			dropNamespaceDecls((Element) n);
 
 		}
 	}
@@ -409,7 +418,7 @@ public class DomHelpers {
 	 * @throws SAXException
 	 * @throws IOException
 	 */
-	public static final Document toDocument(InputStream is) throws MarshalException {
+	public static Document toDocument(InputStream is) throws MarshalException {
 		try {
 			return newDocumentBuilder().parse(is);
 		} catch (SAXException e) {
@@ -429,8 +438,7 @@ public class DomHelpers {
 	 * @return {@link Document} containg the XML data
 	 * @throws MarshalException
 	 */
-	public static final Document toDocument(String s, Charset c)
-			throws MarshalException {
+	public static Document toDocument(String s, Charset c) throws MarshalException {
 
 		byte[] bytes = c == null ? s.getBytes() : s.getBytes(c);
 		ByteArrayInputStream bais = new ByteArrayInputStream(bytes);

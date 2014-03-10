@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,33 +52,33 @@ import util.Pair;
 public class PairTest {
 
 	@Test
-	public void testDefaultContructor(){
+	public void testDefaultContructor() {
 		Pair<String, String> p = new Pair<String, String>();
 
-		assertEquals(null, p.first);
-		assertEquals(null, p.second);
+		assertEquals(null, p.mFirst);
+		assertEquals(null, p.mSecond);
 	}
 
 	@Test
-	public void testContructorSameTypes(){
+	public void testContructorSameTypes() {
 		String first = "first";
 		String second = "second";
 		Pair<String, String> p;
 
 		p = new Pair<String, String>(first, second);
-		assertEquals(first, p.first);
-		assertEquals(second, p.second);
+		assertEquals(first, p.mFirst);
+		assertEquals(second, p.mSecond);
 	}
 
 	@Test
-	public void testContructorDifferentTypes(){
+	public void testContructorDifferentTypes() {
 		String first = "first";
 		Integer second = new Integer(2);
 		Pair<String, Integer> p;
 
 		p = new Pair<String, Integer>(first, second);
-		assertEquals(first, p.first);
-		assertEquals(second, p.second);
+		assertEquals(first, p.mFirst);
+		assertEquals(second, p.mSecond);
 	}
 
 }

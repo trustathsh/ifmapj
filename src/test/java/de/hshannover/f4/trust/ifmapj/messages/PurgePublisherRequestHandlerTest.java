@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,9 @@
  */
 package de.hshannover.f4.trust.ifmapj.messages;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import javax.xml.parsers.DocumentBuilder;
 
@@ -49,13 +51,6 @@ import org.w3c.dom.Element;
 import de.hshannover.f4.trust.ifmapj.exception.IfmapErrorResult;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.messages.PublishRequestImpl;
-import de.hshannover.f4.trust.ifmapj.messages.PurgePublisherRequest;
-import de.hshannover.f4.trust.ifmapj.messages.PurgePublisherRequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.PurgePublisherRequestImpl;
-import de.hshannover.f4.trust.ifmapj.messages.Request;
-import de.hshannover.f4.trust.ifmapj.messages.RequestHandler;
-import de.hshannover.f4.trust.ifmapj.messages.Result;
 import util.DomHelpers;
 
 public class PurgePublisherRequestHandlerTest {
@@ -89,7 +84,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertEquals("4321", ret.getAttribute("ifmap-publisher-id"));
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementNullSessionId() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
 		req.setPublisherId("4321");
@@ -98,7 +93,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementEmptySessionId() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
 		req.setSessionId("");
@@ -108,7 +103,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementNullPublisherId() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
 		req.setSessionId("1234");
@@ -117,7 +112,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementEmptyPublisherId() throws MarshalException {
 		PurgePublisherRequest req = (PurgePublisherRequest) makeRequest();
 		req.setSessionId("1234");
@@ -127,7 +122,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertNull(ret);
 	}
 
-	@Test(expected=MarshalException.class)
+	@Test(expected = MarshalException.class)
 	public void testToElementWrongType() throws MarshalException {
 		Request req = new PublishRequestImpl();
 		req.setSessionId("1234");
@@ -146,7 +141,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertNull(res);	// This handler returns null on success
 	}
 
-	@Test(expected=IfmapErrorResult.class)
+	@Test(expected = IfmapErrorResult.class)
 	public void testFromElementWithErrorResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -157,7 +152,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementNoResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");
@@ -165,7 +160,7 @@ public class PurgePublisherRequestHandlerTest {
 		assertNull(res);
 	}
 
-	@Test(expected=UnmarshalException.class)
+	@Test(expected = UnmarshalException.class)
 	public void testFromElementWrongResult() throws IfmapErrorResult, UnmarshalException {
 		Document doc = sDocBuilder.newDocument();
 		Element response = doc.createElementNS(IFMAP_URI, "ifmap:response");

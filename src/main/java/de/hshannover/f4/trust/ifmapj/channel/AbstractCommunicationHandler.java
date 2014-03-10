@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,14 +80,17 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 			SSLSocketFactory sslSocketFactory,
 			HostnameVerifier verifier) throws InitializationException {
 
-		if (url == null)
+		if (url == null) {
 			throw new NullPointerException("url is null");
+		}
 
-		if (sslSocketFactory == null)
+		if (sslSocketFactory == null) {
 			throw new NullPointerException("sslSocketFactory is null");
+		}
 
-		if (verifier == null)
+		if (verifier == null) {
 			throw new NullPointerException("verifier is null");
+		}
 
 		try {
 			mUrl = new URL(url);
@@ -96,19 +99,20 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 					+ e.getMessage() + "]");
 		}
 		// fix up the path in case non is given
-		mPath = (mUrl.getPath().length() == 0) ? "/" : mUrl.getPath();
+		mPath = mUrl.getPath().length() == 0 ? "/" : mUrl.getPath();
 
 		// set the port to an appropriate value
-		mPort = (mUrl.getPort() == -1) ? mUrl.getDefaultPort() : mUrl.getPort();
+		mPort = mUrl.getPort() == -1 ? mUrl.getDefaultPort() : mUrl.getPort();
 
 		// check whether we use basicauth
 		mBasicAuth = !(user == null || pass == null);
 
 		// if we do, prepare the Authorization header value
-		if (mBasicAuth)
+		if (mBasicAuth) {
 			mAuthHeaderValue = "Basic " + Base64.encodeToString((user + ":" + pass).getBytes(), false);
-		else
+		} else {
 			mAuthHeaderValue = null;
+		}
 
 		mSocketFactory = sslSocketFactory;
 
@@ -142,8 +146,9 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 				writeGzipHeaders();
 			}
 
-			if (usesBasicAuth())
+			if (usesBasicAuth()) {
 				writeAuthHeader();
+			}
 
 			writeContentLengthHeader(httpBody.available());
 
@@ -151,8 +156,9 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 
 			reply = doActualRequest(httpBody);
 
-			if (replyIsGzipped())
+			if (replyIsGzipped()) {
 				reply = new GZIPInputStream(reply);
+			}
 
 			return reply;
 
@@ -223,9 +229,10 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 		// like the other end...
 		ret.getSession().getPeerCertificates();
 
-		if (!mHostnameVerifier.verify(mUrl.getHost(), ret.getSession()))
+		if (!mHostnameVerifier.verify(mUrl.getHost(), ret.getSession())) {
 			throw new IOException("Hostname Verification failed! "
 					+ "Did you set ifmapj.communication.verifypeerhost?");
+		}
 
 		return ret;
 	}
@@ -312,6 +319,7 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	/* (non-Javadoc)
 	 * @see de.fhhannover.inform.trust.ifmapj.channel.CommunicationHandler#closeTcpConnection()
 	 */
+	@Override
 	public final void closeTcpConnection() throws CommunicationException {
 		IOException tmpException = null;
 		try {
@@ -321,8 +329,9 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 		} finally {
 			try {
 
-				if (mSocket != null)
+				if (mSocket != null) {
 					mSocket.close();
+				}
 
 			} catch (IOException e) {
 				tmpException = e;
@@ -331,8 +340,9 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 			}
 		}
 
-		if (tmpException != null)
+		if (tmpException != null) {
 			throw new CommunicationException(tmpException);
+		}
 	}
 
 	/**
@@ -351,8 +361,9 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		OutputStream os = new GZIPOutputStream(baos);
 
-		while ((next = is.read()) >= 0)
+		while ((next = is.read()) >= 0) {
 			os.write(next);
+		}
 
 		baos.close();
 		os.close();

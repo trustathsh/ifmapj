@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,9 @@ import javax.xml.datatype.DatatypeFactory;
  * @since 0.1.5
  * @author jk
  */
-public class DateHelpers {
+public final class DateHelpers {
+
+	private DateHelpers() { }
 
 	/**
 	 * Formats the current date and time to an ISO-8601 compliant string
@@ -70,21 +72,22 @@ public class DateHelpers {
 	 */
 	public static String getUtcTimeAsIso8601(Calendar cal) {
 		try {
-			if (cal == null)
-				return (DatatypeFactory.newInstance().newXMLGregorianCalendar(
-						new GregorianCalendar(TimeZone.getTimeZone("UTC"))))
+			if (cal == null) {
+				return DatatypeFactory.newInstance().newXMLGregorianCalendar(
+						new GregorianCalendar(TimeZone.getTimeZone("UTC")))
 						.toXMLFormat().replaceAll("\\.[0-9]{3}", "");
+			}
 
 			GregorianCalendar suppliedDateCalendar =
 					new GregorianCalendar(TimeZone.getTimeZone("UTC"));
 			suppliedDateCalendar.setTimeInMillis(cal.getTimeInMillis());
 
-			return (DatatypeFactory.newInstance().newXMLGregorianCalendar(
-					suppliedDateCalendar)).toXMLFormat().replaceAll("\\.[0-9]{3}", "");
+			return DatatypeFactory.newInstance().newXMLGregorianCalendar(
+					suppliedDateCalendar).toXMLFormat().replaceAll("\\.[0-9]{3}", "");
 		} catch (DatatypeConfigurationException e) {
-			SimpleDateFormat XmlDateUtc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-			XmlDateUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
-			return XmlDateUtc.format(Calendar.getInstance());
+			SimpleDateFormat xmlDateUtc = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+			xmlDateUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
+			return xmlDateUtc.format(Calendar.getInstance());
 		}
 	}
 

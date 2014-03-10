@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,8 +65,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void newSession()
-			throws IfmapErrorResult, IfmapException;
+	void newSession() throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send a newSession request to MAPS with the given parameter
@@ -81,8 +80,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void newSession(Integer maxPollResSize)
-			throws IfmapErrorResult, IfmapException;
+	void newSession(Integer maxPollResSize) throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send endSession request to MAPS
@@ -90,7 +88,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void endSession() throws IfmapErrorResult, IfmapException;
+	void endSession() throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send renewSession request to MAPS
@@ -98,8 +96,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void renewSession()
-			throws IfmapErrorResult, IfmapException;
+	void renewSession() throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send purgePublisher request to MAPS in order to purge the MAPCs
@@ -108,7 +105,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void purgePublisher() throws IfmapErrorResult, IfmapException;
+	void purgePublisher() throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send purgePublisher request with the given parameter to MAPS
@@ -118,7 +115,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void purgePublisher(String publisherId) throws IfmapErrorResult, IfmapException;
+	void purgePublisher(String publisherId) throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send a publish request to MAPS.
@@ -127,7 +124,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void publish(PublishRequest req) throws IfmapErrorResult, IfmapException;
+	void publish(PublishRequest req) throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send a subscribe request to the MAPS.
@@ -136,7 +133,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public void subscribe(SubscribeRequest req) throws IfmapErrorResult, IfmapException;
+	void subscribe(SubscribeRequest req) throws IfmapErrorResult, IfmapException;
 
 	/**
 	 * Send a search request to the MAPS
@@ -146,7 +143,7 @@ public interface SSRC extends IfmapChannel {
 	 * @throws IfmapErrorResult
 	 * @throws IfmapException
 	 */
-	public SearchResult search(SearchRequest req) throws IfmapErrorResult, IfmapException;
+	SearchResult search(SearchRequest req) throws IfmapErrorResult, IfmapException;
 
 	/* public void dump(...) throws IOException, IfmapError; */
 
@@ -155,5 +152,5 @@ public interface SSRC extends IfmapChannel {
 	 *
 	 * @return the new {@link ARC}
 	 */
-	public ARC getArc() throws InitializationException;
+	ARC getArc() throws InitializationException;
 }

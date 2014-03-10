@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,6 +59,7 @@ public abstract class IdentifierWithAd implements Identifier {
 	 * @param administrativeDomain
 	 * @deprecated
 	 */
+	@Deprecated
 	public void setAdministrativeDomain(String administrativeDomain) {
 		mAdministrativeDomain = administrativeDomain;
 	}
@@ -70,23 +71,28 @@ public abstract class IdentifierWithAd implements Identifier {
 	@Override
 	public boolean equals(Object o) {
 
-		if (o == null)
+		if (o == null) {
 			return false;
+		}
 
-		if (!(o instanceof IdentifierWithAd))
+		if (!(o instanceof IdentifierWithAd)) {
 			return false;
+		}
 
 		IdentifierWithAd i = (IdentifierWithAd) o;
 
-		if (this == i)
+		if (this == i) {
 			return true;
+		}
 
 		// This is mainly here if both are set to null.
-		if (i.mAdministrativeDomain == mAdministrativeDomain)
+		if (i.mAdministrativeDomain == mAdministrativeDomain) {
 			return true;
+		}
 
-		if (i.mAdministrativeDomain != null && mAdministrativeDomain != null)
+		if (i.mAdministrativeDomain != null && mAdministrativeDomain != null) {
 			return mAdministrativeDomain.equals(i.mAdministrativeDomain);
+		}
 
 		return false;
 	}
@@ -98,9 +104,10 @@ public abstract class IdentifierWithAd implements Identifier {
 	public String toString() {
 		/* make life easier for the subclasses */
 		if (getAdministrativeDomain() == null
-				|| getAdministrativeDomain().length() == 0)
+				|| getAdministrativeDomain().length() == 0) {
 			return "";
-		else
+		} else {
 			return ", " + getAdministrativeDomain();
+		}
 	}
 }

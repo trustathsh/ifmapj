@@ -16,12 +16,12 @@
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
  * 
  * Email: trust@f4-i.fh-hannover.de
- * Website: http://trust.f4.hs-hannover.de
+ * Website: http://trust.f4.hs-hannover.de/
  * 
- * This file is part of ifmapj, version 1.0.0, implemented by the Trust@HsH
+ * This file is part of ifmapj, version 1.0.1, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
- * Copyright (C) 2010 - 2013 Trust@HsH
+ * Copyright (C) 2010 - 2014 Trust@HsH
  * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ public interface IdentifierHandler<T extends Identifier> {
 	 * @return the {@link Element} representation of the given {@link Identifier}.
 	 * @throws MarshalException If some constraints for the {@link Identifier} are not fullfilled.
 	 */
-	public Element toElement(Identifier i, Document doc) throws MarshalException;
+	Element toElement(Identifier i, Document doc) throws MarshalException;
 
 	/**
 	 * Create a {@link Identifier} instance from the given {@link Element}.
@@ -75,11 +75,11 @@ public interface IdentifierHandler<T extends Identifier> {
 	 *	 not fulfilled. <b>Note, if this handler is not responsible for the
 	 *	 given XML, null has to be returned.</b>
 	 */
-	public T fromElement(Element el) throws UnmarshalException;
+	T fromElement(Element el) throws UnmarshalException;
 
 	/**
 	 * @return the {@link Class} object for the {@link Identifier} implementation
 	 *	 this implementation is able to handle.
 	 */
-	public Class<T> handles();
+	Class<T> handles();
 }
