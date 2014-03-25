@@ -34,7 +34,7 @@
 
 	<scm>
 		<url>https://github.com/trustathsh/ifmapj</url>
-		<connection>https://github.com/trustathsh/ifmapj.git</connection>
+		<connection>scm:git:https://github.com/trustathsh/ifmapj.git</connection>
 	</scm>
 
 	<!-- the core developers of the project -->
