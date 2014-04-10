@@ -1,7 +1,8 @@
 ifmapj
 ======
 This package contains an *experimental* IF-MAP library for Java. It eases
-the development of IF-MAP clients. ifmapj supports [IF-MAP 2.0] [1].
+the development of IF-MAP clients (see full [Javadoc][javadoc]).
+ifmapj supports [IF-MAP 2.0] [1].
 
 Development was done by [Hochschule Hannover] [2] (Hannover University of
 Applied Sciences and Arts) within the [ESUKOM] [3] research project.
@@ -123,3 +124,4 @@ Changelog
 [2]: http://trust.f4.hs-hannover.de
 [3]: http://www.esukom.de
 [4]: http://www.apache.org/licenses/LICENSE-2.0.html
+[javadoc]: http://trustathsh.github.io/ifmapj
