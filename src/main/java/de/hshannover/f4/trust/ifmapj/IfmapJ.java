@@ -51,6 +51,8 @@ import de.hshannover.f4.trust.ifmapj.messages.RequestFactory;
 import de.hshannover.f4.trust.ifmapj.messages.Requests;
 import de.hshannover.f4.trust.ifmapj.metadata.StandardIfmapMetadataFactory;
 import de.hshannover.f4.trust.ifmapj.metadata.StandardIfmapMetadataFactoryImpl;
+import de.hshannover.f4.trust.ifmapj.metadata.VendorSpecificMetadataFactory;
+import de.hshannover.f4.trust.ifmapj.metadata.VendorSpecificMetadataFactoryImpl;
 import de.hshannover.f4.trust.ifmapj21.ClockSkewDetector;
 
 
@@ -147,5 +149,15 @@ public final class IfmapJ {
 	 */
 	public static ClockSkewDetector createClockSkewDetector(SSRC ssrc, Device dev) {
 		return ClockSkewDetector.newInstance(ssrc, dev);
+	}
+
+	/**
+	 * Create a {@link VendorSpecificMetadataFactory} instance which can be used
+	 * to create vendor specific metadata documents.
+	 *
+	 * @return a new {@link VendorSpecificMetadataFactory}
+	 */
+	public static VendorSpecificMetadataFactory createVendorSpecificMetadataFactory() {
+		return new VendorSpecificMetadataFactoryImpl();
 	}
 }
