@@ -43,6 +43,9 @@ import javax.net.ssl.TrustManager;
 
 import de.hshannover.f4.trust.ifmapj.channel.SSRC;
 import de.hshannover.f4.trust.ifmapj.channel.SsrcImpl;
+import de.hshannover.f4.trust.ifmapj.channel.ThreadSafeSsrc;
+import de.hshannover.f4.trust.ifmapj.config.BasicAuthConfig;
+import de.hshannover.f4.trust.ifmapj.config.CertAuthConfig;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
 import de.hshannover.f4.trust.ifmapj.identifier.Device;
 import de.hshannover.f4.trust.ifmapj.identifier.IdentifierFactory;
@@ -77,10 +80,35 @@ public final class IfmapJ {
 	 * @param tms TrustManager instances to initialize the {@link SSLContext} with.
 	 * @return a new {@link SSRC} that uses basic authentication
 	 * @throws IOException
+	 * @deprecated use createSsrc(BasicAuthConfig) instead
 	 */
+	@Deprecated
 	public static SSRC createSsrc(String url, String user, String pass, TrustManager[] tms)
 			throws InitializationException {
 		return new SsrcImpl(url, user, pass, tms);
+	}
+
+	/**
+	 * Create a new {@link SSRC} object to operate on the given configuration
+	 * using basic authentication.
+	 *
+	 * @param config the configuration parameter for the new SSRC
+	 * @return a new {@link SSRC} that uses basic authentication
+	 * @throws IOException
+	 */
+	public static SSRC createSsrc(BasicAuthConfig config)
+			throws InitializationException {
+		TrustManager[] trustManagers = IfmapJHelper.getTrustManagers(
+				IfmapJ.class.getResourceAsStream(config.trustStorePath),
+				config.trustStorePassword);
+		SSRC ssrc = new SsrcImpl(
+				config.url, config.username, config.password, trustManagers);
+
+		if (config.threadSafe) {
+			return new ThreadSafeSsrc(ssrc);
+		} else {
+			return ssrc;
+		}
 	}
 
 	/**
@@ -97,10 +125,37 @@ public final class IfmapJ {
 	 * @param tms KeyManager instances to initialize the {@link SSLContext} with.
 	 * @return a new {@link SSRC} that uses certificate-based authentication
 	 * @throws IOException
+	 * @deprecated use createSsrc(CertAuthConfig) instead
 	 */
+	@Deprecated
 	public static SSRC createSsrc(String url, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException {
 		return new SsrcImpl(url, kms, tms);
+	}
+
+	/**
+	 * Create a new {@link SSRC} object to operate on the given configuration
+	 * using certificate based authentication.
+	 *
+	 * @param config the configuration parameter for the new SSRC
+	 * @return a new {@link SSRC} that uses certificate based authentication
+	 * @throws IOException
+	 */
+	public static SSRC createSsrc(CertAuthConfig config)
+			throws InitializationException {
+		TrustManager[] trustManagers = IfmapJHelper.getTrustManagers(
+				IfmapJ.class.getResourceAsStream(config.trustStorePath),
+				config.trustStorePassword);
+		KeyManager[] keyManagers = IfmapJHelper.getKeyManagers(
+				IfmapJ.class.getResourceAsStream(config.keyStorePath),
+				config.keyStorePassword);
+		SSRC ssrc = new SsrcImpl(config.url, keyManagers, trustManagers);
+
+		if (config.threadSafe) {
+			return new ThreadSafeSsrc(ssrc);
+		} else {
+			return ssrc;
+		}
 	}
 
 	/**
