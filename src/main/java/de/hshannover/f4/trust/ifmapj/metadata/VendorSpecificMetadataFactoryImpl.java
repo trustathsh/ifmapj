@@ -56,6 +56,9 @@ public class VendorSpecificMetadataFactoryImpl implements VendorSpecificMetadata
 
 	private DocumentBuilder mDocumentBuilder;
 
+	/**
+	 * Create a new {@link VendorSpecificMetadataFactory} instance.
+	 */
 	public VendorSpecificMetadataFactoryImpl() {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
 		try {

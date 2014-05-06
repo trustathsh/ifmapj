@@ -94,7 +94,7 @@ public final class IfmapJ {
 	 *
 	 * @param config the configuration parameter for the new SSRC
 	 * @return a new {@link SSRC} that uses basic authentication
-	 * @throws IOException
+	 * @throws InitializationException if the SSRC initialization fails
 	 */
 	public static SSRC createSsrc(BasicAuthConfig config)
 			throws InitializationException {
@@ -139,7 +139,7 @@ public final class IfmapJ {
 	 *
 	 * @param config the configuration parameter for the new SSRC
 	 * @return a new {@link SSRC} that uses certificate based authentication
-	 * @throws IOException
+	 * @throws InitializationException if the SSRC initialization fails
 	 */
 	public static SSRC createSsrc(CertAuthConfig config)
 			throws InitializationException {

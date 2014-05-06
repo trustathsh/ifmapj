@@ -63,6 +63,10 @@ public class MetadataWrapper {
 		return new MetadataWrapperImpl(document, XPATH_FACTORY.newXPath());
 	}
 
+	/**
+	 * Wrapper implementation which uses {@link XPath} to extract values
+	 * from {@link Document} instances.
+	 */
 	private static class MetadataWrapperImpl implements Metadata {
 
 		// TODO add lazy initialized attributes for publisherId, publishTimestamp, ...
@@ -70,6 +74,12 @@ public class MetadataWrapper {
 		Document mDocument;
 		XPath mXpath;
 
+		/**
+		 * Create a wrapper instance for the given document.
+		 *
+		 * @param document the document to wrap
+		 * @param xpath the XPATH instance for this wrapper
+		 */
 		public MetadataWrapperImpl(Document document, XPath xpath) {
 			mDocument = document;
 			mXpath = xpath;
