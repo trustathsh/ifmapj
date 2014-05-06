@@ -7,36 +7,44 @@ public interface Metadata {
 
 	/**
 	 * Return the publisher id of this metadata.
+	 * If this metadata object has no publisher id the empty string is returned.
+	 * If the extraction of the publisher id fails null is returned.
 	 *
-	 * @return the publisher id
+	 * @return the publisher id, null or the empty string
 	 */
 	public String getPublisherId();
 
 	/**
 	 * Return the publish timestamp of this metadata.
+	 * If this metadata object has no publish timestamp the empty string is returned.
+	 * If the extraction of the publish timestamp fails null is returned.
 	 *
-	 * @return the publish timestamp
+	 * @return the publish timestamp, null or the empty string
 	 */
 	public String getPublishTimestamp();
 
 	/**
 	 * Return the type name of this metadata, including the namespace prefix.
+	 * If the extraction of the type name fails null is returned.
 	 *
-	 * @return the type name
+	 * @return the type name or null
 	 */
 	public String getTypename();
 
 	/**
 	 * Return the local type name of this metadata without the namespace prefix.
+	 * If the extraction of the type name fails null is returned.
 	 *
-	 * @return the local type name
+	 * @return the local type name or null
 	 */
 	public String getLocalname();
 
 	/**
 	 * Return the cardinality of this metadata.
+	 * If this metadata object has no cardinality the empty string is returned.
+	 * If the extraction of the cardinality fails null is returned.
 	 *
-	 * @return the cardinality
+	 * @return the cardinality, null or the empty string
 	 */
 	public String getCardinality();
 

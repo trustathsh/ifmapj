@@ -14,6 +14,7 @@ public interface VendorSpecificMetadataFactory {
 	 *
 	 * @param content a metadata XML string
 	 * @return the parsed metadata document
+	 * @throws IllegalArgumentException if the given string can not be parsed as XML
 	 */
 	public Document createMetadata(String content);
 

@@ -37,12 +37,9 @@ public class MetadataWrapper {
 			mXpath = xpath;
 		}
 
-		/**
+		/*
 		 * Evaluate the given XPATH expression on the given document. Return
 		 * the result as a string or null if an error occurred.
-		 *
-		 * @param expression
-		 * @return
 		 */
 		private String getValueFromExpression(String expression, Document doc) {
 			try {
