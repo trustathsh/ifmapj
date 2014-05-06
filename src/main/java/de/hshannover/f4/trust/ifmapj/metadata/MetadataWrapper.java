@@ -93,7 +93,7 @@ public class MetadataWrapper {
 			try {
 				return mXpath.evaluate(expression, mDocument.getDocumentElement());
 			} catch (XPathExpressionException e) {
-				IfmapJLog.error("could not evaluate '"+expression+"' on '"+mDocument+"'");
+				IfmapJLog.error("could not evaluate '" + expression + "' on '" + mDocument + "'");
 				return null;
 			}
 		}

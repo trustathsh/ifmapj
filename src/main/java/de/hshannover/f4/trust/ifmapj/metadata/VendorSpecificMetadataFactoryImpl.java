@@ -76,7 +76,7 @@ public class VendorSpecificMetadataFactoryImpl implements VendorSpecificMetadata
 			return mDocumentBuilder.parse(input);
 		} catch (Exception e) {
 			throw new IllegalArgumentException(
-					"could not parse '"+content+"' as XML", e);
+					"could not parse '" + content + "' as XML", e);
 		}
 	}
 
