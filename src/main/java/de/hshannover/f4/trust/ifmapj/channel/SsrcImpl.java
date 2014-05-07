@@ -92,11 +92,12 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	 * @param user
 	 * @param pass
 	 * @param tms
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @throws InitializationException
 	 */
-	public SsrcImpl(String url, String user, String pass, TrustManager[] tms)
+	public SsrcImpl(String url, String user, String pass, TrustManager[] tms, int initialConnectionTimeout)
 			throws InitializationException {
-		super(url, user, pass, tms);
+		super(url, user, pass, tms, initialConnectionTimeout);
 		mTrustManagers = tms;
 	}
 
@@ -106,11 +107,12 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 	 * @param url
 	 * @param kms
 	 * @param tms
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @throws InitializationException
 	 */
-	public SsrcImpl(String url, KeyManager[] kms, TrustManager[] tms)
+	public SsrcImpl(String url, KeyManager[] kms, TrustManager[] tms, int initialConnectionTimeout)
 			throws InitializationException {
-		super(url, kms, tms);
+		super(url, kms, tms, initialConnectionTimeout);
 		mKeyManagers = kms;
 		mTrustManagers = tms;
 	}
@@ -219,9 +221,9 @@ public class SsrcImpl extends AbstractChannel implements SSRC {
 		ARC ret;
 
 		if (isBasicAuth()) {
-			ret = new ArcImpl(this, getUrl(), getUser(), getPassword(), mTrustManagers);
+			ret = new ArcImpl(this, getUrl(), getUser(), getPassword(), mTrustManagers, mInitialConnectionTimeout);
 		} else {
-			ret = new ArcImpl(this, getUrl(), mKeyManagers, mTrustManagers);
+			ret = new ArcImpl(this, getUrl(), mKeyManagers, mTrustManagers, mInitialConnectionTimeout);
 		}
 
 		if (usesGzip()) {

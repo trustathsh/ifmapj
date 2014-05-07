@@ -61,19 +61,21 @@ public abstract class CommunicationHandlerFactory {
 	 * @param user for basic auth, if user != null -> pass != null
 	 * @param pass for basic auth, if pass != null -> user != null
 	 * @param sslSocketFactory the {@link SSLSocketFactory} to be used
+	 * @param verifier
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @return the new {@link CommunicationHandler}
 	 * @throws InitializationException
 	 */
 	public static CommunicationHandler newHandler(String url, String user,
-			String pass, SSLSocketFactory sslSocketFactory, HostnameVerifier verifier)
+			String pass, SSLSocketFactory sslSocketFactory, HostnameVerifier verifier, int initialConnectionTimeout)
 			throws InitializationException {
 
 		String handler = System.getProperty(HANDLER_PROPERTY);
 
 		if (handler != null) {
-			return newHandlerPreference(handler, url, user, pass, sslSocketFactory, verifier);
+			return newHandlerPreference(handler, url, user, pass, sslSocketFactory, verifier, initialConnectionTimeout);
 		} else {
-			return newHandlerAuto(url, user, pass, sslSocketFactory, verifier);
+			return newHandlerAuto(url, user, pass, sslSocketFactory, verifier, initialConnectionTimeout);
 		}
 	}
 
@@ -88,17 +90,19 @@ public abstract class CommunicationHandlerFactory {
 	 * @param pass
 	 * @param sslSocketFactory
 	 * @param verifier
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @return
 	 * @throws InitializationException
 	 */
 	private static CommunicationHandler newHandlerAuto(String url, String user,
-			String pass, SSLSocketFactory sslSocketFactory, HostnameVerifier verifier) throws InitializationException {
+			String pass, SSLSocketFactory sslSocketFactory, HostnameVerifier verifier, int initialConnectionTimeout)
+					throws InitializationException {
 		try {
 			return new ApacheCoreCommunicationHandler(url, user, pass,
-					sslSocketFactory, verifier);
+					sslSocketFactory, verifier, initialConnectionTimeout);
 		} catch (NoClassDefFoundError e) {
 			return new JavaCommunicationHandler(url, user, pass,
-					sslSocketFactory, verifier);
+					sslSocketFactory, verifier, initialConnectionTimeout);
 		}
 	}
 
@@ -111,23 +115,25 @@ public abstract class CommunicationHandlerFactory {
 	 * @param pass
 	 * @param sslSocketFactory
 	 * @param verifier
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @return
 	 * @throws InitializationException
 	 */
 	private static CommunicationHandler newHandlerPreference(String handlerProp,
 			String url, String user, String pass,
-			SSLSocketFactory sslSocketFactory, HostnameVerifier verifier) throws InitializationException {
+			SSLSocketFactory sslSocketFactory, HostnameVerifier verifier, int initialConnectionTimeout)
+					throws InitializationException {
 		if (handlerProp == null) {
 			throw new NullPointerException();
 		}
 
 		if (handlerProp.equals("java")) {
 			return new JavaCommunicationHandler(url, user, pass,
-					sslSocketFactory, verifier);
+					sslSocketFactory, verifier, initialConnectionTimeout);
 		} else if (handlerProp.equals("apache")) {
 			try {
 				return new ApacheCoreCommunicationHandler(url, user, pass,
-						sslSocketFactory, verifier);
+						sslSocketFactory, verifier, initialConnectionTimeout);
 			} catch (NoClassDefFoundError e) {
 				throw new InitializationException("Could not initialize ApacheCommunicationHandler");
 			}

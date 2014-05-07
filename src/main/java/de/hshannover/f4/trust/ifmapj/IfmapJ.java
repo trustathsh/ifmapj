@@ -85,7 +85,7 @@ public final class IfmapJ {
 	@Deprecated
 	public static SSRC createSsrc(String url, String user, String pass, TrustManager[] tms)
 			throws InitializationException {
-		return new SsrcImpl(url, user, pass, tms);
+		return new SsrcImpl(url, user, pass, tms, 120*1000);
 	}
 
 	/**
@@ -102,7 +102,7 @@ public final class IfmapJ {
 				IfmapJ.class.getResourceAsStream(config.trustStorePath),
 				config.trustStorePassword);
 		SSRC ssrc = new SsrcImpl(
-				config.url, config.username, config.password, trustManagers);
+				config.url, config.username, config.password, trustManagers, config.initialConnectionTimeout);
 
 		if (config.threadSafe) {
 			return new ThreadSafeSsrc(ssrc);
@@ -130,7 +130,7 @@ public final class IfmapJ {
 	@Deprecated
 	public static SSRC createSsrc(String url, KeyManager[] kms, TrustManager[] tms)
 			throws InitializationException {
-		return new SsrcImpl(url, kms, tms);
+		return new SsrcImpl(url, kms, tms, 120 * 1000);
 	}
 
 	/**
@@ -149,7 +149,7 @@ public final class IfmapJ {
 		KeyManager[] keyManagers = IfmapJHelper.getKeyManagers(
 				IfmapJ.class.getResourceAsStream(config.keyStorePath),
 				config.keyStorePassword);
-		SSRC ssrc = new SsrcImpl(config.url, keyManagers, trustManagers);
+		SSRC ssrc = new SsrcImpl(config.url, keyManagers, trustManagers, config.initialConnectionTimeout);
 
 		if (config.threadSafe) {
 			return new ThreadSafeSsrc(ssrc);

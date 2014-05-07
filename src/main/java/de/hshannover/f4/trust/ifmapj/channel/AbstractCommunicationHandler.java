@@ -43,7 +43,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Socket;
 import java.net.URL;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
@@ -75,10 +77,11 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	private final int mPort;
 	private boolean mGzip;
 	private HostnameVerifier mHostnameVerifier;
+	private final int mInitialConnectionTimeout;
 
 	AbstractCommunicationHandler(String url, String user, String pass,
 			SSLSocketFactory sslSocketFactory,
-			HostnameVerifier verifier) throws InitializationException {
+			HostnameVerifier verifier, int initialConnectionTimeout) throws InitializationException {
 
 		if (url == null) {
 			throw new NullPointerException("url is null");
@@ -117,6 +120,7 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 		mSocketFactory = sslSocketFactory;
 
 		mHostnameVerifier = verifier;
+		mInitialConnectionTimeout = initialConnectionTimeout;
 	}
 
 	/*
@@ -220,8 +224,13 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 	 * @throws IOException
 	 */
 	private SSLSocket getNewSocket() throws IOException {
-		SSLSocket ret = (SSLSocket) mSocketFactory.createSocket(getUrl().getHost(),
-				getPort());
+		String host = getUrl().getHost();
+		int port = getPort();
+		Socket socketConnection = new Socket();
+		InetSocketAddress mapServerAddress = new InetSocketAddress(host, port);
+		socketConnection.connect(mapServerAddress, mInitialConnectionTimeout);
+		SSLSocket ret = (SSLSocket) mSocketFactory.createSocket(socketConnection, host, port, true);
+
 		ret.setTcpNoDelay(true);
 		ret.setWantClientAuth(true);
 

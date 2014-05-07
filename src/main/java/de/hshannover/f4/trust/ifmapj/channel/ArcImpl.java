@@ -63,9 +63,9 @@ public class ArcImpl extends AbstractChannel implements ARC {
 	 */
 	private final SSRC mSsrc;
 
-	ArcImpl(SSRC ssrc, String url, KeyManager[] kms, TrustManager[] tms)
+	ArcImpl(SSRC ssrc, String url, KeyManager[] kms, TrustManager[] tms, int initialConnectionTimeout)
 			throws InitializationException {
-		super(url, kms, tms);
+		super(url, kms, tms, initialConnectionTimeout);
 		if (ssrc == null) {
 			throw new NullPointerException("Need a valid SSRC instance");
 		}
@@ -73,9 +73,9 @@ public class ArcImpl extends AbstractChannel implements ARC {
 		mSsrc = ssrc;
 	}
 
-	ArcImpl(SSRC ssrc, String url, String user, String password, TrustManager[] tms)
+	ArcImpl(SSRC ssrc, String url, String user, String password, TrustManager[] tms, int initialConnectionTimeout)
 			throws InitializationException {
-		super(url, user, password, tms);
+		super(url, user, password, tms, initialConnectionTimeout);
 		if (ssrc == null) {
 			throw new NullPointerException("Need a valid SSRC instance");
 		}

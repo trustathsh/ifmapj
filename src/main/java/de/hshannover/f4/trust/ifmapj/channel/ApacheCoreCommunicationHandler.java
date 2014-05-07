@@ -71,9 +71,9 @@ class ApacheCoreCommunicationHandler extends AbstractCommunicationHandler {
 	private BasicHttpEntityEnclosingRequest mHttpPost;
 
 	ApacheCoreCommunicationHandler(String url, String user, String pass,
-			SSLSocketFactory sslSocketFactory, HostnameVerifier verifier)
+			SSLSocketFactory sslSocketFactory, HostnameVerifier verifier, int initialConnectionTimeout)
 			throws InitializationException {
-		super(url, user, pass, sslSocketFactory, verifier);
+		super(url, user, pass, sslSocketFactory, verifier, initialConnectionTimeout);
 
 		mBasicHttpParams = new BasicHttpParams();
 	}

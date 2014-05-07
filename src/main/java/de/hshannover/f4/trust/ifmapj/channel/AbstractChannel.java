@@ -118,6 +118,11 @@ abstract class AbstractChannel implements IfmapChannel {
 	private final DocumentBuilder mDocumentBuilder;
 
 	/**
+	 * The initial connection timeout in milliseconds.
+	 */
+	protected final int mInitialConnectionTimeout;
+
+	/**
 	 * Construct a {@link AbstractChannel} object in the most general form.
 	 *
 	 * @param url
@@ -125,10 +130,14 @@ abstract class AbstractChannel implements IfmapChannel {
 	 * @param pass
 	 * @param kms the keystore managers to be used
 	 * @param tms the truststore managers to be used
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @throws InitializationException
 	 */
-	private AbstractChannel(String url, String user, String pass, KeyManager[] kms, TrustManager[] tms)
-			throws InitializationException  {
+	private AbstractChannel(String url, String user, String pass,
+			KeyManager[] kms, TrustManager[] tms, int initialConnectionTimeout)
+			throws InitializationException {
+
+		mInitialConnectionTimeout = initialConnectionTimeout;
 
 		if (url == null) {
 			throw new InitializationException("URL not allowed to be null");
@@ -155,7 +164,7 @@ abstract class AbstractChannel implements IfmapChannel {
 		SSLSocketFactory sslSocketFactory = initSslSocketFactory(kms, tms);
 		HostnameVerifier verifier = initHostnameVerifier();
 		mCommunicationHandler = CommunicationHandlerFactory.newHandler(
-				url, user, pass, sslSocketFactory, verifier);
+				url, user, pass, sslSocketFactory, verifier, initialConnectionTimeout);
 	}
 
 	/**
@@ -165,10 +174,12 @@ abstract class AbstractChannel implements IfmapChannel {
 	 * @param user
 	 * @param pass
 	 * @param tms
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @throws InitializationException
 	 */
-	AbstractChannel(String url, String user, String pass, TrustManager[] tms) throws InitializationException {
-		this(url, user, pass, null, tms);
+	AbstractChannel(String url, String user, String pass, TrustManager[] tms, int initialConnectionTimeout)
+			throws InitializationException {
+		this(url, user, pass, null, tms, initialConnectionTimeout);
 	}
 
 	/**
@@ -176,11 +187,12 @@ abstract class AbstractChannel implements IfmapChannel {
 	 * @param url
 	 * @param kms
 	 * @param tms
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 * @throws InitializationException
 	 */
-	AbstractChannel(String url, KeyManager[] kms, TrustManager[] tms)
+	AbstractChannel(String url, KeyManager[] kms, TrustManager[] tms, int initialConnectionTimeout)
 			throws InitializationException {
-		this(url, null, null, kms, tms);
+		this(url, null, null, kms, tms, initialConnectionTimeout);
 	}
 
 	@Override

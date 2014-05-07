@@ -68,6 +68,7 @@ public class CertAuthConfig {
 	 * @param trustStorePath path to trustStore
 	 * @param trustStorePassword password for trustStore
 	 * @param threadSafe true if the SSRC should be thread safe
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 */
 	public CertAuthConfig(
 			String url,
@@ -92,8 +93,8 @@ public class CertAuthConfig {
 	 * with initial connection timeout of 120 seconds.
 	 *
 	 * @param url the URL to connect to
-	 * @param username basic authentication user
-	 * @param password basic authentication password
+	 * @param keyStorePath path to keyStore file
+	 * @param keyStorePassword password for keyStore
 	 * @param trustStorePath path to trustStore
 	 * @param trustStorePassword password for trustStore
 	 */
@@ -103,6 +104,6 @@ public class CertAuthConfig {
 			String keyStorePassword,
 			String trustStorePath,
 			String trustStorePassword) {
-		this(url, keyStorePath, keyStorePassword, trustStorePath, trustStorePassword, false, 120*1000);
+		this(url, keyStorePath, keyStorePassword, trustStorePath, trustStorePassword, false, 120 * 1000);
 	}
 }

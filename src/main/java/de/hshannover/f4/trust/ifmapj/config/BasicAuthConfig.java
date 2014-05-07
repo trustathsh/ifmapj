@@ -102,6 +102,6 @@ public class BasicAuthConfig {
 			String password,
 			String trustStorePath,
 			String trustStorePassword) {
-		this(url, username, password, trustStorePath, trustStorePassword, false, 120*1000);
+		this(url, username, password, trustStorePath, trustStorePassword, false, 120 * 1000);
 	}
 }
