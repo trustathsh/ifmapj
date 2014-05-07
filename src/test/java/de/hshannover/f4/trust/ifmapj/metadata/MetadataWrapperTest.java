@@ -38,11 +38,21 @@
  */
 package de.hshannover.f4.trust.ifmapj.metadata;
 
+import static de.hshannover.f4.trust.ifmapj.metadata.MetadataWrapper.metadata;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
+import java.util.Iterator;
+
+import javax.xml.namespace.NamespaceContext;
+
 import org.junit.Test;
 import org.w3c.dom.Document;
-import static de.hshannover.f4.trust.ifmapj.metadata.MetadataWrapper.*;
 
-import static org.junit.Assert.*;
+import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 
 public class MetadataWrapperTest {
 
@@ -76,6 +86,19 @@ public class MetadataWrapperTest {
 			null,
 			null,
 			null);
+
+	private Document ipMac = standardFactory.createIpMac(
+			"2014-06-12T12:58:50+02:00",
+			"2014-06-12T20:58:50+02:00",
+			"dhcp-server-42");
+
+	private String ipMacStringWithDifferentNamespace = "<foo:ip-mac "
+			+ "ifmap-cardinality=\"multiValue\" "
+			+ "xmlns:foo=\""+ IfmapStrings.STD_METADATA_NS_URI +"\">"
+			+ "<start-time>2014-06-12T12:58:50+02:00</start-time>"
+			+ "<end-time>2014-06-12T20:58:50+02:00</end-time>"
+			+ "<dhcp-server>dhcp-server-42</dhcp-server>"
+			+ "</foo:ip-mac>";
 
 	@Test
 	public void testGetExistingPublisherId() {
@@ -124,5 +147,72 @@ public class MetadataWrapperTest {
 		Metadata metadata = stringToMetadata(publishedMetadataXml);
 		assertTrue(metadata.isSingleValue());
 		assertFalse(metadata.isMultiValue());
+	}
+
+	@Test
+	public void testExtractElementWithXPath() {
+		Metadata metadata = metadata(ipMac);
+		String dhcpServer = metadata.getValueForXpathExpression("/meta:ip-mac/dhcp-server");
+		assertEquals("dhcp-server-42", dhcpServer);
+	}
+
+	@Test
+	public void testExtractNonExistingElementWithXPath() {
+		Metadata metadata = metadata(ipMac);
+		String error = metadata.getValueForXpathExpression("/meta:ip-mac/foobar");
+		assertEquals("", error);
+	}
+
+	@Test
+	public void testInvalidXPathExpression() {
+		Metadata metadata = metadata(ipMac);
+		String error = metadata.getValueForXpathExpression("\\ERROR\\");
+		assertNull(error);
+	}
+
+	@Test
+	public void testExtractElementOrDefaultWithXPath() {
+		Metadata metadata = metadata(ipMac);
+		String dhcpServer = metadata.getValueForXpathExpressionOrElse("/meta:ip-mac/dhcp-server", "error");
+		assertEquals("dhcp-server-42", dhcpServer);
+	}
+
+	@Test
+	public void testExtractNonExistingOrDefaultElementWithXPath() {
+		Metadata metadata = metadata(ipMac);
+		String error = metadata.getValueForXpathExpressionOrElse("/meta:ip-mac/foobar", "error");
+		assertEquals("", error);
+	}
+
+	@Test
+	public void testDifferentPrefixesForXPathQuery() {
+		Metadata metadata = metadata(ipMac);
+		NamespaceContext context = new NamespaceContext() {
+
+			@Override
+			public Iterator getPrefixes(String namespaceURI) {
+				return Arrays.asList("foo").iterator();
+			}
+
+			@Override
+			public String getPrefix(String namespaceURI) {
+				return "foo";
+			}
+
+			@Override
+			public String getNamespaceURI(String prefix) {
+				return IfmapStrings.STD_METADATA_NS_URI;
+			}
+		};
+		metadata.setNamespaceContext(context);
+		String dhcpServer = metadata.getValueForXpathExpression("/foo:ip-mac/dhcp-server");
+		assertEquals("dhcp-server-42", dhcpServer);
+	}
+
+	@Test
+	public void testCustomNamespacePrefixForXPathQuery() {
+		Metadata metadata = stringToMetadata(ipMacStringWithDifferentNamespace);
+		String dhcpServer = metadata.getValueForXpathExpression("/meta:ip-mac/dhcp-server");
+		assertEquals("dhcp-server-42", dhcpServer);
 	}
 }

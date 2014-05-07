@@ -38,6 +38,8 @@
  */
 package de.hshannover.f4.trust.ifmapj.metadata;
 
+import javax.xml.namespace.NamespaceContext;
+
 /**
  * Interface for common IF-MAP metadata attributes.
  */
@@ -101,9 +103,39 @@ public interface Metadata {
 	public boolean isMultiValue();
 
 	/**
+	 * Evaluate the given XPATH expression on this metadata document and return
+	 * the result string. If this metadata object does not match the given
+	 * expression the empty string is returned. If the evaluation of the
+	 * expression fails null is returned.
+	 *
+	 * @param xPathExpression the XPATH expression
+	 * @return the result string, null or the empty string
+	 */
+	public String getValueForXpathExpression(String xPathExpression);
+
+	/**
+	 * Evaluate the given XPATH expression on this metadata document and return
+	 * the result string. If the evaluation fails the given default value will
+	 * be returned.
+	 *
+	 * @param xPathExpression the XPATH expression
+	 * @param defaultValue the default value
+	 * @return the non empty result string or the default value
+	 */
+	public String getValueForXpathExpressionOrElse(String xPathExpression, String defaultValue);
+
+	/**
 	 * Returns a formatted XML string representation of this metadata document.
 	 *
 	 * @return formatted XML string
 	 */
 	public String toFormattedString();
+
+	/**
+	 * Set the given {@link NamespaceContext} as the namespace context for
+	 * XPath queries.
+	 *
+	 * @param context the new namespace context
+	 */
+	public void setNamespaceContext(NamespaceContext context);
 }

@@ -39,7 +39,11 @@
 package de.hshannover.f4.trust.ifmapj.metadata;
 
 import java.io.StringWriter;
+import java.util.Arrays;
+import java.util.Iterator;
 
+import javax.xml.XMLConstants;
+import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
@@ -53,6 +57,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 
+import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 import de.hshannover.f4.trust.ifmapj.log.IfmapJLog;
 
 /**
@@ -64,6 +69,43 @@ public class MetadataWrapper {
 
 	private static final TransformerFactory TRANSFORMER_FACTORY =
 			TransformerFactory.newInstance();
+
+	/**
+	 * Default namespace context which uses the prefixes 'meta' and 'ifmap'
+	 * as specified in TNC IF-MAP Binding for SOAP version 2.2.
+	 */
+	public static final NamespaceContext DEFAULT_NAMESPACE_CONTEXT = new NamespaceContext() {
+
+		@Override
+		public Iterator getPrefixes(String namespaceURI) {
+			return Arrays.asList(
+					IfmapStrings.STD_METADATA_PREFIX,
+					IfmapStrings.BASE_PREFIX)
+						.iterator();
+		}
+
+		@Override
+		public String getPrefix(String namespaceURI) {
+			if (namespaceURI.equals(IfmapStrings.STD_METADATA_NS_URI)) {
+				return IfmapStrings.STD_METADATA_PREFIX;
+			} else if (namespaceURI.equals(IfmapStrings.BASE_NS_URI)) {
+				return IfmapStrings.BASE_PREFIX;
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public String getNamespaceURI(String prefix) {
+			if (prefix.equals(IfmapStrings.STD_METADATA_PREFIX)) {
+				return IfmapStrings.STD_METADATA_NS_URI;
+			} else if (prefix.equals(IfmapStrings.BASE_PREFIX)) {
+				return IfmapStrings.BASE_NS_URI;
+			} else {
+				return XMLConstants.NULL_NS_URI;
+			}
+		}
+	};
 
 	/**
 	 * Create a {@link Metadata} instance for the given document.
@@ -79,12 +121,15 @@ public class MetadataWrapper {
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
 			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
-			return new MetadataWrapperImpl(
-					document, XPATH_FACTORY.newXPath(), transformer);
+
+			XPath xPath = XPATH_FACTORY.newXPath();
+
+			return new MetadataWrapperImpl(document, xPath, transformer, DEFAULT_NAMESPACE_CONTEXT);
 		} catch (TransformerConfigurationException e) {
 			throw new RuntimeException(e);
 		}
 	}
+
 
 	/**
 	 * Wrapper implementation which uses {@link XPath} to extract values
@@ -94,9 +139,9 @@ public class MetadataWrapper {
 
 		// TODO add lazy initialized attributes for publisherId, publishTimestamp, ...
 
-		Document mDocument;
-		XPath mXpath;
-		Transformer mTransformer;
+		final Document mDocument;
+		final XPath mXpath;
+		final Transformer mTransformer;
 
 		/**
 		 * Create a wrapper instance for the given document.
@@ -105,10 +150,14 @@ public class MetadataWrapper {
 		 * @param xpath the XPATH instance for this wrapper
 		 */
 		public MetadataWrapperImpl(
-				Document document, XPath xpath, Transformer transformer) {
+				Document document,
+				XPath xpath,
+				Transformer transformer,
+				NamespaceContext namespaceContext) {
 			mDocument = document;
 			mXpath = xpath;
 			mTransformer = transformer;
+			mXpath.setNamespaceContext(namespaceContext);
 		}
 
 		/*
@@ -159,6 +208,21 @@ public class MetadataWrapper {
 			return getCardinality().equals("multiValue");
 		}
 
+		@Override
+		public String getValueForXpathExpression(String xPathExpression) {
+			return getValueFromExpression(xPathExpression, mDocument);
+		}
+
+		@Override
+		public String getValueForXpathExpressionOrElse(String xPathExpression,
+				String defaultValue) {
+			String result = getValueForXpathExpression(xPathExpression);
+			if (result == null) {
+				return defaultValue;
+			} else {
+				return result;
+			}
+		}
 
 		@Override
 		public String toFormattedString() {
@@ -170,6 +234,11 @@ public class MetadataWrapper {
 				throw new RuntimeException(e);
 			}
 			return writer.toString();
+		}
+
+		@Override
+		public void setNamespaceContext(NamespaceContext context) {
+			mXpath.setNamespaceContext(context);
 		}
 
 	}
