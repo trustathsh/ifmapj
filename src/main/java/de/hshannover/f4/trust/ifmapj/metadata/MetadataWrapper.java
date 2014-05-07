@@ -38,6 +38,15 @@
  */
 package de.hshannover.f4.trust.ifmapj.metadata;
 
+import java.io.StringWriter;
+
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
@@ -53,6 +62,9 @@ public class MetadataWrapper {
 
 	private static final XPathFactory XPATH_FACTORY = XPathFactory.newInstance();
 
+	private static final TransformerFactory TRANSFORMER_FACTORY =
+			TransformerFactory.newInstance();
+
 	/**
 	 * Create a {@link Metadata} instance for the given document.
 	 *
@@ -60,7 +72,18 @@ public class MetadataWrapper {
 	 * @return the wrapped metadata
 	 */
 	public static Metadata metadata(Document document) {
-		return new MetadataWrapperImpl(document, XPATH_FACTORY.newXPath());
+		try {
+			Transformer transformer = TRANSFORMER_FACTORY.newTransformer();
+			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			return new MetadataWrapperImpl(
+					document, XPATH_FACTORY.newXPath(), transformer);
+		} catch (TransformerConfigurationException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -73,6 +96,7 @@ public class MetadataWrapper {
 
 		Document mDocument;
 		XPath mXpath;
+		Transformer mTransformer;
 
 		/**
 		 * Create a wrapper instance for the given document.
@@ -80,9 +104,11 @@ public class MetadataWrapper {
 		 * @param document the document to wrap
 		 * @param xpath the XPATH instance for this wrapper
 		 */
-		public MetadataWrapperImpl(Document document, XPath xpath) {
+		public MetadataWrapperImpl(
+				Document document, XPath xpath, Transformer transformer) {
 			mDocument = document;
 			mXpath = xpath;
+			mTransformer = transformer;
 		}
 
 		/*
@@ -131,6 +157,19 @@ public class MetadataWrapper {
 		@Override
 		public boolean isMultiValue() {
 			return getCardinality().equals("multiValue");
+		}
+
+
+		@Override
+		public String toFormattedString() {
+			StringWriter writer = new StringWriter();
+			try {
+				mTransformer.transform(
+						new DOMSource(mDocument), new StreamResult(writer));
+			} catch (TransformerException e) {
+				throw new RuntimeException(e);
+			}
+			return writer.toString();
 		}
 
 	}

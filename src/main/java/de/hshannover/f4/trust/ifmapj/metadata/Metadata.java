@@ -99,4 +99,11 @@ public interface Metadata {
 	 * @return true if cardinality equals 'multiValue'
 	 */
 	public boolean isMultiValue();
+
+	/**
+	 * Returns a formatted XML string representation of this metadata document.
+	 *
+	 * @return formatted XML string
+	 */
+	public String toFormattedString();
 }
