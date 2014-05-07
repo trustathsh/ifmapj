@@ -38,6 +38,8 @@
  */
 package de.hshannover.f4.trust.ifmapj.config;
 
+import de.hshannover.f4.trust.ifmapj.channel.SSRC;
+
 /**
  * Configuration for certificate based SSRC authentication.
  */
@@ -50,6 +52,11 @@ public class CertAuthConfig {
 	public final String trustStorePassword;
 
 	public final boolean threadSafe;
+
+	/**
+	 * Timeout for the initial connection attempt in milliseconds.
+	 */
+	public final int initialConnectionTimeout;
 
 	/**
 	 * Create a new {@link CertAuthConfig} object with the given configuration
@@ -68,7 +75,8 @@ public class CertAuthConfig {
 			String keyStorePassword,
 			String trustStorePath,
 			String trustStorePassword,
-			boolean threadSafe) {
+			boolean threadSafe,
+			int initialConnectionTimeout) {
 		super();
 		this.url = url;
 		this.keyStorePath = keyStorePath;
@@ -76,5 +84,25 @@ public class CertAuthConfig {
 		this.trustStorePath = trustStorePath;
 		this.trustStorePassword = trustStorePassword;
 		this.threadSafe = threadSafe;
+		this.initialConnectionTimeout = initialConnectionTimeout;
+	}
+
+	/**
+	 * Create a {@link CertAuthConfig} for a non thread safe {@link SSRC}
+	 * with initial connection timeout of 120 seconds.
+	 *
+	 * @param url the URL to connect to
+	 * @param username basic authentication user
+	 * @param password basic authentication password
+	 * @param trustStorePath path to trustStore
+	 * @param trustStorePassword password for trustStore
+	 */
+	public CertAuthConfig(
+			String url,
+			String keyStorePath,
+			String keyStorePassword,
+			String trustStorePath,
+			String trustStorePassword) {
+		this(url, keyStorePath, keyStorePassword, trustStorePath, trustStorePassword, false, 120*1000);
 	}
 }

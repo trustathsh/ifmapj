@@ -52,6 +52,11 @@ public class BasicAuthConfig {
 	public final boolean threadSafe;
 
 	/**
+	 * Timeout for the initial connection attempt in milliseconds.
+	 */
+	public final int initialConnectionTimeout;
+
+	/**
 	 * Create a new {@link BasicAuthConfig} object with the given configuration
 	 * parameter.
 	 *
@@ -61,6 +66,7 @@ public class BasicAuthConfig {
 	 * @param trustStorePath path to trustStore
 	 * @param trustStorePassword password for trustStore
 	 * @param threadSafe true if the SSRC should be thread safe
+	 * @param initialConnectionTimeout the initial connection timeout in milliseconds
 	 */
 	public BasicAuthConfig(
 			String url,
@@ -68,7 +74,8 @@ public class BasicAuthConfig {
 			String password,
 			String trustStorePath,
 			String trustStorePassword,
-			boolean threadSafe) {
+			boolean threadSafe,
+			int initialConnectionTimeout) {
 		super();
 		this.url = url;
 		this.username = username;
@@ -76,5 +83,25 @@ public class BasicAuthConfig {
 		this.trustStorePath = trustStorePath;
 		this.trustStorePassword = trustStorePassword;
 		this.threadSafe = threadSafe;
+		this.initialConnectionTimeout = initialConnectionTimeout;
+	}
+
+	/**
+	 * Create a {@link BasicAuthConfig} for a non thread safe {@link SSRC}
+	 * with initial connection timeout of 120 seconds.
+	 *
+	 * @param url the URL to connect to
+	 * @param username basic authentication user
+	 * @param password basic authentication password
+	 * @param trustStorePath path to trustStore
+	 * @param trustStorePassword password for trustStore
+	 */
+	public BasicAuthConfig(
+			String url,
+			String username,
+			String password,
+			String trustStorePath,
+			String trustStorePassword) {
+		this(url, username, password, trustStorePath, trustStorePassword, false, 120*1000);
 	}
 }
