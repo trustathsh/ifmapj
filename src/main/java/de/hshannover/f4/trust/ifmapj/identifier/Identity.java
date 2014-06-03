@@ -131,55 +131,42 @@ public class Identity extends IdentifierWithAd {
 				otherTypeDef, super.toString());
 	}
 
-	/**
-	* Compare identifier
-	* @return boolean true if both identifiers are equal
-	* @since 0.1.5
-	*/
+
+
 	@Override
-	public boolean equals(Object o) {
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mName == null) ? 0 : mName.hashCode());
+		result = prime
+				* result
+				+ ((mOtherTypeDefinition == null) ? 0 : mOtherTypeDefinition
+						.hashCode());
+		result = prime * result + ((mType == null) ? 0 : mType.hashCode());
+		return result;
+	}
 
-		// check for NULL value or instance of another class
-		if (o == null || !(o instanceof Identity)) {
-			return false;
-		}
-
-		// cast to identity object
-		Identity i = (Identity) o;
-
-		// check if it is the same object
-		if (this == i) {
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		}
-
-		// compare type and other type definition
-		if (!mType.equals(i.getType())) {
+		if (!super.equals(obj))
 			return false;
-		}
-
-		// check administrative domain in super-class
-		if (!super.equals(i)) {
+		if (getClass() != obj.getClass())
 			return false;
-		}
-
-		if (mType == IdentityType.other
-				&& !mOtherTypeDefinition.equals(i.getOtherTypeDefinition())) {
+		Identity other = (Identity) obj;
+		if (mName == null) {
+			if (other.mName != null)
+				return false;
+		} else if (!mName.equals(other.mName))
 			return false;
-		}
-
-		// compare name according to its type
-		if (mType == IdentityType.other
-				&& mOtherTypeDefinition.equals(IfmapStrings.OTHER_TYPE_EXTENDED_IDENTIFIER)
-				&& !extendedIdentifierEquals(mName, i.getName())) {
+		if (mOtherTypeDefinition == null) {
+			if (other.mOtherTypeDefinition != null)
+				return false;
+		} else if (!mOtherTypeDefinition.equals(other.mOtherTypeDefinition))
 			return false;
-		} else if (mType == IdentityType.distinguishedName
-				&& !distinguishedNameEquals(mName, i.getName())) {
+		if (mType != other.mType)
 			return false;
-		} else if (!mName.equals(i.getName())) {
-			return false;
-		}
-
-		// return true if all checks passed
 		return true;
 	}
 

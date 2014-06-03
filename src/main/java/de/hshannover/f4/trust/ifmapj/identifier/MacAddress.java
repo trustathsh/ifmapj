@@ -84,4 +84,31 @@ public class MacAddress extends IdentifierWithAd {
 	public String toString() {
 		return String.format("mac{%s%s}", getValue(), super.toString());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mValue == null) ? 0 : mValue.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		MacAddress other = (MacAddress) obj;
+		if (mValue == null) {
+			if (other.mValue != null)
+				return false;
+		} else if (!mValue.equals(other.mValue))
+			return false;
+		return true;
+	}
+
+
 }

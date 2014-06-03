@@ -78,21 +78,6 @@ public class IpAddress extends IdentifierWithAd {
 		return mValue;
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (o == null || !(o instanceof IpAddress)) {
-			return false;
-		}
-
-		if (!super.equals(o)) {
-			return false;
-		}
-
-		IpAddress ip = (IpAddress) o;
-
-		return ip.mValue.equals(mValue);
-	}
-
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
@@ -101,4 +86,34 @@ public class IpAddress extends IdentifierWithAd {
 		return String.format("ip{%s, %s%s}", getValue(), getType(),
 				super.toString());
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((mType == null) ? 0 : mType.hashCode());
+		result = prime * result + ((mValue == null) ? 0 : mValue.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (!super.equals(obj))
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IpAddress other = (IpAddress) obj;
+		if (mType != other.mType)
+			return false;
+		if (mValue == null) {
+			if (other.mValue != null)
+				return false;
+		} else if (!mValue.equals(other.mValue))
+			return false;
+		return true;
+	}
+
+
 }
