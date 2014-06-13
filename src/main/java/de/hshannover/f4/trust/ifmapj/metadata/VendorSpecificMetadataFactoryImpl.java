@@ -61,6 +61,7 @@ public class VendorSpecificMetadataFactoryImpl implements VendorSpecificMetadata
 	 */
 	public VendorSpecificMetadataFactoryImpl() {
 		DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+		builderFactory.setNamespaceAware(true);
 		try {
 			mDocumentBuilder = builderFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
