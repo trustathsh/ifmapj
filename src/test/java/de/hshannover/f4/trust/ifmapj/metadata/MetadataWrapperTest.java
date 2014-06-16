@@ -44,14 +44,26 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.xml.namespace.NamespaceContext;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Test;
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
+import util.CanonicalXML;
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 
 public class MetadataWrapperTest {
@@ -214,5 +226,42 @@ public class MetadataWrapperTest {
 		Metadata metadata = stringToMetadata(ipMacStringWithDifferentNamespace);
 		String dhcpServer = metadata.getValueForXpathExpression("/meta:ip-mac/dhcp-server");
 		assertEquals("dhcp-server-42", dhcpServer);
+	}
+
+	@Test
+	public void testMetadataEquals() throws Exception {
+		Document d1 = standardFactory.createIpMac(
+				"2014-06-12T12:58:50+02:00",
+				"2014-06-12T20:58:50+02:00",
+				"dhcp-server-42");
+		Document d2 = standardFactory.createIpMac(
+				"2014-06-12T12:58:50+02:00",
+				"2014-06-12T20:58:50+02:00",
+				"dhcp-server-42");
+		Document d3 = standardFactory.createIpMac(
+				"2014-06-12T12:58:50+02:00",
+				"2014-06-12T20:58:50+02:00",
+				"dhcp-server-42");
+		Document dX = standardFactory.createIpMac(
+				"2014-06-12T12:58:50+02:00",
+				"2014-06-12T20:58:50+02:00",
+				"");
+		Metadata m1 = metadata(d1);
+		Metadata m2 = metadata(d2);
+		Metadata m3 = metadata(d3);
+		Metadata mX = metadata(dX);
+
+		// reflexive
+		assertTrue(m1.equals(m2));
+		// symmetric
+		assertTrue(m1.equals(m2) && m2.equals(m1));
+		// transitive
+		assertTrue(m1.equals(m2) && m2.equals(m3) && m1.equals(m3));
+		// negative
+		assertFalse(m1.equals(mX));
+		assertFalse(mX.equals(m1));
+		// hashcode
+		assertTrue(m1.hashCode() == m2.hashCode());
+		assertFalse(m1.hashCode() == mX.hashCode());
 	}
 }

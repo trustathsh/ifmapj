@@ -38,6 +38,8 @@
  */
 package de.hshannover.f4.trust.ifmapj.metadata;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -45,6 +47,7 @@ import java.util.Iterator;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -56,7 +59,11 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.xml.sax.InputSource;
+import org.xml.sax.XMLReader;
+import org.xml.sax.helpers.XMLReaderFactory;
 
+import util.CanonicalXML;
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 import de.hshannover.f4.trust.ifmapj.log.IfmapJLog;
 
@@ -115,16 +122,26 @@ public class MetadataWrapper {
 	 */
 	public static Metadata metadata(Document document) {
 		try {
-			Transformer transformer = TRANSFORMER_FACTORY.newTransformer();
-			transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
-			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
-			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-			transformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
-			transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+			Transformer printFormatTransformer = TRANSFORMER_FACTORY.newTransformer();
+			printFormatTransformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			printFormatTransformer.setOutputProperty(OutputKeys.METHOD, "xml");
+			printFormatTransformer.setOutputProperty(OutputKeys.INDENT, "yes");
+			printFormatTransformer.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+			printFormatTransformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
+
+			Transformer equalsTransformer = TRANSFORMER_FACTORY.newTransformer();
+			equalsTransformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+			equalsTransformer.setOutputProperty(OutputKeys.INDENT, "no");
+			equalsTransformer.setOutputProperty(OutputKeys.METHOD, "xml");
 
 			XPath xPath = XPATH_FACTORY.newXPath();
 
-			return new MetadataWrapperImpl(document, xPath, transformer, DEFAULT_NAMESPACE_CONTEXT);
+			return new MetadataWrapperImpl(
+					document,
+					xPath,
+					printFormatTransformer,
+					DEFAULT_NAMESPACE_CONTEXT,
+					equalsTransformer);
 		} catch (TransformerConfigurationException e) {
 			throw new RuntimeException(e);
 		}
@@ -141,23 +158,29 @@ public class MetadataWrapper {
 
 		final Document mDocument;
 		final XPath mXpath;
-		final Transformer mTransformer;
+		final Transformer mPrintTransformer;
+		final Transformer mEqualsTransformer;
 
 		/**
 		 * Create a wrapper instance for the given document.
 		 *
 		 * @param document the document to wrap
 		 * @param xpath the XPATH instance for this wrapper
+		 * @param printFormatTransformer the transformer to use for pretty printing
+		 * @param namespaceContext the namespace context for XPath operations
+		 * @param equalsTransformer the transformer to use for canonical serialization
 		 */
 		public MetadataWrapperImpl(
 				Document document,
 				XPath xpath,
-				Transformer transformer,
-				NamespaceContext namespaceContext) {
+				Transformer printFormatTransformer,
+				NamespaceContext namespaceContext,
+				Transformer equalsTransformer) {
 			mDocument = document;
 			mXpath = xpath;
-			mTransformer = transformer;
+			mPrintTransformer = printFormatTransformer;
 			mXpath.setNamespaceContext(namespaceContext);
+			mEqualsTransformer = equalsTransformer;
 		}
 
 		/*
@@ -228,7 +251,7 @@ public class MetadataWrapper {
 		public String toFormattedString() {
 			StringWriter writer = new StringWriter();
 			try {
-				mTransformer.transform(
+				mPrintTransformer.transform(
 						new DOMSource(mDocument), new StreamResult(writer));
 			} catch (TransformerException e) {
 				throw new RuntimeException(e);
@@ -241,6 +264,42 @@ public class MetadataWrapper {
 			mXpath.setNamespaceContext(context);
 		}
 
+		private String toCanonicalXml() {
+			try {
+				XMLReader reader = XMLReaderFactory.createXMLReader();
+				DOMSource domSource = new DOMSource(mDocument.getFirstChild());
+				ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
+				Result result = new StreamResult(byteArrayOutput);
+				mEqualsTransformer.transform(domSource, result);
+				ByteArrayInputStream byteArrayInput = new ByteArrayInputStream(byteArrayOutput.toByteArray());
+				InputSource input = new InputSource(byteArrayInput);
+				CanonicalXML canonicalXml = new CanonicalXML();
+				return canonicalXml.toCanonicalXml2(reader, input, true);
+			} catch (Exception e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result
+					+ toCanonicalXml().hashCode();
+			return result;
+		}
+
+		@Override
+		public boolean equals(Object obj) {
+			if (this == obj)
+				return true;
+			if (obj == null)
+				return false;
+			if (getClass() != obj.getClass())
+				return false;
+			MetadataWrapperImpl other = (MetadataWrapperImpl) obj;
+			return other.toCanonicalXml().equals(toCanonicalXml());
+		}
 	}
 
 }
