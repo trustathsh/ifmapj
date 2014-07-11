@@ -47,6 +47,8 @@ import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -67,6 +69,16 @@ import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
  * @author aw
  */
 abstract class AbstractCommunicationHandler implements CommunicationHandler {
+
+	static final String CLI_XML_LOG_SWITCH = "ifmapj.xml.log";
+	static final String CLI_XML_LOG_ENABLE_KEY = "true";
+	static final String LOG_SWITCH = System.getProperty(CLI_XML_LOG_SWITCH);
+	static final boolean XML_LOG_ENABLED = (null != LOG_SWITCH &&
+			LOG_SWITCH.equals(CLI_XML_LOG_ENABLE_KEY));
+
+	static final int LOG_BUFFER_SIZE = 4096;
+
+	final SimpleDateFormat LOGGING_DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
 
 	private final SSLSocketFactory mSocketFactory;
 	private SSLSocket mSocket;
@@ -145,6 +157,8 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 
 			writeContentTypeHeaders();
 
+			httpBody = logAndCloneInputStream(httpBody, "request");
+
 			if (usesGzip()) {
 				httpBody = compressInputStream(httpBody);
 				writeGzipHeaders();
@@ -160,6 +174,8 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 
 			reply = doActualRequest(httpBody);
 
+			reply = logAndCloneInputStream(reply, "response");
+
 			if (replyIsGzipped()) {
 				reply = new GZIPInputStream(reply);
 			}
@@ -168,6 +184,48 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 
 		} catch (IOException e) {
 			throw new CommunicationException(e.getMessage());
+		}
+	}
+
+	/**
+	 * Log the content of the given {@link InputStream} and return a copy
+	 * of the content in a new stream. The {@link InputStream} may be empty
+	 * after this method returns. If logging is not enabled this method
+	 * returns the given stream object and logs nothing.
+	 *
+	 * @param originalInput the stream to log
+	 * @param logPrefix a string prefix for the log message
+	 * @return a copy of the given {@link InputStream}
+	 */
+	private InputStream logAndCloneInputStream(InputStream originalInput,
+			String logPrefix) {
+		if (!XML_LOG_ENABLED) {
+			return originalInput;
+		}
+		ByteArrayOutputStream copy = new ByteArrayOutputStream();
+		byte[] buffer = new byte[LOG_BUFFER_SIZE];
+
+		try {
+			while (true) {
+				int n = originalInput.read(buffer);
+				if (n == -1) {
+					break;
+				}
+				copy.write(buffer, 0, n);
+			}
+			Date now = new Date();
+
+			StringBuffer sb = new StringBuffer();
+			sb.append(LOGGING_DATE_FORMAT.format(now));
+			sb.append(" ");
+			sb.append(logPrefix);
+			sb.append(" - ");
+			sb.append(new String(copy.toByteArray(), "UTF-8"));
+			System.out.println(sb.toString());
+			System.out.flush();
+			return new ByteArrayInputStream(copy.toByteArray());
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 
