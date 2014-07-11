@@ -53,9 +53,6 @@ public class AccessRequest extends IdentifierWithAd {
 	 * Package constructor with name and administrative domain
 	 * @param admDom administrative domain
 	 * @param name identifier name
-	 *
-	 * Theoretically deprecated as an administrative domain is not allowed
-	 * for access-request with IF-MAP 2.1
 	 */
 	AccessRequest(String name, String admDom) {
 		super(admDom);

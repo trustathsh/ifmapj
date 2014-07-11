@@ -227,10 +227,7 @@ public final class Identifiers {
 	 * and administrative-domain as given.
 	 *
 	 * @return the new {@link AccessRequest} instance.
-	 * @deprecated administrative-domain should not be used for access-request
-	 *			   anymore.
 	 */
-	@Deprecated
 	public static AccessRequest createArRandomUuid(String admDom) {
 		return new AccessRequest(java.util.UUID.randomUUID().toString(), admDom);
 	}
@@ -275,10 +272,7 @@ public final class Identifiers {
 	 * @param name the name of the access-request
 	 * @param admDom the administrative-domain of the access-request
 	 * @return the new {@link AccessRequest} instance
-	 * @deprecated administrative-domain should not be used for access-request
-	 *			   anymore.
 	 */
-	@Deprecated
 	public static AccessRequest createAr(String name, String admDom) {
 		return new AccessRequest(name, admDom);
 	}
@@ -290,11 +284,8 @@ public final class Identifiers {
 	 * @param name the name of the access-request
 	 * @param admDom the administrative-domain of the access-request
 	 * @param pubId the publisher id
-	 * @deprecated administrative-domain should not be used for access-request
-	 *			   anymore.
 	 * @return the new {@link AccessRequest} instance
 	 */
-	@Deprecated
 	public static AccessRequest createArPubPrefixed(String name,  String pubId,
 			String admDom) {
 		return new AccessRequest(pubId + ":" + name, admDom);
