@@ -103,24 +103,24 @@ public interface Metadata {
 	public boolean isMultiValue();
 
 	/**
-	 * Evaluate the given XPATH expression on this metadata document and return
+	 * Evaluate the given XPath expression on this metadata document and return
 	 * the result string. If this metadata object does not match the given
 	 * expression the empty string is returned. If the evaluation of the
 	 * expression fails null is returned.
 	 *
-	 * @param xPathExpression the XPATH expression
+	 * @param xPathExpression the XPath expression
 	 * @return the result string, null or the empty string
 	 */
 	public String getValueForXpathExpression(String xPathExpression);
 
 	/**
-	 * Evaluate the given XPATH expression on this metadata document and return
+	 * Evaluate the given XPath expression on this metadata document and return
 	 * the result string. If the evaluation fails the given default value will
 	 * be returned.
 	 *
-	 * @param xPathExpression the XPATH expression
+	 * @param xPathExpression the XPath expression
 	 * @param defaultValue the default value
-	 * @return the non empty result string or the default value
+	 * @return the result string or the default value
 	 */
 	public String getValueForXpathExpressionOrElse(String xPathExpression, String defaultValue);
 
