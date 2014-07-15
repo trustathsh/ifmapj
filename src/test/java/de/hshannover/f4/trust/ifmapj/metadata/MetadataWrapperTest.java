@@ -44,29 +44,19 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.xml.namespace.NamespaceContext;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Result;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.junit.Test;
 import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
 
-import util.CanonicalXML;
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 
 public class MetadataWrapperTest {
+
+	private static final double TIMESTAMP_FRACTION_TOLERANCE = 0.000001;
 
 	private VendorSpecificMetadataFactory vendorFactory = new VendorSpecificMetadataFactoryImpl();
 	private StandardIfmapMetadataFactory standardFactory = new StandardIfmapMetadataFactoryImpl();
@@ -79,6 +69,22 @@ public class MetadataWrapperTest {
 			+ "xmlns:foo=\"http://foo.org\" "
 			+ "ifmap-publisher-id=\"adb02031-35ec-4bde-b066-a080341aa66f\" "
 			+ "ifmap-timestamp=\"2011-10-27T23:51:42Z\" "
+			+ "ifmap-cardinality=\"singleValue\""
+			+ "/>";
+
+	private String publishedMetadataWithTimestampFractionXml = "<foo:bar "
+			+ "xmlns:foo=\"http://foo.org\" "
+			+ "ifmap-publisher-id=\"adb02031-35ec-4bde-b066-a080341aa66f\" "
+			+ "ifmap-timestamp=\"2011-10-27T23:51:42Z\" "
+			+ "ifmap-timestamp-fraction=\"0.123\" "
+			+ "ifmap-cardinality=\"singleValue\""
+			+ "/>";
+
+	private String publishedMetadataWithCorruptTimestampFractionXml = "<foo:bar "
+			+ "xmlns:foo=\"http://foo.org\" "
+			+ "ifmap-publisher-id=\"adb02031-35ec-4bde-b066-a080341aa66f\" "
+			+ "ifmap-timestamp=\"2011-10-27T23:51:42Z\" "
+			+ "ifmap-timestamp-fraction=\"error\" "
 			+ "ifmap-cardinality=\"singleValue\""
 			+ "/>";
 
@@ -134,6 +140,24 @@ public class MetadataWrapperTest {
 	public void testGetNonExistingPublishTimestamp() {
 		Metadata metadata = stringToMetadata(unPublishedMetadataXml);
 		assertEquals("", metadata.getPublishTimestamp());
+	}
+
+	@Test
+	public void testGetNonExistingPublishTimestampFraction() {
+		Metadata metadata = stringToMetadata(unPublishedMetadataXml);
+		assertEquals(0.0, metadata.getPublishTimestampFraction(), TIMESTAMP_FRACTION_TOLERANCE);
+	}
+
+	@Test
+	public void testGetExistingPublishTimestampFraction() {
+		Metadata metadata = stringToMetadata(publishedMetadataWithTimestampFractionXml);
+		assertEquals(0.123, metadata.getPublishTimestampFraction(), TIMESTAMP_FRACTION_TOLERANCE);
+	}
+
+	@Test
+	public void testCorruptPublishTimestampFraction() {
+		Metadata metadata = stringToMetadata(publishedMetadataWithCorruptTimestampFractionXml);
+		assertEquals(0.0, metadata.getPublishTimestampFraction(), TIMESTAMP_FRACTION_TOLERANCE);
 	}
 
 	@Test

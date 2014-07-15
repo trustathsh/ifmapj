@@ -64,6 +64,15 @@ public interface Metadata {
 	public String getPublishTimestamp();
 
 	/**
+	 * Return the publish timestamp fraction of this metadata.
+	 * If this metadata object has no publish timestamp fraction or
+	 * the extraction fails, 0.0 is returned.
+	 *
+	 * @return the publish timestamp fraction or null
+	 */
+	public double getPublishTimestampFraction();
+
+	/**
 	 * Return the type name of this metadata, including the namespace prefix.
 	 * If the extraction of the type name fails null is returned.
 	 *

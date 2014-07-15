@@ -207,6 +207,17 @@ public class MetadataWrapper {
 		}
 
 		@Override
+		public double getPublishTimestampFraction() {
+			String fractionString = getValueFromExpression(
+					"/*/@ifmap-timestamp-fraction", mDocument);
+			try {
+				return Double.parseDouble(fractionString);
+			} catch (NumberFormatException e) {
+				return 0.0;
+			}
+		}
+
+		@Override
 		public String getTypename() {
 			return getValueFromExpression("name(/*)", mDocument);
 		}
