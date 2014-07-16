@@ -68,7 +68,7 @@ public interface Metadata {
 	 * If this metadata object has no publish timestamp fraction or
 	 * the extraction fails, 0.0 is returned.
 	 *
-	 * @return the publish timestamp fraction or null
+	 * @return the publish timestamp fraction
 	 */
 	public double getPublishTimestampFraction();
 
