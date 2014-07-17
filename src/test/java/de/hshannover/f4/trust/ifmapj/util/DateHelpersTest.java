@@ -42,6 +42,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -72,9 +73,9 @@ public class DateHelpersTest {
 		SimpleDateFormat xmlDateUtc =
 			new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 		xmlDateUtc.setTimeZone(TimeZone.getTimeZone("UTC"));
-		String expectedStr = xmlDateUtc.format(
-			Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTime());
-		String actualStr = DateHelpers.getUtcTimeAsIso8601();
+		Calendar time = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+		String expectedStr = xmlDateUtc.format(time.getTime());
+		String actualStr = DateHelpers.getUtcTimeAsIso8601(time);
 		assertEquals(expectedStr, actualStr);
 	}
 
