@@ -78,7 +78,7 @@ abstract class AbstractCommunicationHandler implements CommunicationHandler {
 
 	static final int LOG_BUFFER_SIZE = 4096;
 
-	final SimpleDateFormat LOGGING_DATE_FORMAT = new SimpleDateFormat("YYYY-MM-DD HH:mm:ss");
+	final SimpleDateFormat LOGGING_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-DD HH:mm:ss");
 
 	private final SSLSocketFactory mSocketFactory;
 	private SSLSocket mSocket;
