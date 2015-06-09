@@ -47,11 +47,17 @@ import de.hshannover.f4.trust.ifmapj.channel.ThreadSafeSsrc;
 import de.hshannover.f4.trust.ifmapj.config.BasicAuthConfig;
 import de.hshannover.f4.trust.ifmapj.config.CertAuthConfig;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
+import de.hshannover.f4.trust.ifmapj.extendedIdentifiers.IcsIdentifiersFactory;
+import de.hshannover.f4.trust.ifmapj.extendedIdentifiers.IcsIdentifiersFactoryImpl;
 import de.hshannover.f4.trust.ifmapj.identifier.Device;
 import de.hshannover.f4.trust.ifmapj.identifier.IdentifierFactory;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 import de.hshannover.f4.trust.ifmapj.messages.RequestFactory;
 import de.hshannover.f4.trust.ifmapj.messages.Requests;
+import de.hshannover.f4.trust.ifmapj.metadata.ContentAuthorizationMetadataFactory;
+import de.hshannover.f4.trust.ifmapj.metadata.ContentAuthorizationMetadataFactoryImpl;
+import de.hshannover.f4.trust.ifmapj.metadata.IcsSecurityMetadataFactory;
+import de.hshannover.f4.trust.ifmapj.metadata.IcsSecurityMetadataFactoryImpl;
 import de.hshannover.f4.trust.ifmapj.metadata.StandardIfmapMetadataFactory;
 import de.hshannover.f4.trust.ifmapj.metadata.StandardIfmapMetadataFactoryImpl;
 import de.hshannover.f4.trust.ifmapj.metadata.VendorSpecificMetadataFactory;
@@ -185,6 +191,18 @@ public final class IfmapJ {
 	}
 
 	/**
+	 * Create a {@link IdentifierFactory} object to create different types
+	 * of {@link Identifier} implementations.
+	 *
+	 * @return a new {@link IdentifierFactory} that is used to create IF-MAP identifiers
+	 * @deprecated
+	 * Use {@link Identifiers} directly.
+	 */
+	public static IcsIdentifiersFactory createIcsIdentifiersFactory() {
+		return new IcsIdentifiersFactoryImpl();
+	}
+
+	/**
 	 * Create a new {@link StandardIfmapMetadataFactory} object to create
 	 * standard metadata defined by IF-MAP 2.0.
 	 *
@@ -192,6 +210,26 @@ public final class IfmapJ {
 	 */
 	public static StandardIfmapMetadataFactory createStandardMetadataFactory() {
 		return new StandardIfmapMetadataFactoryImpl();
+	}
+
+	/**
+	 * Create a new {@link IcsSecurityMetadataFactory} object
+	 * to create the IF-MAP Metadata for ICS Security
+	 *
+	 * @return a new {@link IcsSecurityMetadataFactory} to create metadata
+	 */
+	public static IcsSecurityMetadataFactory createIcsSecurityMetadataFactory() {
+		return new IcsSecurityMetadataFactoryImpl();
+	}
+
+	/**
+	 * Create a new {@link ContentAuthorizationMetadataFactory} object
+	 * to create the IF-MAP Metadata for Content Authorization
+	 *
+	 * @return a new {@link ContentAuthorizationMetadataFactory} to create metadata
+	 */
+	public static ContentAuthorizationMetadataFactory createContentAuthorizationMetadataFactory() {
+		return new ContentAuthorizationMetadataFactoryImpl();
 	}
 
 	/**
