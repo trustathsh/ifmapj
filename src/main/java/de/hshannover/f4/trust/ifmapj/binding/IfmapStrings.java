@@ -54,10 +54,10 @@ public class IfmapStrings {
 	public static final String STD_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2010/IFMAP-METADATA/2";
 
 	public static final String CONTAUTH_METADATA_PREFIX =  "contauth-meta";
-	public static final String CONTAUTH_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2010/CONTAUTH-METADATA/1";
+	public static final String CONTAUTH_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2013/MAP-CONTENT-AUTHORIZATION/1";
 
 	public static final String ICS_METADATA_PREFIX =  "ics-meta";
-	public static final String ICS_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2010/ICS-METADATA/1";
+	public static final String ICS_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2010/IFMAP-ICS-METADATA/1";
 
 	public static final String OP_METADATA_PREFIX =  "op-meta";
 	public static final String OP_METADATA_NS_URI =  "http://www.trustedcomputinggroup.org/2012/IFMAP-OPERATIONAL-METADATA/1";

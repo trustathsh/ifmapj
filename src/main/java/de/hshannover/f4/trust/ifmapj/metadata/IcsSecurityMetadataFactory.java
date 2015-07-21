@@ -129,7 +129,7 @@ public interface IcsSecurityMetadataFactory {
 	 *  search specification that will result in a list of principals
 	 * </pre>
 	 *
-	 * @param ldapUri contains URI for LDAP directory  search specification
+	 * @param ldapUri contains URI for LDAP directory search specification
 	 *
 	 * @return a {@link Document} that represents the metadata
 	 */
@@ -143,7 +143,7 @@ public interface IcsSecurityMetadataFactory {
 	 *  associates an overlay-manager-group identifier with
 	 *  a backhaul-interface identifier or
 	 *  an overlay-manager-group identifier with
-	 *  an overlay-network
+	 *  an overlay-network-group identifier
 	 * </pre>
 	 *
 	 * @return a {@link Document} that represents the metadata

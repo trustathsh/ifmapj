@@ -36,49 +36,22 @@
  * limitations under the License.
  * #L%
  */
+
 package de.hshannover.f4.trust.ifmapj.extendedIdentifiers;
 
 import de.hshannover.f4.trust.ifmapj.identifier.Identity;
 
 /**
- * Contains methods to create ICS Identifiers.
+ * Factory to create the extended identifiers for Content Authorization
  *
  * @author pe
- *
  */
-public final class IcsIdentifiers {
-
+public interface ContentAuthorizationIdentifiersFactory {
 	/**
-	 * Create a backhaul-interface identifier,
+	 * Create a ifmap-client-catalog identifier,
 	 * that is an extended identity identifier.
 	 *
-	 * @param name unique name of a given BHI
 	 * @return the new {@link Identity} instance
 	 */
-	public static Identity createBackhaulInterface(String name) {
-		return new IcsIdentifiersFactoryImpl().createBackhaulInterface(name);
-	}
-
-	/**
-	 * Create a overlay-manager-group identifier,
-	 * that is an extended identity identifier.
-	 *
-	 * @param name name of a particular Overlay Manager group
-	 * @return the new {@link Identity} instance
-	 */
-	public static Identity createOverlayManagerGroup(String name) {
-		return new IcsIdentifiersFactoryImpl().createBackhaulInterface(name);
-	}
-
-	/**
-	 * Create a overlay-network-group identifier,
-	 * that is an extended identity identifier.
-	 *
-	 * @param name name of the overlay network
-	 * @return the new {@link Identity} instance
-	 */
-	public static Identity createOverlayNetworkGroup(String name) {
-		return new IcsIdentifiersFactoryImpl().createOverlayManagerGroup(name);
-	}
-
+	Identity createIfmapClientCatalog();
 }
