@@ -71,31 +71,24 @@ public abstract class IfmapMetadataFactory {
 	}
 
 	/**
+	 * Creates a metadata document with a single element and given namespace information.
+	 *
 	 * @param namespaceUri
+	 *            URI of the namespace of the metadata document
 	 * @param namespacePrefix
+	 *            prefix of the namespace of the metadata document
 	 * @param name
-	 * @param card
-	 * @return
+	 *            value of the root element of the metadata document
+	 * @param cardinality
+	 *            the cardinality of the metadata document
+	 * @return a {@link Document} instance representing the metadata object
 	 */
 	protected Document createSingleElementDocument(String namespaceUri, String namespacePrefix, String name,
-			Cardinality card) {
-		return createSingleElementDocument(
-				namespacePrefix
-						+ ":" + name,
-				namespaceUri,
-				card);
-	}
-
-	/**
-	 * @param qualifiedName
-	 * @param uri
-	 * @param cardinality
-	 * @return
-	 */
-	protected Document createSingleElementDocument(String qualifiedName,
-			String uri, Cardinality cardinality) {
+			Cardinality cardinality) {
 		Document doc = mDocumentBuilder.newDocument();
-		Element e = doc.createElementNS(uri, qualifiedName);
+		String qualifiedName = namespacePrefix
+				+ ":" + name;
+		Element e = doc.createElementNS(namespaceUri, qualifiedName);
 		e.setAttributeNS(null, "ifmap-cardinality", cardinality.toString());
 		doc.appendChild(e);
 		return doc;

@@ -51,10 +51,15 @@ import de.hshannover.f4.trust.ifmapj.identifier.Identity;
 import de.hshannover.f4.trust.ifmapj.log.IfmapJLog;
 
 /**
- * @author bahellma
+ * Static class that helps to create Extended Identifiers.
+ *
+ * @author Bastian Hellmann
  *
  */
 public class ExtendedIdentifiers {
+
+	private ExtendedIdentifiers() {
+	}
 
 	private static DocumentBuilder mDocumentBuilder;
 
@@ -71,12 +76,19 @@ public class ExtendedIdentifiers {
 	}
 
 	/**
+	 * Creates an Extended Identifier.
+	 *
 	 * @param namespaceUri
+	 *            URI of the namespace of the inner XML of the Extended Identifier
 	 * @param namespacePrefix
+	 *            prefix of the namespace of the inner XML of the Extended Identifier
 	 * @param identifierName
+	 *            the name value of the Extended Identifier (will be the root node of the inner XML)
 	 * @param attributeValue
+	 *            a value for the attribute <i>name</i>
 	 * @param administrativeDomain
-	 * @return
+	 *            the value of the administrativeDomain attribute
+	 * @return an {@link Identity} instance encapsulating the Extended Identifier
 	 */
 	public static Identity createExtendedIdentifier(String namespaceUri, String namespacePrefix, String identifierName,
 			String attributeValue,
@@ -99,11 +111,17 @@ public class ExtendedIdentifiers {
 	}
 
 	/**
+	 * Creates an Extended Identifier; uses an empty string for the administrativeDomain attribute.
+	 *
 	 * @param namespaceUri
+	 *            URI of the namespace of the inner XML of the Extended Identifier
 	 * @param namespacePrefix
+	 *            prefix of the namespace of the inner XML of the Extended Identifier
 	 * @param identifierName
+	 *            the name value of the Extended Identifier (will be the root node of the inner XML)
 	 * @param attributeValue
-	 * @return
+	 *            a value for the attribute <i>name</i>
+	 * @return an {@link Identity} instance encapsulating the Extended Identifier
 	 */
 	public static Identity createExtendedIdentifier(String namespaceUri, String namespacePrefix, String identifierName,
 			String attributeValue) {
@@ -111,10 +129,16 @@ public class ExtendedIdentifiers {
 	}
 
 	/**
+	 * Creates an Extended Identifier; uses an empty string for the administrativeDomain attribute and does not add an
+	 * attribute <i>name</i>.
+	 *
 	 * @param namespaceUri
+	 *            URI of the namespace of the inner XML of the Extended Identifier
 	 * @param namespacePrefix
+	 *            prefix of the namespace of the inner XML of the Extended Identifier
 	 * @param identifierName
-	 * @return
+	 *            the name value of the Extended Identifier (will be the root node of the inner XML)
+	 * @return an {@link Identity} instance encapsulating the Extended Identifier
 	 */
 	public static Identity createExtendedIdentifier(String namespaceUri, String namespacePrefix, String identifierName) {
 		return createExtendedIdentifier(namespaceUri, namespacePrefix, identifierName, null, "");
