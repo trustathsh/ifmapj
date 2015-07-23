@@ -7,17 +7,17 @@
  *    | | | |  | |_| \__ \ |_| | (_| |  _  |\__ \|  _  |
  *    |_| |_|   \__,_|___/\__|\ \__,_|_| |_||___/|_| |_|
  *                             \____/
- * 
+ *
  * =====================================================
- * 
+ *
  * Hochschule Hannover
  * (University of Applied Sciences and Arts, Hannover)
  * Faculty IV, Dept. of Computer Science
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
- * 
+ *
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de/
- * 
+ *
  * This file is part of ifmapj, version 2.2.2, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
@@ -26,9 +26,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,7 +38,10 @@
  */
 package de.hshannover.f4.trust.ifmapj;
 
+import java.io.IOException;
+
 import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 
 import de.hshannover.f4.trust.ifmapj.channel.SSRC;
@@ -47,9 +50,8 @@ import de.hshannover.f4.trust.ifmapj.channel.ThreadSafeSsrc;
 import de.hshannover.f4.trust.ifmapj.config.BasicAuthConfig;
 import de.hshannover.f4.trust.ifmapj.config.CertAuthConfig;
 import de.hshannover.f4.trust.ifmapj.exception.InitializationException;
-import de.hshannover.f4.trust.ifmapj.extendedIdentifiers.IcsIdentifiersFactory;
-import de.hshannover.f4.trust.ifmapj.extendedIdentifiers.IcsIdentifiersFactoryImpl;
 import de.hshannover.f4.trust.ifmapj.identifier.Device;
+import de.hshannover.f4.trust.ifmapj.identifier.Identifier;
 import de.hshannover.f4.trust.ifmapj.identifier.IdentifierFactory;
 import de.hshannover.f4.trust.ifmapj.identifier.Identifiers;
 import de.hshannover.f4.trust.ifmapj.messages.RequestFactory;
@@ -64,7 +66,6 @@ import de.hshannover.f4.trust.ifmapj.metadata.VendorSpecificMetadataFactory;
 import de.hshannover.f4.trust.ifmapj.metadata.VendorSpecificMetadataFactoryImpl;
 import de.hshannover.f4.trust.ifmapj21.ClockSkewDetector;
 
-
 /**
  * Entry class to do IF-MAP 2.0 communication using IfmapJ.
  *
@@ -74,16 +75,21 @@ import de.hshannover.f4.trust.ifmapj21.ClockSkewDetector;
 @SuppressWarnings("deprecation")
 public final class IfmapJ {
 
-	private IfmapJ() { }
+	private IfmapJ() {
+	}
 
 	/**
 	 * Create a new {@link SSRC} object to operate on the given url
 	 * using basic authentication.
 	 *
-	 * @param url the URL to connect to
-	 * @param user basic authentication user
-	 * @param pass basic authentication password
-	 * @param tms TrustManager instances to initialize the {@link SSLContext} with.
+	 * @param url
+	 *            the URL to connect to
+	 * @param user
+	 *            basic authentication user
+	 * @param pass
+	 *            basic authentication password
+	 * @param tms
+	 *            TrustManager instances to initialize the {@link SSLContext} with.
 	 * @return a new {@link SSRC} that uses basic authentication
 	 * @throws IOException
 	 * @deprecated use createSsrc(BasicAuthConfig) instead
@@ -91,16 +97,18 @@ public final class IfmapJ {
 	@Deprecated
 	public static SSRC createSsrc(String url, String user, String pass, TrustManager[] tms)
 			throws InitializationException {
-		return new SsrcImpl(url, user, pass, tms, 120*1000);
+		return new SsrcImpl(url, user, pass, tms, 120 * 1000);
 	}
 
 	/**
 	 * Create a new {@link SSRC} object to operate on the given configuration
 	 * using basic authentication.
 	 *
-	 * @param config the configuration parameter for the new SSRC
+	 * @param config
+	 *            the configuration parameter for the new SSRC
 	 * @return a new {@link SSRC} that uses basic authentication
-	 * @throws InitializationException if the SSRC initialization fails
+	 * @throws InitializationException
+	 *             if the SSRC initialization fails
 	 */
 	public static SSRC createSsrc(BasicAuthConfig config)
 			throws InitializationException {
@@ -126,9 +134,12 @@ public final class IfmapJ {
 	 * the keys javax.net.ssl.keyStore, and javax.net.ssl.trustStore
 	 * respectively.
 	 *
-	 * @param url the URL to connect to
-	 * @param kms TrustManager instances to initialize the {@link SSLContext} with.
-	 * @param tms KeyManager instances to initialize the {@link SSLContext} with.
+	 * @param url
+	 *            the URL to connect to
+	 * @param kms
+	 *            TrustManager instances to initialize the {@link SSLContext} with.
+	 * @param tms
+	 *            KeyManager instances to initialize the {@link SSLContext} with.
 	 * @return a new {@link SSRC} that uses certificate-based authentication
 	 * @throws IOException
 	 * @deprecated use createSsrc(CertAuthConfig) instead
@@ -143,9 +154,11 @@ public final class IfmapJ {
 	 * Create a new {@link SSRC} object to operate on the given configuration
 	 * using certificate based authentication.
 	 *
-	 * @param config the configuration parameter for the new SSRC
+	 * @param config
+	 *            the configuration parameter for the new SSRC
 	 * @return a new {@link SSRC} that uses certificate based authentication
-	 * @throws InitializationException if the SSRC initialization fails
+	 * @throws InitializationException
+	 *             if the SSRC initialization fails
 	 */
 	public static SSRC createSsrc(CertAuthConfig config)
 			throws InitializationException {
@@ -170,7 +183,7 @@ public final class IfmapJ {
 	 *
 	 * @return a new {@link RequestFactory} that is used to create IF-MAP requests
 	 * @deprecated
-	 * Use {@link Requests} directly.
+	 *             Use {@link Requests} directly.
 	 */
 	@Deprecated
 	public static RequestFactory createRequestFactory() {
@@ -183,23 +196,11 @@ public final class IfmapJ {
 	 *
 	 * @return a new {@link IdentifierFactory} that is used to create IF-MAP identifiers
 	 * @deprecated
-	 * Use {@link Identifiers} directly.
+	 *             Use {@link Identifiers} directly.
 	 */
 	@Deprecated
 	public static IdentifierFactory createIdentifierFactory() {
 		return Identifiers.getIdentifierFactory();
-	}
-
-	/**
-	 * Create a {@link IdentifierFactory} object to create different types
-	 * of {@link Identifier} implementations.
-	 *
-	 * @return a new {@link IdentifierFactory} that is used to create IF-MAP identifiers
-	 * @deprecated
-	 * Use {@link Identifiers} directly.
-	 */
-	public static IcsIdentifiersFactory createIcsIdentifiersFactory() {
-		return new IcsIdentifiersFactoryImpl();
 	}
 
 	/**
@@ -236,8 +237,10 @@ public final class IfmapJ {
 	 * Create a {@link ClockSkewDetector} instance which can be used to
 	 * synchronize the time with the MAPS.
 	 *
-	 * @param ssrc the {@link SSRC} instance to be used for synchronization
-	 * @param dev the {@link Device} used for time synchronization
+	 * @param ssrc
+	 *            the {@link SSRC} instance to be used for synchronization
+	 * @param dev
+	 *            the {@link Device} used for time synchronization
 	 * @return
 	 */
 	public static ClockSkewDetector createClockSkewDetector(SSRC ssrc, Device dev) {
