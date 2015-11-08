@@ -122,6 +122,22 @@ public final class Identifiers {
 		return null;
 	}
 
+	public static IdentifierHandler<? extends Identifier> getHandlerFor(Class<? extends Identifier> clazz) {
+
+		if (sIdentifierHandlers == null) {
+			initializeDefaultHandlers();
+		}
+
+		for (Entry<Class<? extends Identifier>, IdentifierHandler<? extends Identifier>> entry : sIdentifierHandlers
+				.entrySet()) {
+			if (entry.getKey().equals(clazz)) {
+				return entry.getValue();
+			}
+		}
+
+		return null;
+	}
+
 	private static void initializeDefaultHandlers() {
 		sIdentifierHandlers = new HashMap<Class<? extends Identifier>,
 				IdentifierHandler<? extends Identifier>>();
