@@ -38,12 +38,6 @@
  */
 package de.hshannover.f4.trust.ifmapj.identifier;
 
-import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
-import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
-import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
-import de.hshannover.f4.trust.ifmapj.identifier.Identifiers.Helpers;
-import de.hshannover.f4.trust.ifmapj.log.IfmapJLog;
-
 import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -51,11 +45,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.xml.transform.TransformerConfigurationException;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
+import de.hshannover.f4.trust.ifmapj.exception.IfmapException;
+import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
+import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
+import de.hshannover.f4.trust.ifmapj.identifier.Identifiers.Helpers;
+import de.hshannover.f4.trust.ifmapj.log.IfmapJLog;
 import util.DomHelpers;
 import util.StringHelpers;
 
@@ -71,7 +73,7 @@ public final class Identifiers {
 	@SuppressWarnings("deprecation")
 	private static IdentifierFactory sIdentifierFactoryInstance;
 	private static Map<Class<? extends Identifier>,
-			IdentifierHandler<? extends Identifier>> sIdentifierHandlers;
+	IdentifierHandler<? extends Identifier>> sIdentifierHandlers;
 
 	private Identifiers() { }
 
@@ -122,15 +124,115 @@ public final class Identifiers {
 		return null;
 	}
 
-	public static IdentifierHandler<? extends Identifier> getHandlerFor(Class<? extends Identifier> clazz) {
+	/**
+	 * First try to find the default handler for the element argument. ( AccessRequestHandler || DeviceHandler ||
+	 * IdentityHandler || IpAddressHandler || MacAddressHandler) If the element argument an extended identity Identifier
+	 * then try to find the most specific handler for this element. Used the Element-LocalName to find the right
+	 * handler.
+	 *
+	 * @param element
+	 * @return The {@link IdentifierHandler} for the element or null.
+	 */
+	public static IdentifierHandler<? extends Identifier> getHandlerFor(Element element) {
 
 		if (sIdentifierHandlers == null) {
 			initializeDefaultHandlers();
 		}
 
+		String nodeName = element.getNodeName();
+
+		if (nodeName.equalsIgnoreCase(IfmapStrings.ACCESS_REQUEST_EL_NAME)) {
+			return sIdentifierHandlers.get(AccessRequest.class);
+
+		} else if (nodeName.equalsIgnoreCase(IfmapStrings.DEVICE_EL_NAME)) {
+			return sIdentifierHandlers.get(Device.class);
+
+		} else if (nodeName.equalsIgnoreCase(IfmapStrings.IP_ADDRESS_EL_NAME)) {
+			return sIdentifierHandlers.get(IpAddress.class);
+
+		} else if (nodeName.equalsIgnoreCase(IfmapStrings.MAC_ADDRESS_EL_NAME)) {
+			return sIdentifierHandlers.get(MacAddress.class);
+
+		} else if (nodeName.equalsIgnoreCase(IfmapStrings.IDENTITY_EL_NAME)) {
+			if (checkExtendedIdentityElement(element)) {
+				IdentifierHandler<? extends Identifier> handler = getExtendedIdentifierHandlerFor(element);
+
+				if (handler != null) {
+					return handler;
+				}
+			}
+
+			return sIdentifierHandlers.get(Identity.class);
+		}
+
+		return null;
+	}
+
+	public static boolean checkExtendedIdentityElement(Element element) {
+		if (!DomHelpers.elementMatches(element, IfmapStrings.IDENTITY_EL_NAME)) {
+			return false;
+		}
+
+		IdentityType typeEnum = null;
+		String type = element.getAttribute(IfmapStrings.IDENTITY_ATTR_TYPE);
+		String otherTypeDef = element.getAttribute(IfmapStrings.IDENTITY_ATTR_OTHER_TYPE_DEF);
+
+		if (type == null || type.length() == 0) {
+			return false;
+		}
+
+		for (IdentityType t : IdentityType.values()) {
+			if (t.toString().equals(type)) {
+				typeEnum = t;
+				break;
+			}
+		}
+
+		if (typeEnum == null || otherTypeDef == null) {
+			return false;
+		}
+
+		if (typeEnum == IdentityType.other && otherTypeDef.length() == 0) {
+			return false;
+		}
+
+		if (typeEnum == IdentityType.other && otherTypeDef.equals(IfmapStrings.OTHER_TYPE_EXTENDED_IDENTIFIER)) {
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * If the element argument is an extended identity Identifier then try to find the most specific handler for this
+	 * element. Used the Element-LocalName to find the right handler.
+	 *
+	 * @param element
+	 * @return The {@link IdentifierHandler} for the element or null.
+	 */
+	private static IdentifierHandler<? extends Identifier> getExtendedIdentifierHandlerFor(Element element) {
+		if (!checkExtendedIdentityElement(element)) {
+			return null;
+		}
+
+		String name = element.getAttribute(IfmapStrings.IDENTITY_ATTR_NAME);
+
+		Document extendedDocument;
+		try {
+			extendedDocument = DomHelpers.parseEscapedXmlString(name);
+		} catch (UnmarshalException e) {
+			return null;
+		}
+		Element extendedElement = extendedDocument.getDocumentElement();
+		String nodeName = extendedElement.getLocalName();
+
+		// try to find the most specific handler
 		for (Entry<Class<? extends Identifier>, IdentifierHandler<? extends Identifier>> entry : sIdentifierHandlers
 				.entrySet()) {
-			if (entry.getKey().equals(clazz)) {
+
+			String simpleClassName = entry.getKey().getSimpleName();
+
+			if (simpleClassName.equalsIgnoreCase(nodeName)) {
 				return entry.getValue();
 			}
 		}
@@ -157,14 +259,10 @@ public final class Identifiers {
 			initializeDefaultHandlers();
 		}
 
-		for (IdentifierHandler<? extends Identifier> handler
-				: sIdentifierHandlers.values()) {
+		IdentifierHandler<? extends Identifier> handler = getHandlerFor(el);
 
+		if (handler != null) {
 			ret = handler.fromElement(el);
-
-			if (ret != null) {
-				break;
-			}
 		}
 
 		return ret;

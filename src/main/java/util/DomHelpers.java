@@ -42,6 +42,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,7 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import de.hshannover.f4.trust.ifmapj.binding.IfmapStrings;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
+import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
 import de.hshannover.f4.trust.ifmapj.log.IfmapJLog;
 import de.hshannover.f4.trust.ifmapj.messages.NamespaceDeclarationHolder;
 
@@ -319,6 +321,33 @@ public final class DomHelpers {
 	}
 
 	/**
+	 * Takes escaped XML as a {@link String} and replaces any escaped character with its non-escaped version.
+	 *
+	 * <ul>
+	 * <li>&ampamp; -> &
+	 * <li>&amplt; -> <
+	 * <li>&ampgt; -> >
+	 * <li>&ampquot; -> "
+	 * <li>&ampapos; -> '
+	 * </ul>
+	 *
+	 * @param input
+	 * @return
+	 */
+	private static String deEscapeXml(String input) {
+		String ret = input;
+
+		String[] unwanted = {"&amp;", "&lt;", "&gt;", "&quot;", "&apos;"};
+		String[] replaceBy = {"&", "<", ">", "\"", "'"};
+
+		for (int i = 0; i < unwanted.length; i++) {
+			ret = ret.replace(unwanted[i], replaceBy[i]);
+		}
+
+		return ret;
+	}
+
+	/**
 	 * If the top-level element has a prefix associated with it, drop it.
 	 * Go recursively down and remove all prefixes. If we come across
 	 * a different prefix, throw a {@link MarshalException}...
@@ -459,4 +488,41 @@ public final class DomHelpers {
 		d2.normalize();
 		return d1.isEqualNode(d2);
 	}
+
+	/**
+	 * Parses a {@link String} containing a XML document to a {@link Document}.
+	 *
+	 * @param input
+	 *            XML document as one {@link String}
+	 * @return a {@link Document}
+	 * @throws UnmarshalException
+	 */
+	private static synchronized Document parseXmlString(String input) throws UnmarshalException {
+		Document document = null;
+		try {
+			document = DOCUMENT_BUILDER.parse(new InputSource(new StringReader(input)));
+		} catch (SAXException e) {
+			IfmapJLog.error(e.getMessage());
+			throw new UnmarshalException(e.getMessage());
+		} catch (IOException e) {
+			IfmapJLog.error(e.getMessage());
+			throw new UnmarshalException(e.getMessage());
+		}
+
+		return document;
+	}
+
+	/**
+	 * Convenience method; takes an escaped XML document as input and returns a {@link Document} object.
+	 *
+	 * @param input
+	 *            escaped XML as one {@link String}
+	 * @return a {@link Document}
+	 * @throws UnmarshalException
+	 */
+	public static Document parseEscapedXmlString(String input) throws UnmarshalException {
+		String deEscapedXml = deEscapeXml(input);
+		return parseXmlString(deEscapedXml);
+	}
+
 }
