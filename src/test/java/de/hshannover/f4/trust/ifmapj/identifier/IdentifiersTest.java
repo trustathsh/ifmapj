@@ -7,17 +7,17 @@
  *    | | | |  | |_| \__ \ |_| | (_| |  _  |\__ \|  _  |
  *    |_| |_|   \__,_|___/\__|\ \__,_|_| |_||___/|_| |_|
  *                             \____/
- * 
+ *
  * =====================================================
- * 
+ *
  * Hochschule Hannover
  * (University of Applied Sciences and Arts, Hannover)
  * Faculty IV, Dept. of Computer Science
  * Ricklinger Stadtweg 118, 30459 Hannover, Germany
- * 
+ *
  * Email: trust@f4-i.fh-hannover.de
  * Website: http://trust.f4.hs-hannover.de/
- * 
+ *
  * This file is part of ifmapj, version 2.3.0, implemented by the Trust@HsH
  * research group at the Hochschule Hannover.
  * %%
@@ -26,9 +26,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,15 +38,19 @@
  */
 package de.hshannover.f4.trust.ifmapj.identifier;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import util.DomHelpers;
 import de.hshannover.f4.trust.ifmapj.exception.MarshalException;
 import de.hshannover.f4.trust.ifmapj.exception.UnmarshalException;
+import util.DomHelpers;
 
 /**
  * Test functionality provided by the {@link Identifiers} class.
@@ -185,80 +189,80 @@ public class IdentifiersTest {
 
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
 
-		class CustomIdent implements Identifier {
+		class CustomIdentToElement implements Identifier {
 
 		};
 
-		class CustomIdentHandler implements IdentifierHandler<CustomIdent> {
+		class CustomIdentHandlerToElement implements IdentifierHandler<CustomIdentToElement> {
 
 			@Override
 			public Element toElement(Identifier i, Document doc)
 					throws MarshalException {
-				return DomHelpers.createNonNsElement(doc, "customident");
+				return DomHelpers.createNonNsElement(doc, "customidenttoelement");
 			}
 
 			@Override
-			public CustomIdent fromElement(Element el)
+			public CustomIdentToElement fromElement(Element el)
 					throws UnmarshalException {
 				return null;
 			}
 
 			@Override
-			public Class<CustomIdent> handles() {
-				return CustomIdent.class;
+			public Class<CustomIdentToElement> handles() {
+				return CustomIdentToElement.class;
 			}
 
 		}
 
-		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
+		Identifiers.registerIdentifierHandler(new CustomIdentHandlerToElement());
 
-		Element element = Identifiers.tryToElement(new CustomIdent(), doc);
+		Element element = Identifiers.tryToElement(new CustomIdentToElement(), doc);
 
-		assertEquals("customident", element.getLocalName());
+		assertEquals("customidenttoelement", element.getLocalName());
 	}
 
 	@Test
 	public void testFromElementNewHandler() throws UnmarshalException {
 
 		Document doc = DomHelpers.newDocumentBuilder().newDocument();
-		Element el = DomHelpers.createNonNsElement(doc, "customident");
+		Element el = DomHelpers.createNonNsElement(doc, "customidentfromElement");
 		doc.appendChild(el);
 
-		class CustomIdent implements Identifier {
+		class CustomIdentFromElement implements Identifier {
 
 		};
 
-		class CustomIdentHandler implements IdentifierHandler<CustomIdent> {
+		class CustomIdentHandlerFromElement implements IdentifierHandler<CustomIdentFromElement> {
 
 			@Override
 			public Element toElement(Identifier i, Document doc)
 					throws MarshalException {
-				return DomHelpers.createNonNsElement(doc, "customident");
+				return DomHelpers.createNonNsElement(doc, "customidentfromElement");
 			}
 
 			@Override
-			public CustomIdent fromElement(Element el)
+			public CustomIdentFromElement fromElement(Element el)
 					throws UnmarshalException {
-				if (el.getLocalName().equals("customident")) {
-					return new CustomIdent();
+				if (el.getLocalName().equals("customidentfromElement")) {
+					return new CustomIdentFromElement();
 				}
 
 				return null;
 			}
 
 			@Override
-			public Class<CustomIdent> handles() {
-				return CustomIdent.class;
+			public Class<CustomIdentFromElement> handles() {
+				return CustomIdentFromElement.class;
 			}
 
 		}
 
-		Identifiers.registerIdentifierHandler(new CustomIdentHandler());
+		Identifiers.registerIdentifierHandler(new CustomIdentHandlerFromElement());
 
 		Identifier i = Identifiers.tryFromElement(el);
 
 		assertNotNull(i);
-		assertEquals(CustomIdent.class, i.getClass());
+		assertEquals(CustomIdentFromElement.class, i.getClass());
 	}
 
 	@Test

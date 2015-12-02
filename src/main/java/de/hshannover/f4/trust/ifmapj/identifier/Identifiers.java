@@ -165,7 +165,7 @@ public final class Identifiers {
 			return sIdentifierHandlers.get(Identity.class);
 		}
 
-		return null;
+		return getOtherIdentifierHandlerFor(element);
 	}
 
 	public static boolean checkExtendedIdentityElement(Element element) {
@@ -227,6 +227,22 @@ public final class Identifiers {
 		String nodeName = extendedElement.getLocalName();
 
 		// try to find the most specific handler
+		for (Entry<Class<? extends Identifier>, IdentifierHandler<? extends Identifier>> entry : sIdentifierHandlers
+				.entrySet()) {
+
+			String simpleClassName = entry.getKey().getSimpleName();
+
+			if (simpleClassName.equalsIgnoreCase(nodeName)) {
+				return entry.getValue();
+			}
+		}
+
+		return null;
+	}
+
+	private static IdentifierHandler<? extends Identifier> getOtherIdentifierHandlerFor(Element element) {
+		String nodeName = element.getLocalName();
+
 		for (Entry<Class<? extends Identifier>, IdentifierHandler<? extends Identifier>> entry : sIdentifierHandlers
 				.entrySet()) {
 
