@@ -107,8 +107,12 @@ public abstract class IfmapJHelper {
 	 */
 	public static KeyManager[] getKeyManagers(InputStream keyStoreIs, String pass)
 	throws InitializationException {
-		if (keyStoreIs == null || pass == null) {
-			throw new NullPointerException("parameters null?");
+		if (keyStoreIs == null) {
+			throw new NullPointerException("KeyStore input stream is null");
+		}
+
+		if (pass == null) {
+			throw new NullPointerException("KeyStore password is null");
 		}
 
 		try {
@@ -164,8 +168,12 @@ public abstract class IfmapJHelper {
 	 */
 	public static TrustManager[] getTrustManagers(InputStream trustStoreIs, String pass)
 			throws InitializationException {
-		if (trustStoreIs == null || pass == null) {
-			throw new NullPointerException("parameters null?");
+		if (trustStoreIs == null) {
+			throw new NullPointerException("TrustStore input stream is null");
+		}
+
+		if (pass == null) {
+			throw new NullPointerException("TrustStore password is null");
 		}
 
 		try {
