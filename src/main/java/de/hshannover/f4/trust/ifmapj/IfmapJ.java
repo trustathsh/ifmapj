@@ -113,7 +113,7 @@ public final class IfmapJ {
 	public static SSRC createSsrc(BasicAuthConfig config)
 			throws InitializationException {
 		TrustManager[] trustManagers = IfmapJHelper.getTrustManagers(
-				IfmapJ.class.getResourceAsStream(config.trustStorePath),
+				config.trustStorePath,
 				config.trustStorePassword);
 		SSRC ssrc = new SsrcImpl(
 				config.url, config.username, config.password, trustManagers, config.initialConnectionTimeout);
@@ -163,10 +163,10 @@ public final class IfmapJ {
 	public static SSRC createSsrc(CertAuthConfig config)
 			throws InitializationException {
 		TrustManager[] trustManagers = IfmapJHelper.getTrustManagers(
-				IfmapJ.class.getResourceAsStream(config.trustStorePath),
+				config.trustStorePath,
 				config.trustStorePassword);
 		KeyManager[] keyManagers = IfmapJHelper.getKeyManagers(
-				IfmapJ.class.getResourceAsStream(config.keyStorePath),
+				config.keyStorePath,
 				config.keyStorePassword);
 		SSRC ssrc = new SsrcImpl(config.url, keyManagers, trustManagers, config.initialConnectionTimeout);
 
