@@ -215,7 +215,7 @@ public abstract class IfmapJHelper {
 	 */
 	private static InputStream getFileAsInputStream(String file) throws InitializationException {
 		if (file == null) {
-			throw new NullPointerException("file is null");
+			throw new NullPointerException("File is null");
 		}
 		try {
 			return new FileInputStream(new File(file));

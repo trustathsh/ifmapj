@@ -107,7 +107,7 @@ public class BasicAuthConfig {
 	
 	@Override
 	public String toString() {
-		return "BasicAuthConfig [url:" + url
+		return "BasicAuthConfig [url: " + url
 				+ ", username: " + username
 				+ ", password: " + password
 				+ ", trustStorePath: " + trustStorePath

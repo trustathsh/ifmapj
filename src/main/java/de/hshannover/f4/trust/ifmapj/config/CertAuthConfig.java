@@ -109,7 +109,7 @@ public class CertAuthConfig {
 	
 	@Override
 	public String toString() {
-		return "CertAuthConfig [url:" + url
+		return "CertAuthConfig [url: " + url
 				+ ", keyStorePath: " + keyStorePath
 				+ ", keyStorePassword: " + keyStorePassword
 				+ ", trustStorePath: " + trustStorePath
