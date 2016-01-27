@@ -104,4 +104,15 @@ public class BasicAuthConfig {
 			String trustStorePassword) {
 		this(url, username, password, trustStorePath, trustStorePassword, false, 120 * 1000);
 	}
+	
+	@Override
+	public String toString() {
+		return "BasicAuthConfig [url:" + url
+				+ ", username: " + username
+				+ ", password: " + password
+				+ ", trustStorePath: " + trustStorePath
+				+ ", trustStorePassword: " + trustStorePassword
+				+ ", threadSafe: " + threadSafe
+				+ ", initialConnectionTimeout: " + initialConnectionTimeout + "]";
+	}
 }

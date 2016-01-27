@@ -106,4 +106,15 @@ public class CertAuthConfig {
 			String trustStorePassword) {
 		this(url, keyStorePath, keyStorePassword, trustStorePath, trustStorePassword, false, 120 * 1000);
 	}
+	
+	@Override
+	public String toString() {
+		return "CertAuthConfig [url:" + url
+				+ ", keyStorePath: " + keyStorePath
+				+ ", keyStorePassword: " + keyStorePassword
+				+ ", trustStorePath: " + trustStorePath
+				+ ", trustStorePassword: " + trustStorePassword
+				+ ", threadSafe: " + threadSafe
+				+ ", initialConnectionTimeout: " + initialConnectionTimeout + "]";
+	}
 }
